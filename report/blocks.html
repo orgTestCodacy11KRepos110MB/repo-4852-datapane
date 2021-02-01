@@ -288,7 +288,7 @@ pandas' <code>Styler</code> API.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.DataTable"><code class="flex name class">
 <span>class <span class="ident">DataTable</span></span>
-<span>(</span><span>df: pandas.core.frame.DataFrame, caption: Union[str, NoneType] = None, can_pivot: bool = True, id: str = None, label: str = None)</span>
+<span>(</span><span>df: pandas.core.frame.DataFrame, caption: Union[str, NoneType] = None, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>DataTable blocks store a dataframe that can be viewed, sorted, filtered by users viewing your report, similar to a spreadsheet,
@@ -302,16 +302,11 @@ and can be downloaded by them as a CSV or Excel file.</p>
 <dd>The pandas dataframe to attach to the report</dd>
 <dt><strong><code>caption</code></strong></dt>
 <dd>A caption to display below the plot (optional)</dd>
-<dt><strong><code>can_pivot</code></strong></dt>
-<dd>Is the table pivotable (not yet supported)</dd>
 <dt><strong><code>id</code></strong></dt>
 <dd>A unique id for the block to aid querying (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
-</dl>
-<div class="admonition hint">
-<p class="admonition-title">Hint:&ensp;<code>can_pivot</code> is currently unsupported and can be ignored</p>
-</div></div>
+</dl></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>datapane.client.api.report.blocks.AssetBlock</li>

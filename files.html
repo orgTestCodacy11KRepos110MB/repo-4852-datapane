@@ -1545,7 +1545,11 @@ to Folium. Pass any of the following to the "tiles" keyword:</p>
 - "CartoDB" (positron and dark_matter)
 </code></pre>
 <p>You can pass a custom tileset to Folium by passing a Leaflet-style
-URL to the tiles parameter: <code>http://{s}.yourtiles.com/{z}/{x}/{y}.png</code></p>
+URL to the tiles parameter: <code>http://{s}.yourtiles.com/{z}/{x}/{y}.png</code>.</p>
+<p>You can find a list of free tile providers here:
+<code>http://leaflet-extras.github.io/leaflet-providers/preview/</code>.
+Be sure to check their terms and conditions and to provide attribution
+with the <code>attr</code> keyword.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>location</code></strong> :&ensp;<code>tuple</code> or <code>list</code>, default <code>None</code></dt>
@@ -1606,16 +1610,12 @@ rare environments) even if they're supported.</dd>
 <dd>&nbsp;</dd>
 </dl>
 <h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675],
-...                        width=750, height=500)
-&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675],
-                           tiles='Mapbox Control Room')
-&gt;&gt;&gt; m = folium.Map(location=(45.523, -122.675), max_zoom=20,
-                           tiles='Cloudmade', API_key='YourKey')
+<pre><code class="language-python-repl">&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], width=750, height=500)
+&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], tiles='cartodb positron')
 &gt;&gt;&gt; m = folium.Map(
 ...    location=[45.523, -122.675],
 ...    zoom_start=2,
-...    tiles='http://{s}.tiles.mapbox.com/v3/mapbox.control-room/{z}/{x}/{y}.png',
+...    tiles='https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=mytoken',
 ...    attr='Mapbox attribution'
 ...)
 </code></pre></div>
@@ -1695,7 +1695,11 @@ to Folium. Pass any of the following to the "tiles" keyword:</p>
 - "CartoDB" (positron and dark_matter)
 </code></pre>
 <p>You can pass a custom tileset to Folium by passing a Leaflet-style
-URL to the tiles parameter: <code>http://{s}.yourtiles.com/{z}/{x}/{y}.png</code></p>
+URL to the tiles parameter: <code>http://{s}.yourtiles.com/{z}/{x}/{y}.png</code>.</p>
+<p>You can find a list of free tile providers here:
+<code>http://leaflet-extras.github.io/leaflet-providers/preview/</code>.
+Be sure to check their terms and conditions and to provide attribution
+with the <code>attr</code> keyword.</p>
 <h2 id="parameters">Parameters</h2>
 <dl>
 <dt><strong><code>location</code></strong> :&ensp;<code>tuple</code> or <code>list</code>, default <code>None</code></dt>
@@ -1756,16 +1760,12 @@ rare environments) even if they're supported.</dd>
 <dd>&nbsp;</dd>
 </dl>
 <h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675],
-...                        width=750, height=500)
-&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675],
-                           tiles='Mapbox Control Room')
-&gt;&gt;&gt; m = folium.Map(location=(45.523, -122.675), max_zoom=20,
-                           tiles='Cloudmade', API_key='YourKey')
+<pre><code class="language-python-repl">&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], width=750, height=500)
+&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], tiles='cartodb positron')
 &gt;&gt;&gt; m = folium.Map(
 ...    location=[45.523, -122.675],
 ...    zoom_start=2,
-...    tiles='http://{s}.tiles.mapbox.com/v3/mapbox.control-room/{z}/{x}/{y}.png',
+...    tiles='https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=mytoken',
 ...    attr='Mapbox attribution'
 ...)
 </code></pre></div>

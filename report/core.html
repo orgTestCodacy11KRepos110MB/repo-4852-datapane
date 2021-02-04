@@ -113,7 +113,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
-<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, NoneType] = None, open: bool = False, tags: List[str] = None, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, NoneType] = None, open: bool = False, tags: List[str] = None, group: Union[str, NoneType] = None, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Publish the report, including its attached assets, to the logged-in Datapane Server.</p>
@@ -126,7 +126,7 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>source_url</code></strong></dt>
 <dd>A URL pointing to the source code for the report, e.g. a GitHub repo or a Colab notebook</dd>
 <dt><strong><code>visibility</code></strong></dt>
-<dd>one of <code>"PUBLIC"</code> <em>(default on Public)</em>, <code>"ORG"</code> <em>(Teams only)</em>, or <code>"PRIVATE"</code> <em>(limited on Public, unlimited on Teams)</em></dd>
+<dd>one of <code>"PUBLIC"</code> <em>(default on Public)</em>, or <code>"PRIVATE"</code> <em>(limited on Public, unlimited on Teams)</em></dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
 <dt><strong><code>tags</code></strong></dt>
@@ -200,10 +200,6 @@ can be analysed and shared by users in their Browser</p>
 <h3>Class variables</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Visibility.PRIVATE"><code class="name">var <span class="ident">PRIVATE</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.core.Visibility.ORG"><code class="name">var <span class="ident">ORG</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

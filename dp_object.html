@@ -75,7 +75,7 @@ and accessible by the client API</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.dp_object.DPObjectRef.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Union[str, NoneType] = None, version: Union[str, NoneType] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, owner: Union[str, NoneType] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Lookup and retrieve an object from the Datapane Server by its name</p>
@@ -85,8 +85,6 @@ and accessible by the client API</p>
 <dd>The name of the object, e.g. <code>my-blob 3</code></dd>
 <dt><strong><code>owner</code></strong></dt>
 <dd>The owner of the object, e.g. <code>fred</code></dd>
-<dt><strong><code>version</code></strong></dt>
-<dd>The version of the object (optional, defaults to latest)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>The object if found</p></div>

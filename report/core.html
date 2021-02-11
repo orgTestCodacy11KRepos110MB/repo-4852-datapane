@@ -40,7 +40,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dl>
 <dt id="datapane.client.api.report.core.Report"><code class="flex name class">
 <span>class <span class="ident">Report</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, type: datapane.client.api.report.core.ReportType = ReportType.REPORT, **kwargs)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, type: <a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a> = ReportType.REPORT, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Reports collate plots, text, tables, and files into an interactive report that
@@ -68,7 +68,7 @@ can be analysed and shared by users in their Browser</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.core.Report.report_type"><code class="name">var <span class="ident">report_type</span> : datapane.client.api.report.core.ReportType</code></dt>
+<dt id="datapane.client.api.report.core.Report.report_type"><code class="name">var <span class="ident">report_type</span> : <a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -134,7 +134,7 @@ can be analysed and shared by users in their Browser</p>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, standalone: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the report to a local HTML file</p>
@@ -144,8 +144,6 @@ can be analysed and shared by users in their Browser</p>
 <dd>location to save the HTML file</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
-<dt><strong><code>standalone</code></strong></dt>
-<dd>Create a fully standalone HTML report with minimal external/network dependencies <em>(this can result in large files)</em></dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
@@ -209,6 +207,32 @@ can be analysed and shared by users in their Browser</p>
 </dd>
 </dl>
 </dd>
+<dt id="datapane.client.api.report.core.ReportType"><code class="flex name class">
+<span>class <span class="ident">ReportType</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The report type</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.report.core.ReportType.DASHBOARD"><code class="name">var <span class="ident">DASHBOARD</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.report.core.ReportType.REPORT"><code class="name">var <span class="ident">REPORT</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.report.core.ReportType.ARTICLE"><code class="name">var <span class="ident">ARTICLE</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 </dl>
 </section>
 </article>
@@ -240,6 +264,9 @@ can be analysed and shared by users in their Browser</p>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a></code></h4>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a></code></h4>
 </li>
 </ul>
 </li>

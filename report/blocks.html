@@ -358,7 +358,7 @@ and can be downloaded by them as a CSV or Excel file.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.Plot"><code class="flex name class">
 <span>class <span class="ident">Plot</span></span>
-<span>(</span><span>data: Any, caption: Union[str, NoneType] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Any, caption: Union[str, NoneType] = None, responsive: bool = True, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plot blocks store a Python-based plot object, including ones created by Altair, Plotly, Matplotlib, Bokeh, and Folium,
@@ -369,6 +369,8 @@ for interactive display in your report when viewed in the browser.</p>
 <dd>The <code>plot</code> object to attach</dd>
 <dt><strong><code>caption</code></strong></dt>
 <dd>A caption to display below the plot (optional)</dd>
+<dt><strong><code>responsive</code></strong></dt>
+<dd>Whether the plot should automatically be resized to fit, set to False if your plot looks odd (optional, default: True)</dd>
 <dt><strong><code>id</code></strong></dt>
 <dd>A unique id for the block to aid querying (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
@@ -452,13 +454,10 @@ for interactive display in your report when viewed in the browser.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;You can also insert a dataframe in a Markdown block as a table by using <code>df.to_markdown()</code>, or use dp.Table or dp.DataTable for dedicated dataframe tables.</p>
 </div>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>text</code></strong></dt>
-<dd>The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
-</dl></div>
+<p>Args:te
+text: The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text
+file: Path to a file containing markdown text
+id: A unique id for the block to aid querying (optional)</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>datapane.client.api.report.blocks.EmbeddedTextBlock</li>

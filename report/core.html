@@ -134,20 +134,24 @@ can be analysed and shared by users in their Browser</p>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False) ‑> NoneType</span>
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Union[str, NoneType] = None, author: Union[str, NoneType] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the report to a local HTML file</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>path</code></strong></dt>
-<dd>location to save the HTML file</dd>
+<dd>File path to store the report</dd>
 <dt><strong><code>open</code></strong></dt>
-<dd>Open the file in your browser after creating</dd>
+<dd>Open the file in your browser after creating (default: False)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>Name of the report (optional: uses path if not provided)</dd>
+<dt><strong><code>author</code></strong></dt>
+<dd>The report author / email / etc.</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self, width: int = 600, height: int = 500) ‑> NoneType</span>
+<span>def <span class="ident">preview</span></span>(<span>self, width: int = 960, height: int = 700)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Preview the report inside your currently running Jupyter notebook</p>

@@ -54,6 +54,8 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>type</code></strong></dt>
 <dd>Set the Report type, this will affect the formatting and layout of the report</dd>
 </dl>
+<h2 id="returns">Returns</h2>
+<p>A <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> object that can be published, saved, etc.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;Group can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
 <p><code>dp.Report(plot, table)</code> or <code>dp.Report(blocks=[plot, table])</code></p>
@@ -126,7 +128,7 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>source_url</code></strong></dt>
 <dd>A URL pointing to the source code for the report, e.g. a GitHub repo or a Colab notebook</dd>
 <dt><strong><code>visibility</code></strong></dt>
-<dd>one of <code>"PUBLIC"</code> <em>(default on Public)</em>, or <code>"PRIVATE"</code> <em>(limited on Public, unlimited on Teams)</em></dd>
+<dd>one of <code>"PUBLIC"</code> <em>(default on Datapane.com)</em>, or <code>"PRIVATE"</code> <em>(limited on Datapame.com, unlimited on Datapane Enterprise)</em></dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
 <dt><strong><code>tags</code></strong></dt>

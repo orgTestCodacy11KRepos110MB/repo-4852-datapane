@@ -27,11 +27,11 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </header>
 <section id="section-intro">
 <h1 id="api-docs-for-datapane-client">API docs for Datapane Client</h1>
-<p>These docs describe the Python API for building Datapane Reports, along with additional information on the Datapane Teams API.</p>
+<p>These docs describe the Python API for building Datapane Reports, along with additional information on the Datapane Enterprise API.</p>
 <p>Usage docs for Datapane can be found at <a href="https://docs.datapane.com">https://docs.datapane.com</a></p>
 <p>These objects are all available under the <code>datapane</code> module, via <code>import datapane as dp</code> (they are re-exported from <code><a title="datapane.client.api" href="#datapane.client.api">datapane.client.api</a></code>).</p>
 <h3 id="datapane-reports-api">Datapane Reports API</h3>
-<p>The core reporting APIs are available on both the public and teams plans, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
+<p>The core reporting APIs are available on the default datapane.com instance and on Datapane Enterprise instances, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
 <ul>
 <li><code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code></li>
 <li>Layout Blocks<ul>
@@ -52,13 +52,13 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<h3 id="datapane-teams">Datapane Teams</h3>
-<p>Additional API docs for teams and enterprise features are found in <code><a title="datapane.client.api.teams" href="teams.html">datapane.client.api.teams</a></code> that provide automation and sharing of data analytics workflows</p>
+<h3 id="datapane-enterprise">Datapane Enterprise</h3>
+<p>Additional API docs for enterprise features are found in <code><a title="datapane.client.api.enterprise" href="enterprise.html">datapane.client.api.enterprise</a></code> that provide automation and sharing of data analytics workflows</p>
 <ul>
-<li><code><a title="datapane.client.api.teams.Blob" href="teams.html#datapane.client.api.teams.Blob">Blob</a></code></li>
-<li><code><a title="datapane.client.api.teams.Variable" href="teams.html#datapane.client.api.teams.Variable">Variable</a></code></li>
-<li><code><a title="datapane.client.api.teams.Script" href="teams.html#datapane.client.api.teams.Script">Script</a></code></li>
-<li><code><a title="datapane.client.api.teams.Schedule" href="teams.html#datapane.client.api.teams.Schedule">Schedule</a></code></li>
+<li><code><a title="datapane.client.api.enterprise.Blob" href="enterprise.html#datapane.client.api.enterprise.Blob">Blob</a></code></li>
+<li><code><a title="datapane.client.api.enterprise.Variable" href="enterprise.html#datapane.client.api.enterprise.Variable">Variable</a></code></li>
+<li><code><a title="datapane.client.api.enterprise.Script" href="enterprise.html#datapane.client.api.enterprise.Script">Script</a></code></li>
+<li><code><a title="datapane.client.api.enterprise.Schedule" href="enterprise.html#datapane.client.api.enterprise.Schedule">Schedule</a></code></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note:&ensp;These docs describe the latest version of the datapane API available on <a href="https://pypi.org/project/datapane/">pypi</a></p>
@@ -78,6 +78,10 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dd>
 <div class="desc"><p>Base classes …</p></div>
 </dd>
+<dt><code class="name"><a title="datapane.client.api.enterprise" href="enterprise.html">datapane.client.api.enterprise</a></code></dt>
+<dd>
+<div class="desc"><p>Datapane Enterprise API …</p></div>
+</dd>
 <dt><code class="name"><a title="datapane.client.api.files" href="files.html">datapane.client.api.files</a></code></dt>
 <dd>
 <div class="desc"><p>Creating charts.
@@ -90,10 +94,6 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dt><code class="name"><a title="datapane.client.api.runtime" href="runtime.html">datapane.client.api.runtime</a></code></dt>
 <dd>
 <div class="desc"><p>Script runtime API …</p></div>
-</dd>
-<dt><code class="name"><a title="datapane.client.api.teams" href="teams.html">datapane.client.api.teams</a></code></dt>
-<dd>
-<div class="desc"><p>Datapane Teams API …</p></div>
 </dd>
 <dt><code class="name"><a title="datapane.client.api.templates" href="templates.html">datapane.client.api.templates</a></code></dt>
 <dd>
@@ -228,7 +228,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <ul>
 <li><a href="#api-docs-for-datapane-client">API docs for Datapane Client</a><ul>
 <li><a href="#datapane-reports-api">Datapane Reports API</a></li>
-<li><a href="#datapane-teams">Datapane Teams</a></li>
+<li><a href="#datapane-enterprise">Datapane Enterprise</a></li>
 </ul>
 </li>
 </ul>
@@ -238,10 +238,10 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <ul>
 <li><code><a title="datapane.client.api.common" href="common.html">datapane.client.api.common</a></code></li>
 <li><code><a title="datapane.client.api.dp_object" href="dp_object.html">datapane.client.api.dp_object</a></code></li>
+<li><code><a title="datapane.client.api.enterprise" href="enterprise.html">datapane.client.api.enterprise</a></code></li>
 <li><code><a title="datapane.client.api.files" href="files.html">datapane.client.api.files</a></code></li>
 <li><code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code></li>
 <li><code><a title="datapane.client.api.runtime" href="runtime.html">datapane.client.api.runtime</a></code></li>
-<li><code><a title="datapane.client.api.teams" href="teams.html">datapane.client.api.teams</a></code></li>
 <li><code><a title="datapane.client.api.templates" href="templates.html">datapane.client.api.templates</a></code></li>
 <li><code><a title="datapane.client.api.user" href="user.html">datapane.client.api.user</a></code></li>
 </ul>

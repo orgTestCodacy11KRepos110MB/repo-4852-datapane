@@ -78,7 +78,7 @@ out_df = in_df</p>
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="datapane.client.api.files.get_wrapper"><code class="name flex">
-<span>def <span class="ident">get_wrapper</span></span>(<span>x: Any, default_to_json: bool, error_msg: Union[str, NoneType] = None) ‑> <a title="datapane.client.api.files.BaseAsset" href="#datapane.client.api.files.BaseAsset">BaseAsset</a></span>
+<span>def <span class="ident">get_wrapper</span></span>(<span>x: Any, default_to_json: bool, error_msg: Optional[str] = None) ‑> <a title="datapane.client.api.files.BaseAsset" href="#datapane.client.api.files.BaseAsset">BaseAsset</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -102,7 +102,6 @@ out_df = in_df</p>
 <dl>
 <dt id="datapane.client.api.files.BaseAsset"><code class="flex name class">
 <span>class <span class="ident">BaseAsset</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -180,7 +179,6 @@ return default</p></div>
 </dd>
 <dt id="datapane.client.api.files.BasePickleWriter"><code class="flex name class">
 <span>class <span class="ident">BasePickleWriter</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a pickle file from any object</p></div>
@@ -226,7 +224,6 @@ return default</p></div>
 </dd>
 <dt id="datapane.client.api.files.BaseJsonWriter"><code class="flex name class">
 <span>class <span class="ident">BaseJsonWriter</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a JSON file from any object</p></div>
@@ -272,7 +269,6 @@ return default</p></div>
 </dd>
 <dt id="datapane.client.api.files.StringWrapper"><code class="flex name class">
 <span>class <span class="ident">StringWrapper</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a Json for a string File, or Markdown for a Block</p></div>
@@ -331,7 +327,6 @@ errors defaults to 'strict'.</p></div>
 </dd>
 <dt id="datapane.client.api.files.PathWrapper"><code class="flex name class">
 <span>class <span class="ident">PathWrapper</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a File block around Path objects</p></div>
@@ -382,7 +377,6 @@ but cannot instantiate a WindowsPath on a POSIX system or vice versa.</p></div>
 </dd>
 <dt id="datapane.client.api.files.BaseTable"><code class="flex name class">
 <span>class <span class="ident">BaseTable</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -473,7 +467,6 @@ pandas' <code>Styler</code> API.</p>
 </dd>
 <dt id="datapane.client.api.files.StylerTable"><code class="flex name class">
 <span>class <span class="ident">StylerTable</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a styled html table from a pandas Styler object</p></div>
@@ -594,7 +587,6 @@ pandas' <code>Styler</code> API …</p></div>
 </dd>
 <dt id="datapane.client.api.files.DataFrameTable"><code class="flex name class">
 <span>class <span class="ident">DataFrameTable</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates an html table from the dataframe</p></div>
@@ -712,7 +704,6 @@ pandas' <code>Styler</code> API …</p></div>
 </dd>
 <dt id="datapane.client.api.files.PlotAsset"><code class="flex name class">
 <span>class <span class="ident">PlotAsset</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -770,7 +761,6 @@ for interactive display in your report when viewed in the browser.</p></div>
 </dd>
 <dt id="datapane.client.api.files.MatplotBasePlot"><code class="flex name class">
 <span>class <span class="ident">MatplotBasePlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -831,7 +821,6 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.MatplotFigurePlot"><code class="flex name class">
 <span>class <span class="ident">MatplotFigurePlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -911,7 +900,6 @@ If
 </dd>
 <dt id="datapane.client.api.files.MatplotAxesPlot"><code class="flex name class">
 <span>class <span class="ident">MatplotAxesPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -990,7 +978,6 @@ func(<em>ax</em>) where <em>ax</em> is the <code>Axes</code> instance.</p>
 </dd>
 <dt id="datapane.client.api.files.MatplotNDArrayPlot"><code class="flex name class">
 <span>class <span class="ident">MatplotNDArrayPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -1169,7 +1156,6 @@ array([2, 3])
 </dd>
 <dt id="datapane.client.api.files.BokehBasePlot"><code class="flex name class">
 <span>class <span class="ident">BokehBasePlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns an interactive Bokeh application, supports both basic plots and layout plots via subclasses</p></div>
@@ -1225,7 +1211,6 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.BokehPlot"><code class="flex name class">
 <span>class <span class="ident">BokehPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns an interactive Bokeh application, supports both basic plots and layout plots via subclasses</p></div>
@@ -1350,7 +1335,6 @@ options are also accepted:</p>
 </dd>
 <dt id="datapane.client.api.files.BokehLayoutPlot"><code class="flex name class">
 <span>class <span class="ident">BokehLayoutPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns an interactive Bokeh application, supports both basic plots and layout plots via subclasses</p></div>
@@ -1398,7 +1382,6 @@ model types. <strong>It is not useful to instantiate on its own.</strong></p>
 </dd>
 <dt id="datapane.client.api.files.AltairPlot"><code class="flex name class">
 <span>class <span class="ident">AltairPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a vega-light chart from Altair Chart / pdvega Axes object.</p></div>
@@ -1451,7 +1434,6 @@ the _rootschema class attribute) which is used for validation.</p></div>
 </dd>
 <dt id="datapane.client.api.files.PlotlyPlot"><code class="flex name class">
 <span>class <span class="ident">PlotlyPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Creates a plotly graph from a figure object</p></div>
@@ -1502,7 +1484,6 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.FoliumPlot"><code class="flex name class">
 <span>class <span class="ident">FoliumPlot</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>
@@ -1648,7 +1629,6 @@ rare environments) even if they're supported.</dd>
 </dd>
 <dt id="datapane.client.api.files.FoliumPlot"><code class="flex name class">
 <span>class <span class="ident">p</span></span>
-<span>(</span><span>*args, **kwds)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract base class for generic types.</p>

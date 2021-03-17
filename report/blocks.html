@@ -101,7 +101,7 @@ A Page itself is a Block, but is only allowed at the top-level and cannot be nes
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Page.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Page.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -158,7 +158,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Group.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Group.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -170,7 +170,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.Select"><code class="flex name class">
 <span>class <span class="ident">Select</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, type: Union[<a title="datapane.client.api.report.blocks.SelectType" href="#datapane.client.api.report.blocks.SelectType">SelectType</a>, NoneType] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, type: Optional[<a title="datapane.client.api.report.blocks.SelectType" href="#datapane.client.api.report.blocks.SelectType">SelectType</a>] = None, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Select act as a container that hold a list of nested Blocks object, such
@@ -209,7 +209,7 @@ as Tables, Plots, etc.. - but only one may be <strong>visible</strong>, or "sele
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Select.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Select.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -243,7 +243,7 @@ as Tables, Plots, etc.. - but only one may be <strong>visible</strong>, or "sele
 </dd>
 <dt id="datapane.client.api.report.blocks.Table"><code class="flex name class">
 <span>class <span class="ident">Table</span></span>
-<span>(</span><span>data: Union[pandas.core.frame.DataFrame, pandas.io.formats.style.Styler], caption: Union[str, NoneType] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Union[pandas.core.frame.DataFrame, pandas.io.formats.style.Styler], caption: Optional[str] = None, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Table blocks store the contents of a dataframe as a HTML <code>table</code> whose style can be customised using
@@ -275,11 +275,11 @@ pandas' <code>Styler</code> API.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Table.caption"><code class="name">var <span class="ident">caption</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Table.caption"><code class="name">var <span class="ident">caption</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Table.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Table.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -291,7 +291,7 @@ pandas' <code>Styler</code> API.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.DataTable"><code class="flex name class">
 <span>class <span class="ident">DataTable</span></span>
-<span>(</span><span>df: pandas.core.frame.DataFrame, caption: Union[str, NoneType] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>df: pandas.core.frame.DataFrame, caption: Optional[str] = None, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>DataTable blocks store a dataframe that can be viewed, sorted, filtered by users viewing your report, similar to a spreadsheet,
@@ -322,11 +322,11 @@ and can be downloaded by them as a CSV or Excel file.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.blocks.DataTable.caption"><code class="name">var <span class="ident">caption</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.DataTable.caption"><code class="name">var <span class="ident">caption</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.DataTable.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.DataTable.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -364,7 +364,7 @@ and can be downloaded by them as a CSV or Excel file.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.Plot"><code class="flex name class">
 <span>class <span class="ident">Plot</span></span>
-<span>(</span><span>data: Any, caption: Union[str, NoneType] = None, responsive: bool = True, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Any, caption: Optional[str] = None, responsive: bool = True, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plot blocks store a Python-based plot object, including ones created by Altair, Plotly, Matplotlib, Bokeh, and Folium,
@@ -391,11 +391,11 @@ for interactive display in your report when viewed in the browser.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.blocks.Plot.caption"><code class="name">var <span class="ident">caption</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Plot.caption"><code class="name">var <span class="ident">caption</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Plot.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Plot.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -407,7 +407,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.BigNumber"><code class="flex name class">
 <span>class <span class="ident">BigNumber</span></span>
-<span>(</span><span>heading: str, value: Union[str, int, float], change: Union[str, int, float, NoneType] = None, prev_value: Union[str, int, float, NoneType] = None, is_positive_intent: Union[bool, NoneType] = None, is_upward_change: Union[bool, NoneType] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>heading: str, value: Union[str, int, float], change: Union[str, int, float, NoneType] = None, prev_value: Union[str, int, float, NoneType] = None, is_positive_intent: Optional[bool] = None, is_upward_change: Optional[bool] = None, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>BigNumber blocks display a numerical value with a heading, alongside optional contextual information about the previous value.</p>
@@ -438,7 +438,7 @@ for interactive display in your report when viewed in the browser.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.blocks.BigNumber.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.BigNumber.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -481,7 +481,7 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Text.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Text.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -543,7 +543,7 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Code.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.Code.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -581,7 +581,7 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.HTML.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.HTML.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>
@@ -593,7 +593,7 @@ id: A unique id for the block to aid querying (optional)</p></div>
 </dd>
 <dt id="datapane.client.api.report.blocks.File"><code class="flex name class">
 <span>class <span class="ident">File</span></span>
-<span>(</span><span>data: Union[Any, NoneType] = None, file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, is_json: bool = False, can_download: bool = True, name: Union[str, NoneType] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, is_json: bool = False, can_download: bool = True, name: Optional[str] = None, id: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
@@ -627,7 +627,7 @@ id: A unique id for the block to aid querying (optional)</p></div>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.blocks.File.id"><code class="name">var <span class="ident">id</span> : Union[str, NoneType]</code></dt>
+<dt id="datapane.client.api.report.blocks.File.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
 <dd>
 <p class="inheritance">
 <em>Inherited from:</em>

@@ -82,7 +82,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Union[str, NoneType] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -115,7 +115,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
-<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, NoneType] = None, open: bool = False, tags: List[str] = None, group: Union[str, NoneType] = None, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Optional[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>] = None, open: bool = False, tags: List[str] = None, group: Optional[str] = None, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Publish the report, including its attached assets, to the logged-in Datapane Server.</p>
@@ -136,7 +136,7 @@ can be analysed and shared by users in their Browser</p>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Union[str, NoneType] = None, author: Union[str, NoneType] = None) ‑> NoneType</span>
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the report to a local HTML file</p>

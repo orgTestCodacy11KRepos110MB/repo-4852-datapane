@@ -75,7 +75,7 @@ and accessible by the client API</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.dp_object.DPObjectRef.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Union[str, NoneType] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Lookup and retrieve an object from the Datapane Server by its name</p>
@@ -103,7 +103,7 @@ and accessible by the client API</p>
 <p>The object if found</p></div>
 </dd>
 <dt id="datapane.client.api.dp_object.DPObjectRef.post_with_files"><code class="name flex">
-<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Union[pathlib.Path, NoneType] = None, **kwargs) ‑> ~U</span>
+<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, **kwargs) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -123,7 +123,7 @@ and accessible by the client API</p>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="datapane.client.api.dp_object.DPObjectRef.dto"><code class="name">var <span class="ident">dto</span> : Union[munch.Munch, NoneType]</code></dt>
+<dt id="datapane.client.api.dp_object.DPObjectRef.dto"><code class="name">var <span class="ident">dto</span> : Optional[munch.Munch]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

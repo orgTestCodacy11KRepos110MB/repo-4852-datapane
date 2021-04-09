@@ -27,11 +27,11 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </header>
 <section id="section-intro">
 <h1 id="api-docs-for-datapane-client">API docs for Datapane Client</h1>
-<p>These docs describe the Python API for building Datapane Reports, along with additional information on the Datapane Enterprise API.</p>
+<p>These docs describe the Python API for building Datapane documents, along with additional information on the Datapane Cloud API.</p>
 <p>Usage docs for Datapane can be found at <a href="https://docs.datapane.com">https://docs.datapane.com</a></p>
 <p>These objects are all available under the <code>datapane</code> module, via <code>import datapane as dp</code> (they are re-exported from <code><a title="datapane.client.api" href="#datapane.client.api">datapane.client.api</a></code>).</p>
 <h3 id="datapane-reports-api">Datapane Reports API</h3>
-<p>The core reporting APIs are available on the default datapane.com instance and on Datapane Enterprise instances, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
+<p>The core document APIs are available for both Datapane Community and Datapane Cloud, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
 <ul>
 <li><code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code></li>
 <li>Layout Blocks<ul>
@@ -52,13 +52,13 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<h3 id="datapane-enterprise">Datapane Enterprise</h3>
-<p>Additional API docs for enterprise features are found in <code><a title="datapane.client.api.enterprise" href="enterprise.html">datapane.client.api.enterprise</a></code> that provide automation and sharing of data analytics workflows</p>
+<h3 id="datapane-cloud">Datapane Cloud</h3>
+<p>Additional API docs are found in <code><a title="datapane.client.api.cloud" href="cloud.html">datapane.client.api.cloud</a></code> that provide building, deployment, and sharing of data analytics apps and workflows</p>
 <ul>
-<li><code><a title="datapane.client.api.enterprise.Blob" href="enterprise.html#datapane.client.api.enterprise.Blob">Blob</a></code></li>
-<li><code><a title="datapane.client.api.enterprise.Variable" href="enterprise.html#datapane.client.api.enterprise.Variable">Variable</a></code></li>
-<li><code><a title="datapane.client.api.enterprise.Script" href="enterprise.html#datapane.client.api.enterprise.Script">Script</a></code></li>
-<li><code><a title="datapane.client.api.enterprise.Schedule" href="enterprise.html#datapane.client.api.enterprise.Schedule">Schedule</a></code></li>
+<li><code><a title="datapane.client.api.cloud.Blob" href="cloud.html#datapane.client.api.cloud.Blob">Blob</a></code></li>
+<li><code><a title="datapane.client.api.cloud.Variable" href="cloud.html#datapane.client.api.cloud.Variable">Variable</a></code></li>
+<li><code><a title="datapane.client.api.cloud.Script" href="cloud.html#datapane.client.api.cloud.Script">Script</a></code></li>
+<li><code><a title="datapane.client.api.cloud.Schedule" href="cloud.html#datapane.client.api.cloud.Schedule">Schedule</a></code></li>
 </ul>
 <div class="admonition note">
 <p class="admonition-title">Note:&ensp;These docs describe the latest version of the datapane API available on <a href="https://pypi.org/project/datapane/">pypi</a></p>
@@ -70,6 +70,10 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
+<dt><code class="name"><a title="datapane.client.api.cloud" href="cloud.html">datapane.client.api.cloud</a></code></dt>
+<dd>
+<div class="desc"><p>Datapane Cloud API …</p></div>
+</dd>
 <dt><code class="name"><a title="datapane.client.api.common" href="common.html">datapane.client.api.common</a></code></dt>
 <dd>
 <div class="desc"><p>Common objects …</p></div>
@@ -77,10 +81,6 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dt><code class="name"><a title="datapane.client.api.dp_object" href="dp_object.html">datapane.client.api.dp_object</a></code></dt>
 <dd>
 <div class="desc"><p>Base classes …</p></div>
-</dd>
-<dt><code class="name"><a title="datapane.client.api.enterprise" href="enterprise.html">datapane.client.api.enterprise</a></code></dt>
-<dd>
-<div class="desc"><p>Datapane Enterprise API …</p></div>
 </dd>
 <dt><code class="name"><a title="datapane.client.api.files" href="files.html">datapane.client.api.files</a></code></dt>
 <dd>
@@ -92,7 +92,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </dd>
 <dt><code class="name"><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code></dt>
 <dd>
-<div class="desc"><p>Main Reporting API module, includes both the core <code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code> object, and the blocks in …</p></div>
+<div class="desc"><p>Main Document API module, includes both the core <code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code> object, and the blocks in …</p></div>
 </dd>
 <dt><code class="name"><a title="datapane.client.api.runtime" href="runtime.html">datapane.client.api.runtime</a></code></dt>
 <dd>
@@ -215,7 +215,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <ul>
 <li><a href="#api-docs-for-datapane-client">API docs for Datapane Client</a><ul>
 <li><a href="#datapane-reports-api">Datapane Reports API</a></li>
-<li><a href="#datapane-enterprise">Datapane Enterprise</a></li>
+<li><a href="#datapane-cloud">Datapane Cloud</a></li>
 </ul>
 </li>
 </ul>
@@ -223,9 +223,9 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
+<li><code><a title="datapane.client.api.cloud" href="cloud.html">datapane.client.api.cloud</a></code></li>
 <li><code><a title="datapane.client.api.common" href="common.html">datapane.client.api.common</a></code></li>
 <li><code><a title="datapane.client.api.dp_object" href="dp_object.html">datapane.client.api.dp_object</a></code></li>
-<li><code><a title="datapane.client.api.enterprise" href="enterprise.html">datapane.client.api.enterprise</a></code></li>
 <li><code><a title="datapane.client.api.files" href="files.html">datapane.client.api.files</a></code></li>
 <li><code><a title="datapane.client.api.files_optional" href="files_optional.html">datapane.client.api.files_optional</a></code></li>
 <li><code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code></li>

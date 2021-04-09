@@ -43,19 +43,19 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, type: <a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a> = ReportType.REPORT, **kwargs)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Reports collate plots, text, tables, and files into an interactive report that
+<div class="desc"><p>Report documents collate plots, text, tables, and files into an interactive document that
 can be analysed and shared by users in their Browser</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>*arg_blocks</code></strong></dt>
-<dd>Group to add to report</dd>
+<dd>Group to add to document</dd>
 <dt><strong><code>blocks</code></strong></dt>
-<dd>Allows providing the report blocks as a single list</dd>
+<dd>Allows providing the document blocks as a single list</dd>
 <dt><strong><code>type</code></strong></dt>
-<dd>Set the Report type, this will affect the formatting and layout of the report</dd>
+<dd>Set the Report type, this will affect the formatting and layout of the document</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>A <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> object that can be published, saved, etc.</p>
+<p>A <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> document object that can be published, saved, etc.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;Group can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
 <p><code>dp.Report(plot, table)</code> or <code>dp.Report(blocks=[plot, table])</code></p>
@@ -115,54 +115,54 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
-<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Optional[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>] = None, open: bool = False, tags: List[str] = None, group: Optional[str] = None, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: <a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a> = Visibility.PRIVATE, open: bool = False, tags: List[str] = None, group: Optional[str] = None, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Publish the report, including its attached assets, to the logged-in Datapane Server.</p>
+<div class="desc"><p>Publish the report document, including its attached assets, to the logged-in Datapane Server.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
-<dd>The report name - can include spaces, caps, symbols, etc., e.g. "Profit &amp; Loss 2020"</dd>
+<dd>The document name - can include spaces, caps, symbols, etc., e.g. "Profit &amp; Loss 2020"</dd>
 <dt><strong><code>description</code></strong></dt>
-<dd>A high-level description for the report, this is displayed in searches and thumbnails</dd>
+<dd>A high-level description for the document, this is displayed in searches and thumbnails</dd>
 <dt><strong><code>source_url</code></strong></dt>
-<dd>A URL pointing to the source code for the report, e.g. a GitHub repo or a Colab notebook</dd>
+<dd>A URL pointing to the source code for the document, e.g. a GitHub repo or a Colab notebook</dd>
 <dt><strong><code>visibility</code></strong></dt>
-<dd>one of <code>"PUBLIC"</code> <em>(default on Datapane.com)</em>, or <code>"PRIVATE"</code> <em>(limited on Datapame.com, unlimited on Datapane Enterprise)</em></dd>
+<dd>"PRIVATE"<code> (default) or </code>"PUBLIC"``</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
 <dt><strong><code>tags</code></strong></dt>
-<dd>A list of tags (as strings) used to categorise your report</dd>
+<dd>A list of tags (as strings) used to categorise your document</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
 <span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Save the report to a local HTML file</p>
+<div class="desc"><p>Save the report document to a local HTML file</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>path</code></strong></dt>
-<dd>File path to store the report</dd>
+<dd>File path to store the document</dd>
 <dt><strong><code>open</code></strong></dt>
-<dd>Open the file in your browser after creating (default: False)</dd>
+<dd>Open in your browser after creating (default: False)</dd>
 <dt><strong><code>name</code></strong></dt>
-<dd>Name of the report (optional: uses path if not provided)</dd>
+<dd>Name of the document (optional: uses path if not provided)</dd>
 <dt><strong><code>author</code></strong></dt>
-<dd>The report author / email / etc.</dd>
+<dd>The report author / email / etc. (optional)</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
 <span>def <span class="ident">preview</span></span>(<span>self, width: int = 960, height: int = 700)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preview the report inside your currently running Jupyter notebook</p>
+<div class="desc"><p>Preview the document inside your currently running Jupyter notebook</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>width</code></strong></dt>
-<dd>Width of the report preview in Jupyter (default: 960)</dd>
+<dd>Width of the preview in Jupyter (default: 960)</dd>
 <dt><strong><code>height</code></strong></dt>
-<dd>Height of the report preview in Jupyter (default: 700)</dd>
+<dd>Height of the preview in Jupyter (default: 700)</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.refresh"><code class="name flex">
@@ -216,7 +216,7 @@ can be analysed and shared by users in their Browser</p>
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The report type</p></div>
+<div class="desc"><p>The document type</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>enum.Enum</li>

@@ -130,7 +130,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <p>Args:te
 text: The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text
 file: Path to a file containing markdown text
-id: A unique id for the block to aid querying (optional)</p></div>
+name: A unique name for the block to reference when adding text or embedding (optional)</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="datapane.client.api.report.blocks.Text" href="report/blocks.html#datapane.client.api.report.blocks.Text">Text</a></li>
@@ -144,14 +144,6 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dt id="datapane.client.api.Markdown.content"><code class="name">var <span class="ident">content</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.Markdown.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.Text" href="report/blocks.html#datapane.client.api.report.blocks.Text">Text</a></code>.<code><a title="datapane.client.api.report.blocks.Text.id" href="report/blocks.html#datapane.client.api.report.blocks.Text.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -186,7 +178,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <dd>Group to add to report</dd>
 <dt><strong><code>blocks</code></strong></dt>
 <dd>Allows providing the report blocks as a single list</dd>
-<dt><strong><code>id</code></strong></dt>
+<dt><strong><code>name</code></strong></dt>
 <dd>A unique id for the blocks to aid querying (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
@@ -211,14 +203,6 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <dt id="datapane.client.api.Blocks.blocks"><code class="name">var <span class="ident">blocks</span> : List[Union[<a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a>, <a title="datapane.client.api.report.blocks.Select" href="report/blocks.html#datapane.client.api.report.blocks.Select">Select</a>, <a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]]</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.Blocks.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a></code>.<code><a title="datapane.client.api.report.blocks.Group.id" href="report/blocks.html#datapane.client.api.report.blocks.Group.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
 </dd>
 </dl>
 </dd>

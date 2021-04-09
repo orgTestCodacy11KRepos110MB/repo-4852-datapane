@@ -40,7 +40,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dl>
 <dt id="datapane.client.api.report.blocks.BaseElement"><code class="flex name class">
 <span>class <span class="ident">BaseElement</span></span>
-<span>(</span><span>id: str = None, **kwargs)</span>
+<span>(</span><span>name: str = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Base Block class - subclassed by all Block types</p>
@@ -49,8 +49,8 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </div>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id to reference the block, used when querying blocks via XPath to aid embedding</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name to reference the block, used when referencing blocks via the report editor and when embedding</dd>
 </dl></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -61,10 +61,17 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <li><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></li>
 <li>datapane.client.api.report.blocks.LayoutBlock</li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.report.blocks.BaseElement.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.Page"><code class="flex name class">
 <span>class <span class="ident">Page</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>All <code><a title="datapane.client.api.report.core.Report" href="core.html#datapane.client.api.report.core.Report">Report</a></code>s consist of a list of Pages.
@@ -80,8 +87,6 @@ A Page itself is a Block, but is only allowed at the top-level and cannot be nes
 <dd>Page to add to report</dd>
 <dt><strong><code>blocks</code></strong></dt>
 <dd>Allows providing the report blocks as a single list</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the blocks to aid querying (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl>
@@ -101,19 +106,11 @@ A Page itself is a Block, but is only allowed at the top-level and cannot be nes
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Page.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></code>.<code><a title="datapane.client.api.report.blocks.BaseElement.id" href="#datapane.client.api.report.blocks.BaseElement.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.Group"><code class="flex name class">
 <span>class <span class="ident">Group</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, id: str = None, label: str = None, rows: int = 0, columns: int = 1)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, name: str = None, label: str = None, rows: int = 0, columns: int = 1)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Groups act as a container that hold a list of nested Blocks object, such
@@ -129,7 +126,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <dd>Group to add to report</dd>
 <dt><strong><code>blocks</code></strong></dt>
 <dd>Allows providing the report blocks as a single list</dd>
-<dt><strong><code>id</code></strong></dt>
+<dt><strong><code>name</code></strong></dt>
 <dd>A unique id for the blocks to aid querying (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
@@ -158,19 +155,11 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Group.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></code>.<code><a title="datapane.client.api.report.blocks.BaseElement.id" href="#datapane.client.api.report.blocks.BaseElement.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.Select"><code class="flex name class">
 <span>class <span class="ident">Select</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, type: Optional[<a title="datapane.client.api.report.blocks.SelectType" href="#datapane.client.api.report.blocks.SelectType">SelectType</a>] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, type: Optional[<a title="datapane.client.api.report.blocks.SelectType" href="#datapane.client.api.report.blocks.SelectType">SelectType</a>] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Select act as a container that hold a list of nested Blocks object, such
@@ -188,7 +177,7 @@ as Tables, Plots, etc.. - but only one may be <strong>visible</strong>, or "sele
 <dd>Allows providing the report blocks as a single list</dd>
 <dt><strong><code>type</code></strong></dt>
 <dd>An instance of SelectType that indicates if the select should use tabs or a dropdown</dd>
-<dt><strong><code>id</code></strong></dt>
+<dt><strong><code>name</code></strong></dt>
 <dd>A unique id for the blocks to aid querying (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
@@ -208,14 +197,6 @@ as Tables, Plots, etc.. - but only one may be <strong>visible</strong>, or "sele
 <dt id="datapane.client.api.report.blocks.Select.blocks"><code class="name">var <span class="ident">blocks</span> : List[Union[<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>, <a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>, <a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]]</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.blocks.Select.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></code>.<code><a title="datapane.client.api.report.blocks.BaseElement.id" href="#datapane.client.api.report.blocks.BaseElement.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
 </dd>
 </dl>
 </dd>
@@ -243,7 +224,7 @@ as Tables, Plots, etc.. - but only one may be <strong>visible</strong>, or "sele
 </dd>
 <dt id="datapane.client.api.report.blocks.Table"><code class="flex name class">
 <span>class <span class="ident">Table</span></span>
-<span>(</span><span>data: Union[pandas.core.frame.DataFrame, pandas.io.formats.style.Styler], caption: Optional[str] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Union[pandas.core.frame.DataFrame, pandas.io.formats.style.Styler], caption: Optional[str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Table blocks store the contents of a dataframe as a HTML <code>table</code> whose style can be customised using
@@ -257,8 +238,8 @@ pandas' <code>Styler</code> API.</p>
 <dd>The pandas <code>Styler</code> instance or dataframe to generate the table from</dd>
 <dt><strong><code>caption</code></strong></dt>
 <dd>A caption to display below the table (optional)</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl></div>
@@ -279,19 +260,11 @@ pandas' <code>Styler</code> API.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Table.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.DataTable"><code class="flex name class">
 <span>class <span class="ident">DataTable</span></span>
-<span>(</span><span>df: pandas.core.frame.DataFrame, caption: Optional[str] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>df: pandas.core.frame.DataFrame, caption: Optional[str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>DataTable blocks store a dataframe that can be viewed, sorted, filtered by users viewing your report, similar to a spreadsheet,
@@ -308,8 +281,8 @@ and can be downloaded by them as a CSV or Excel file.</p>
 <dd>The pandas dataframe to attach to the report</dd>
 <dt><strong><code>caption</code></strong></dt>
 <dd>A caption to display below the plot (optional)</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl></div>
@@ -326,19 +299,11 @@ and can be downloaded by them as a CSV or Excel file.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.DataTable.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.DataBlock"><code class="flex name class">
 <span>class <span class="ident">DataBlock</span></span>
-<span>(</span><span>id: str = None, **kwargs)</span>
+<span>(</span><span>name: str = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract block that represents a leaf-node in the tree, e.g. a Plot or Table</p>
@@ -347,8 +312,8 @@ and can be downloaded by them as a CSV or Excel file.</p>
 </div>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id to reference the block, used when querying blocks via XPath to aid embedding</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name to reference the block, used when referencing blocks via the report editor and when embedding</dd>
 </dl></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -361,10 +326,17 @@ and can be downloaded by them as a CSV or Excel file.</p>
 <li><a title="datapane.client.api.report.blocks.BigNumber" href="#datapane.client.api.report.blocks.BigNumber">BigNumber</a></li>
 <li>datapane.client.api.report.blocks.EmbeddedTextBlock</li>
 </ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.report.blocks.DataBlock.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.Plot"><code class="flex name class">
 <span>class <span class="ident">Plot</span></span>
-<span>(</span><span>data: Any, caption: Optional[str] = None, responsive: bool = True, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Any, caption: Optional[str] = None, responsive: bool = True, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Plot blocks store a Python-based plot object, including ones created by Altair, Plotly, Matplotlib, Bokeh, and Folium,
@@ -377,8 +349,8 @@ for interactive display in your report when viewed in the browser.</p>
 <dd>A caption to display below the plot (optional)</dd>
 <dt><strong><code>responsive</code></strong></dt>
 <dd>Whether the plot should automatically be resized to fit, set to False if your plot looks odd (optional, default: True)</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl></div>
@@ -395,19 +367,11 @@ for interactive display in your report when viewed in the browser.</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Plot.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.BigNumber"><code class="flex name class">
 <span>class <span class="ident">BigNumber</span></span>
-<span>(</span><span>heading: str, value: Union[str, int, float], change: Union[str, int, float, NoneType] = None, prev_value: Union[str, int, float, NoneType] = None, is_positive_intent: Optional[bool] = None, is_upward_change: Optional[bool] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>heading: str, value: Union[str, int, float], change: Union[str, int, float, NoneType] = None, prev_value: Union[str, int, float, NoneType] = None, is_positive_intent: Optional[bool] = None, is_upward_change: Optional[bool] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>BigNumber blocks display a numerical value with a heading, alongside optional contextual information about the previous value.</p>
@@ -425,8 +389,8 @@ for interactive display in your report when viewed in the browser.</p>
 <dd>Displays the change on a green background if <code>True</code>, and red otherwise. Follows <code>is_upward_change</code> if not set (optional)</dd>
 <dt><strong><code>is_upward_change</code></strong></dt>
 <dd>Whether the change is upward or downward (required when <code>change</code> is set)</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl></div>
@@ -438,19 +402,15 @@ for interactive display in your report when viewed in the browser.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.blocks.BigNumber.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
+<dt id="datapane.client.api.report.blocks.BigNumber.name"><code class="name">var <span class="ident">name</span> : Optional[str]</code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.Text"><code class="flex name class">
 <span>class <span class="ident">Text</span></span>
-<span>(</span><span>text: str = None, file: Union[pathlib.Path, os.PathLike, str] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>text: str = None, file: Union[pathlib.Path, os.PathLike, str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Markdown objects store Markdown text that can be displayed as formatted text when viewing your report.</p>
@@ -463,7 +423,7 @@ for interactive display in your report when viewed in the browser.</p>
 <p>Args:te
 text: The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text
 file: Path to a file containing markdown text
-id: A unique id for the block to aid querying (optional)</p></div>
+name: A unique name for the block to reference when adding text or embedding (optional)</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>datapane.client.api.report.blocks.EmbeddedTextBlock</li>
@@ -480,14 +440,6 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dt id="datapane.client.api.report.blocks.Text.content"><code class="name">var <span class="ident">content</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.blocks.Text.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -515,7 +467,7 @@ id: A unique id for the block to aid querying (optional)</p></div>
 </dd>
 <dt id="datapane.client.api.report.blocks.Code"><code class="flex name class">
 <span>class <span class="ident">Code</span></span>
-<span>(</span><span>code: str, language: str = 'python', id: str = None, label: str = None)</span>
+<span>(</span><span>code: str, language: str = 'python', name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Code objects store source code that can be displayed as formatted text when viewing your report.</p>
@@ -525,8 +477,8 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>The source code</dd>
 <dt><strong><code>language</code></strong></dt>
 <dd>The language of the code, most common languages are supported (optional - defaults to Python)</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl></div>
@@ -543,19 +495,11 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.Code.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.HTML"><code class="flex name class">
 <span>class <span class="ident">HTML</span></span>
-<span>(</span><span>html: Union[str, dominate.dom_tag.dom_tag], id: str = None, label: str = None)</span>
+<span>(</span><span>html: Union[str, dominate.dom_tag.dom_tag], name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>HTML blocks can be used to embed an arbitrary HTML fragment in a report.</p>
@@ -563,8 +507,8 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dl>
 <dt><strong><code>html</code></strong></dt>
 <dd>The HTML fragment to embed - can be a string or a <a href="https://github.com/Knio/dominate/">dominate</a> tag</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl></div>
@@ -581,19 +525,11 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.blocks.HTML.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.report.blocks.File"><code class="flex name class">
 <span>class <span class="ident">File</span></span>
-<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, is_json: bool = False, can_download: bool = True, name: Optional[str] = None, id: str = None, label: str = None)</span>
+<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, is_json: bool = False, filename: Optional[str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
@@ -606,12 +542,10 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <dd>Path to a file to attach to the report (e.g. a JPEG image)</dd>
 <dt><strong><code>is_json</code></strong></dt>
 <dd>If <code>True</code>, treat the <code>data</code> as JSON data already</dd>
-<dt><strong><code>can_download</code></strong></dt>
-<dd>Allow users to download the file when viewing the report</dd>
-<dt><strong><code>name</code></strong></dt>
+<dt><strong><code>filename</code></strong></dt>
 <dd>Name to be used when downloading the file</dd>
-<dt><strong><code>id</code></strong></dt>
-<dd>A unique id for the block to aid querying (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
 </dl>
@@ -625,17 +559,6 @@ id: A unique id for the block to aid querying (optional)</p></div>
 <li><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></li>
 <li>abc.ABC</li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.report.blocks.File.id"><code class="name">var <span class="ident">id</span> : Optional[str]</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></code>.<code><a title="datapane.client.api.report.blocks.DataBlock.id" href="#datapane.client.api.report.blocks.DataBlock.id">id</a></code>
-</p>
-<div class="desc inherited"><p>dummy</p></div>
-</dd>
-</dl>
 </dd>
 </dl>
 </section>

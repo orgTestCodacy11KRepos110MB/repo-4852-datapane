@@ -71,7 +71,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </dd>
 <dt id="datapane.client.api.report.blocks.Page"><code class="flex name class">
 <span>class <span class="ident">Page</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, title: str = None)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, title: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>All <code><a title="datapane.client.api.report.core.Report" href="core.html#datapane.client.api.report.core.Report">Report</a></code>s consist of a list of Pages.
@@ -89,6 +89,8 @@ A Page itself is a Block, but is only allowed at the top-level and cannot be nes
 <dd>Allows providing the report blocks as a single list</dd>
 <dt><strong><code>title</code></strong></dt>
 <dd>The page title (optional)</dd>
+<dt><strong><code>label</code></strong></dt>
+<dd>A label used when displaying the page (optional, deprecated)</dd>
 </dl>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;Page can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>

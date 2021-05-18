@@ -573,14 +573,18 @@ name: A unique name for the block to reference when adding text or embedding (op
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>formula</code></strong></dt>
-<dd>The formula to embed, using LaTeX format</dd>
+<dd>The formula to embed, using LaTeX format (use raw strings)</dd>
 <dt><strong><code>caption</code></strong></dt>
 <dd>A caption to display below the Formula (optional)</dd>
 <dt><strong><code>name</code></strong></dt>
 <dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>
 <dd>A label used when displaying the block (optional)</dd>
-</dl></div>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;LaTeX commonly uses special characters, hence prefix your formulas with <code>r</code> to make them</p>
+</div>
+<p>raw strings, e.g. r"rac{1}{\sqrt{x^2 + 1}}"</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>datapane.client.api.report.blocks.EmbeddedTextBlock</li>

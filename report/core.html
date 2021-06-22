@@ -27,7 +27,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </header>
 <section id="section-intro">
 <p>Datapane Reports Object</p>
-<p>Describes the <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> object and included APIs for saving and publishing them.</p>
+<p>Describes the <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> object and included APIs for saving and uploading them.</p>
 </section>
 <section>
 </section>
@@ -55,25 +55,21 @@ can be analysed and shared by users in their Browser</p>
 <dd>Set the Report type, this will affect the formatting and layout of the document</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>A <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> document object that can be published, saved, etc.</p>
+<p>A <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> document object that can be uploaded, saved, etc.</p>
 <div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Group can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
+<p class="admonition-title">Tip:&ensp;Blocks can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
 <p><code>dp.Report(plot, table)</code> or <code>dp.Report(blocks=[plot, table])</code></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Create a list first to hold your blocks to edit them dynmically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
 </div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
+<li>datapane.client.api.report.core.BaseReport</li>
 <li><a title="datapane.client.api.dp_object.DPObjectRef" href="../dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.core.Report.pages"><code class="name">var <span class="ident">pages</span> : List[<a title="datapane.client.api.report.blocks.Page" href="blocks.html#datapane.client.api.report.blocks.Page">Page</a>]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.core.Report.report_type"><code class="name">var <span class="ident">report_type</span> : <a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="datapane.client.api.report.core.Report.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
 <dd>
 <div class="desc"><p>When set, the report is full-width suitable for use in a dashboard</p></div>
@@ -114,11 +110,11 @@ can be analysed and shared by users in their Browser</p>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
-<span>def <span class="ident">publish</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: <a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a> = Visibility.PRIVATE, open: bool = False, tags: List[str] = None, group: Optional[str] = None, **kwargs) ‑> NoneType</span>
+<dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, str] = '', tags: List[str] = None, group: Optional[str] = None, open: bool = False, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Publish the report document, including its attached assets, to the logged-in Datapane Server.</p>
+<div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
@@ -129,11 +125,19 @@ can be analysed and shared by users in their Browser</p>
 <dd>A URL pointing to the source code for the document, e.g. a GitHub repo or a Colab notebook</dd>
 <dt><strong><code>visibility</code></strong></dt>
 <dd>"PRIVATE"<code> (default) or </code>"PUBLIC"``</dd>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open the file in your browser after creating</dd>
 <dt><strong><code>tags</code></strong></dt>
 <dd>A list of tags (as strings) used to categorise your document</dd>
+<dt><strong><code>group</code></strong></dt>
+<dd>Group to add the report to (Teams only)</dd>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open the file in your browser after creating</dd>
 </dl></div>
+</dd>
+<dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
+<span>def <span class="ident">publish</span></span>(<span>self, *a, **kw) ‑> NoneType</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
 <span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None) ‑> NoneType</span>
@@ -173,7 +177,8 @@ can be analysed and shared by users in their Browser</p>
 <em>Inherited from:</em>
 <code><a title="datapane.client.api.dp_object.DPObjectRef" href="../dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.refresh" href="../dp_object.html#datapane.client.api.dp_object.DPObjectRef.refresh">refresh</a></code>
 </p>
-<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server</p></div>
+<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
+- override to pull updated fields from dto to top-level</p></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self)</span>
@@ -259,6 +264,7 @@ can be analysed and shared by users in their Browser</p>
 <li><code><a title="datapane.client.api.report.core.Report.get" href="../dp_object.html#datapane.client.api.report.core.Report.get">get</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.by_id" href="../dp_object.html#datapane.client.api.report.core.Report.by_id">by_id</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.list" href="../dp_object.html#datapane.client.api.report.core.Report.list">list</a></code></li>
+<li><code><a title="datapane.client.api.report.core.Report.upload" href="#datapane.client.api.report.core.Report.upload">upload</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.publish" href="#datapane.client.api.report.core.Report.publish">publish</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.save" href="#datapane.client.api.report.core.Report.save">save</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.preview" href="#datapane.client.api.report.core.Report.preview">preview</a></code></li>

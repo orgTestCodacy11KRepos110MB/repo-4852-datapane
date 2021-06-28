@@ -111,7 +111,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, str] = '', tags: List[str] = None, group: Optional[str] = None, open: bool = False, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, open: bool = False, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
@@ -123,8 +123,6 @@ can be analysed and shared by users in their Browser</p>
 <dd>A high-level description for the document, this is displayed in searches and thumbnails</dd>
 <dt><strong><code>source_url</code></strong></dt>
 <dd>A URL pointing to the source code for the document, e.g. a GitHub repo or a Colab notebook</dd>
-<dt><strong><code>visibility</code></strong></dt>
-<dd>"PRIVATE"<code> (default) or </code>"PUBLIC"``</dd>
 <dt><strong><code>tags</code></strong></dt>
 <dd>A list of tags (as strings) used to categorise your document</dd>
 <dt><strong><code>group</code></strong></dt>
@@ -192,30 +190,6 @@ can be analysed and shared by users in their Browser</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.report.core.Visibility"><code class="flex name class">
-<span>class <span class="ident">Visibility</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>The report visibility type</p></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>enum.IntEnum</li>
-<li>builtins.int</li>
-<li>enum.Enum</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.report.core.Visibility.PRIVATE"><code class="name">var <span class="ident">PRIVATE</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.core.Visibility.PUBLIC"><code class="name">var <span class="ident">PUBLIC</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
 <dt id="datapane.client.api.report.core.ReportType"><code class="flex name class">
 <span>class <span class="ident">ReportType</span></span>
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
@@ -271,9 +245,6 @@ can be analysed and shared by users in their Browser</p>
 <li><code><a title="datapane.client.api.report.core.Report.refresh" href="../dp_object.html#datapane.client.api.report.core.Report.refresh">refresh</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.delete" href="../dp_object.html#datapane.client.api.report.core.Report.delete">delete</a></code></li>
 </ul>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a></code></h4>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a></code></h4>

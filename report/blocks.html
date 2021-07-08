@@ -501,6 +501,40 @@ name: A unique name for the block to reference when adding text or embedding (op
 </dd>
 </dl>
 </dd>
+<dt id="datapane.client.api.report.blocks.Embed"><code class="flex name class">
+<span>class <span class="ident">Embed</span></span>
+<span>(</span><span>url: str, width: int = 960, height: int = 540, name: str = None, label: str = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Embed blocks allow HTML from OEmbed providers (e.g. Youtube, Twitter, Vimeo) to be embedded in a report.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>url</code></strong></dt>
+<dd>The URL of the resource to be embedded</dd>
+<dt><strong><code>width</code></strong></dt>
+<dd>The width of the embedded object (optional)</dd>
+<dt><strong><code>height</code></strong></dt>
+<dd>The height of the embedded object (optional)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
+<dt><strong><code>label</code></strong></dt>
+<dd>A label used when displaying the block (optional)</dd>
+</dl></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>datapane.client.api.report.blocks.EmbeddedTextBlock</li>
+<li><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></li>
+<li><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.report.blocks.Embed.content"><code class="name">var <span class="ident">content</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="datapane.client.api.report.blocks.HTML"><code class="flex name class">
 <span>class <span class="ident">HTML</span></span>
 <span>(</span><span>html: Union[str, dominate.dom_tag.dom_tag], name: str = None, label: str = None)</span>
@@ -654,6 +688,9 @@ name: A unique name for the block to reference when adding text or embedding (op
 </li>
 <li>
 <h4><code><a title="datapane.client.api.report.blocks.Code" href="#datapane.client.api.report.blocks.Code">Code</a></code></h4>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.report.blocks.Embed" href="#datapane.client.api.report.blocks.Embed">Embed</a></code></h4>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.report.blocks.HTML" href="#datapane.client.api.report.blocks.HTML">HTML</a></code></h4>

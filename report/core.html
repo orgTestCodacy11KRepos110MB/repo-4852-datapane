@@ -111,7 +111,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, open: bool = False, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, open: bool = False, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
@@ -127,6 +127,8 @@ can be analysed and shared by users in their Browser</p>
 <dd>A list of tags (as strings) used to categorise your document</dd>
 <dt><strong><code>group</code></strong></dt>
 <dd>Group to add the report to (Teams only)</dd>
+<dt><strong><code>source_file</code></strong></dt>
+<dd>Path of jupyter notebook file to upload</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
 </dl></div>

@@ -40,7 +40,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dl>
 <dt id="datapane.client.api.report.core.Report"><code class="flex name class">
 <span>class <span class="ident">Report</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, type: <a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a> = ReportType.REPORT, **kwargs)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, type: datapane.client.api.report.core.ReportType = ReportType.REPORT, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Report documents collate plots, text, tables, and files into an interactive document that
@@ -111,7 +111,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, open: bool = False, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, **kwargs) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
@@ -131,6 +131,8 @@ can be analysed and shared by users in their Browser</p>
 <dd>Path of jupyter notebook file to upload</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Set the basic styling for your report</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
@@ -140,7 +142,7 @@ can be analysed and shared by users in their Browser</p>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None) ‑> NoneType</span>
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> NoneType</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the report document to a local HTML file</p>
@@ -154,6 +156,8 @@ can be analysed and shared by users in their Browser</p>
 <dd>Name of the document (optional: uses path if not provided)</dd>
 <dt><strong><code>author</code></strong></dt>
 <dd>The report author / email / etc. (optional)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Set the basic styling for your report</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
@@ -192,27 +196,27 @@ can be analysed and shared by users in their Browser</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.report.core.ReportType"><code class="flex name class">
-<span>class <span class="ident">ReportType</span></span>
+<dt id="datapane.client.api.report.core.ReportWidth"><code class="flex name class">
+<span>class <span class="ident">ReportWidth</span></span>
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The document type</p></div>
+<div class="desc"><p>The document width</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.report.core.ReportType.DASHBOARD"><code class="name">var <span class="ident">DASHBOARD</span></code></dt>
+<dt id="datapane.client.api.report.core.ReportWidth.NARROW"><code class="name">var <span class="ident">NARROW</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.core.ReportType.REPORT"><code class="name">var <span class="ident">REPORT</span></code></dt>
+<dt id="datapane.client.api.report.core.ReportWidth.MEDIUM"><code class="name">var <span class="ident">MEDIUM</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.report.core.ReportType.ARTICLE"><code class="name">var <span class="ident">ARTICLE</span></code></dt>
+<dt id="datapane.client.api.report.core.ReportWidth.FULL"><code class="name">var <span class="ident">FULL</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -249,7 +253,7 @@ can be analysed and shared by users in their Browser</p>
 </ul>
 </li>
 <li>
-<h4><code><a title="datapane.client.api.report.core.ReportType" href="#datapane.client.api.report.core.ReportType">ReportType</a></code></h4>
+<h4><code><a title="datapane.client.api.report.core.ReportWidth" href="#datapane.client.api.report.core.ReportWidth">ReportWidth</a></code></h4>
 </li>
 </ul>
 </li>

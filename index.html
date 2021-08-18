@@ -128,10 +128,18 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;You can also insert a dataframe in a Markdown block as a table by using <code>df.to_markdown()</code>, or use dp.Table or dp.DataTable for dedicated dataframe tables.</p>
 </div>
-<p>Args:te
-text: The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text
-file: Path to a file containing markdown text
-name: A unique name for the block to reference when adding text or embedding (optional)</p></div>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>text</code></strong></dt>
+<dd>The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text</dd>
+<dt><strong><code>file</code></strong></dt>
+<dd>Path to a file containing markdown text</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;File encodings are auto-detected, if this fails please read the file manually with an explicit encoding and use the text parameter on dp.File</p>
+</div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="datapane.client.api.report.blocks.Text" href="report/blocks.html#datapane.client.api.report.blocks.Text">Text</a></li>

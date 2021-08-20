@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>datapane.client.api API documentation</title>
 <meta name="description" content="API docs for Datapane Client …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -71,6 +71,10 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <section>
 <h2 class="section-title" id="header-submodules">Sub-modules</h2>
 <dl>
+<dt><code class="name"><a title="datapane.client.api.builtins" href="builtins.html">datapane.client.api.builtins</a></code></dt>
+<dd>
+<div class="desc"><p>Datapane built-in helper functions to make creating your reports a bit simpler and reduce common tasks</p></div>
+</dd>
 <dt><code class="name"><a title="datapane.client.api.common" href="common.html">datapane.client.api.common</a></code></dt>
 <dd>
 <div class="desc"><p>Common objects …</p></div>
@@ -99,10 +103,6 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dd>
 <div class="desc"><p>Datapane Teams API …</p></div>
 </dd>
-<dt><code class="name"><a title="datapane.client.api.templates" href="templates.html">datapane.client.api.templates</a></code></dt>
-<dd>
-<div class="desc"><p>Datapane helper functions to make creating your reports a bit simpler and reduce common tasks …</p></div>
-</dd>
 <dt><code class="name"><a title="datapane.client.api.user" href="user.html">datapane.client.api.user</a></code></dt>
 <dd>
 <div class="desc"><p>Datapane User API …</p></div>
@@ -114,108 +114,6 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <section>
 </section>
 <section>
-<h2 class="section-title" id="header-classes">Classes</h2>
-<dl>
-<dt id="datapane.client.api.Markdown"><code class="flex name class">
-<span>class <span class="ident">Markdown</span></span>
-<span>(</span><span>*a, **kw)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Markdown objects store Markdown text that can be displayed as formatted text when viewing your report.</p>
-<div class="admonition note">
-<p class="admonition-title">Note:&ensp;This object is also available as <code>dp.Text</code>, and any strings provided directly to the Report/Group object are converted automatically to Markdown blocks</p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;You can also insert a dataframe in a Markdown block as a table by using <code>df.to_markdown()</code>, or use dp.Table or dp.DataTable for dedicated dataframe tables.</p>
-</div>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>text</code></strong></dt>
-<dd>The markdown formatted text, use triple-quotes, (<code>"""# My Title"""</code>) to create multi-line markdown text</dd>
-<dt><strong><code>file</code></strong></dt>
-<dd>Path to a file containing markdown text</dd>
-<dt><strong><code>name</code></strong></dt>
-<dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
-</dl>
-<div class="admonition note">
-<p class="admonition-title">Note:&ensp;File encodings are auto-detected, if this fails please read the file manually with an explicit encoding and use the text parameter on dp.File</p>
-</div></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="datapane.client.api.report.blocks.Text" href="report/blocks.html#datapane.client.api.report.blocks.Text">Text</a></li>
-<li>datapane.client.api.report.blocks.EmbeddedTextBlock</li>
-<li><a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a></li>
-<li><a title="datapane.client.api.report.blocks.BaseElement" href="report/blocks.html#datapane.client.api.report.blocks.BaseElement">BaseElement</a></li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.Markdown.content"><code class="name">var <span class="ident">content</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.Markdown.format"><code class="name flex">
-<span>def <span class="ident">format</span></span>(<span>self, *args: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="report/blocks.html#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], **kwargs: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="report/blocks.html#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]) ‑> <a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a></span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.report.blocks.Text" href="report/blocks.html#datapane.client.api.report.blocks.Text">Text</a></code>.<code><a title="datapane.client.api.report.blocks.Text.format" href="report/blocks.html#datapane.client.api.report.blocks.Text.format">format</a></code>
-</p>
-<div class="desc inherited"><p>Format the markdown text template, using the supplied context to insert blocks into <code>{{}}</code> markers in the template …</p></div>
-</dd>
-</dl>
-</dd>
-<dt id="datapane.client.api.Blocks"><code class="flex name class">
-<span>class <span class="ident">Blocks</span></span>
-<span>(</span><span>*a, **kw)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Groups act as a container that hold a list of nested Blocks object, such
-as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
-<p>Group are used to provide a grouping for blocks can have layout options applied to them</p>
-<div class="admonition note">
-<p class="admonition-title">Note:&ensp;Group expects a list of Blocks, e.g. a Plot or Table, but also including Select or Groups themselves,</p>
-<p>but if a Python object is passed, e.g. a Dataframe, Datapane will attempt to convert it automatically.</p>
-</div>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>*arg_blocks</code></strong></dt>
-<dd>Group to add to report</dd>
-<dt><strong><code>blocks</code></strong></dt>
-<dd>Allows providing the report blocks as a single list</dd>
-<dt><strong><code>name</code></strong></dt>
-<dd>A unique id for the blocks to aid querying (optional)</dd>
-<dt><strong><code>label</code></strong></dt>
-<dd>A label used when displaying the block (optional)</dd>
-<dt><strong><code>rows</code></strong></dt>
-<dd>Display the contained blocks, e.g. Plots, using <em>n</em> rows (set to 0 to autofill)</dd>
-<dt><strong><code>columns</code></strong></dt>
-<dd>Display the contained blocks, e.g. Plots, using <em>n</em> columns (set to 0 to autofill)</dd>
-</dl>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Group can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
-<p><code>dp.Group(plot, table, columns=2)</code> or <code>dp.Group(blocks=[plot, table], columns=2)</code></p>
-</div></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a></li>
-<li>datapane.client.api.report.blocks.LayoutBlock</li>
-<li><a title="datapane.client.api.report.blocks.BaseElement" href="report/blocks.html#datapane.client.api.report.blocks.BaseElement">BaseElement</a></li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.Blocks.blocks"><code class="name">var <span class="ident">blocks</span> : List[Union[<a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a>, <a title="datapane.client.api.report.blocks.Select" href="report/blocks.html#datapane.client.api.report.blocks.Select">Select</a>, <a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -232,6 +130,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <ul id="index">
 <li><h3><a href="#header-submodules">Sub-modules</a></h3>
 <ul>
+<li><code><a title="datapane.client.api.builtins" href="builtins.html">datapane.client.api.builtins</a></code></li>
 <li><code><a title="datapane.client.api.common" href="common.html">datapane.client.api.common</a></code></li>
 <li><code><a title="datapane.client.api.dp_object" href="dp_object.html">datapane.client.api.dp_object</a></code></li>
 <li><code><a title="datapane.client.api.files" href="files.html">datapane.client.api.files</a></code></li>
@@ -239,28 +138,14 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <li><code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code></li>
 <li><code><a title="datapane.client.api.runtime" href="runtime.html">datapane.client.api.runtime</a></code></li>
 <li><code><a title="datapane.client.api.teams" href="teams.html">datapane.client.api.teams</a></code></li>
-<li><code><a title="datapane.client.api.templates" href="templates.html">datapane.client.api.templates</a></code></li>
 <li><code><a title="datapane.client.api.user" href="user.html">datapane.client.api.user</a></code></li>
-</ul>
-</li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="datapane.client.api.Markdown" href="#datapane.client.api.Markdown">Markdown</a></code></h4>
-<ul class="">
-<li><code><a title="datapane.client.api.Markdown.format" href="report/blocks.html#datapane.client.api.Markdown.format">format</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.Blocks" href="#datapane.client.api.Blocks">Blocks</a></code></h4>
-</li>
 </ul>
 </li>
 </ul>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

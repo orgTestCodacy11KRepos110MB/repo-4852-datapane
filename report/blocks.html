@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>datapane.client.api.report.blocks API documentation</title>
 <meta name="description" content="Datapane Blocks API …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -71,7 +71,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </dd>
 <dt id="datapane.client.api.report.blocks.Page"><code class="flex name class">
 <span>class <span class="ident">Page</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, title: str = None, label: str = None)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.report.blocks.Group" href="#datapane.client.api.report.blocks.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.Select" href="#datapane.client.api.report.blocks.Select">Select</a>'), ForwardRef('<a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a>'), Any]] = None, title: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>All <code><a title="datapane.client.api.report.core.Report" href="core.html#datapane.client.api.report.core.Report">Report</a></code>s consist of a list of Pages.
@@ -89,8 +89,6 @@ A Page itself is a Block, but is only allowed at the top-level and cannot be nes
 <dd>Allows providing the report blocks as a single list</dd>
 <dt><strong><code>title</code></strong></dt>
 <dd>The page title (optional)</dd>
-<dt><strong><code>label</code></strong></dt>
-<dd>A label used when displaying the page (optional, deprecated)</dd>
 </dl>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;Page can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
@@ -146,10 +144,6 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <li>datapane.client.api.report.blocks.LayoutBlock</li>
 <li><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></li>
 <li>abc.ABC</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="datapane.client.api.Blocks" href="../index.html#datapane.client.api.Blocks">Blocks</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -370,7 +364,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.BigNumber"><code class="flex name class">
 <span>class <span class="ident">BigNumber</span></span>
-<span>(</span><span>heading: str, value: Union[str, int, float], change: Union[str, int, float, NoneType] = None, prev_value: Union[str, int, float, NoneType] = None, is_positive_intent: Optional[bool] = None, is_upward_change: Optional[bool] = None, name: str = None, label: str = None)</span>
+<span>(</span><span>heading: str, value: Union[str, int, float], change: Union[str, int, float, ForwardRef(None)] = None, prev_value: Union[str, int, float, ForwardRef(None)] = None, is_positive_intent: Optional[bool] = None, is_upward_change: Optional[bool] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>BigNumber blocks display a numerical value with a heading, alongside optional contextual information about the previous value.</p>
@@ -409,7 +403,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.Text"><code class="flex name class">
 <span>class <span class="ident">Text</span></span>
-<span>(</span><span>text: str = None, file: Union[pathlib.Path, os.PathLike, str] = None, name: str = None, label: str = None)</span>
+<span>(</span><span>text: str = None, file: Union[str, pathlib.Path, os.PathLike] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Markdown objects store Markdown text that can be displayed as formatted text when viewing your report.</p>
@@ -437,10 +431,6 @@ for interactive display in your report when viewed in the browser.</p>
 <li><a title="datapane.client.api.report.blocks.DataBlock" href="#datapane.client.api.report.blocks.DataBlock">DataBlock</a></li>
 <li><a title="datapane.client.api.report.blocks.BaseElement" href="#datapane.client.api.report.blocks.BaseElement">BaseElement</a></li>
 <li>abc.ABC</li>
-</ul>
-<h3>Subclasses</h3>
-<ul class="hlist">
-<li><a title="datapane.client.api.Markdown" href="../index.html#datapane.client.api.Markdown">Markdown</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
@@ -572,7 +562,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.File"><code class="flex name class">
 <span>class <span class="ident">File</span></span>
-<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, is_json: bool = False, filename: Optional[str] = None, name: str = None, label: str = None)</span>
+<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, is_json: bool = False, filename: Optional[str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
@@ -712,7 +702,7 @@ for interactive display in your report when viewed in the browser.</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

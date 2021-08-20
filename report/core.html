@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
-<meta name="generator" content="pdoc 0.9.2" />
+<meta name="generator" content="pdoc 0.10.0" />
 <title>datapane.client.api.report.core API documentation</title>
 <meta name="description" content="Datapane Reports Object …" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
@@ -40,7 +40,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dl>
 <dt id="datapane.client.api.report.core.Report"><code class="flex name class">
 <span>class <span class="ident">Report</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, type: Optional[datapane.client.api.report.core.ReportType] = None, **kwargs)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Report documents collate plots, text, tables, and files into an interactive document that
@@ -111,7 +111,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, NoneType] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, **kwargs) ‑> NoneType</span>
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', tags: List[str] = None, group: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, **kwargs) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
@@ -135,14 +135,8 @@ can be analysed and shared by users in their Browser</p>
 <dd>Set the basic styling for your report</dd>
 </dl></div>
 </dd>
-<dt id="datapane.client.api.report.core.Report.publish"><code class="name flex">
-<span>def <span class="ident">publish</span></span>(<span>self, *a, **kw) ‑> NoneType</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> NoneType</span>
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the report document to a local HTML file</p>
@@ -161,7 +155,7 @@ can be analysed and shared by users in their Browser</p>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self) ‑> NoneType</span>
+<span>def <span class="ident">preview</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -238,7 +232,6 @@ can be analysed and shared by users in their Browser</p>
 <li><code><a title="datapane.client.api.report.core.Report.by_id" href="../dp_object.html#datapane.client.api.report.core.Report.by_id">by_id</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.list" href="../dp_object.html#datapane.client.api.report.core.Report.list">list</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.upload" href="#datapane.client.api.report.core.Report.upload">upload</a></code></li>
-<li><code><a title="datapane.client.api.report.core.Report.publish" href="#datapane.client.api.report.core.Report.publish">publish</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.save" href="#datapane.client.api.report.core.Report.save">save</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.preview" href="#datapane.client.api.report.core.Report.preview">preview</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.refresh" href="../dp_object.html#datapane.client.api.report.core.Report.refresh">refresh</a></code></li>
@@ -254,7 +247,7 @@ can be analysed and shared by users in their Browser</p>
 </nav>
 </main>
 <footer id="footer">
-<p>Generated by <a href="https://pdoc3.github.io/pdoc"><cite>pdoc</cite> 0.9.2</a>.</p>
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
 </footer>
 </body>
 </html>

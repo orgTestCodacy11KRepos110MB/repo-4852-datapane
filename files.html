@@ -869,28 +869,13 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.MatplotFigurePlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>The top level container for all the plot elements.</p>
-<p>The Figure instance supports callbacks through a <em>callbacks</em> attribute
-which is a <code>.CallbackRegistry</code> instance.
-The events you can connect to
-are 'dpi_changed', and the callback will be called with <code>func(fig)</code> where
-fig is the <code>Figure</code> instance.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>patch</code></strong></dt>
-<dd>The <code>.Rectangle</code> instance representing the figure background patch.</dd>
-<dt><strong><code>suppressComposite</code></strong></dt>
-<dd>For multiple figure images, the figure will make composite images
-depending on the renderer option_image_nocomposite function.
-If
-<em>suppressComposite</em> is a boolean, this will override the renderer.</dd>
-</dl></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.MatplotFigurePlot.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>self, x: matplotlib.figure.Figure) ‑> datapane.client.api.common.DPTmpFile</span>
+<span>def <span class="ident">write</span></span>(<span>self, x: <a title="datapane.client.api.files_optional.Figure" href="files_optional.html#datapane.client.api.files_optional.Figure">Figure</a>) ‑> datapane.client.api.common.DPTmpFile</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -948,27 +933,13 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.MatplotAxesPlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>The <code>Axes</code> contains most of the figure elements: <code>~.axis.Axis</code>,
-<code>~.axis.Tick</code>, <code>~.lines.Line2D</code>, <code>~.text.Text</code>, <code>~.patches.Polygon</code>, etc.,
-and sets the coordinate system.</p>
-<p>The <code>Axes</code> instance supports callbacks through a callbacks attribute which
-is a <code>~.cbook.CallbackRegistry</code> instance.
-The events you can connect to
-are 'xlim_changed' and 'ylim_changed' and the callback will be called with
-func(<em>ax</em>) where <em>ax</em> is the <code>Axes</code> instance.</p>
-<h2 id="attributes">Attributes</h2>
-<dl>
-<dt><strong><code>dataLim</code></strong> :&ensp;<code>.Bbox</code></dt>
-<dd>The bounding box enclosing all data displayed in the Axes.</dd>
-<dt><strong><code>viewLim</code></strong> :&ensp;<code>.Bbox</code></dt>
-<dd>The view limits in data coordinates.</dd>
-</dl></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.MatplotAxesPlot.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>self, x: matplotlib.axes._axes.Axes) ‑> datapane.client.api.common.DPTmpFile</span>
+<span>def <span class="ident">write</span></span>(<span>self, x: <a title="datapane.client.api.files_optional.Axes" href="files_optional.html#datapane.client.api.files_optional.Axes">Axes</a>) ‑> datapane.client.api.common.DPTmpFile</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1248,87 +1219,7 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.BokehPlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>Create a new Figure for plotting.</p>
-<p>A subclass of :class:<code>~bokeh.models.plots.Plot</code> that simplifies plot
-creation with default axes, grids, tools, etc.</p>
-<p>Figure objects have many glyph methods that can be used to draw
-vectorized graphical glyphs:</p>
-<div class="admonition hlist">
-<p class="admonition-title">Hlist</p>
-<p>:columns: 3</p>
-<ul>
-<li>:func:<code>~bokeh.plotting.figure.Figure.annular_wedge</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.annulus</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.arc</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.asterisk</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.bezier</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.circle</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.circle_cross</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.circle_dot</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.circle_x</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.circle_y</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.cross</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.dash</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.diamond</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.diamond_cross</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.diamond_dot</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.dot</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.ellipse</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.harea</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.hbar</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.hex</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.hex_tile</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.image</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.image_rgba</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.image_url</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.inverted_triangle</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.line</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.multi_line</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.multi_polygons</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.oval</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.patch</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.patches</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.plus</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.quad</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.quadratic</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.ray</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.rect</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.segment</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.square</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.square_cross</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.square_dot</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.square_pin</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.square_x</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.step</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.text</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.triangle</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.triangle_dot</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.triangle_pin</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.varea</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.vbar</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.wedge</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.x</code></li>
-<li>:func:<code>~bokeh.plotting.figure.Figure.y</code></li>
-</ul>
-</div>
-<p>There is a scatter function that can be parameterized by marker type:</p>
-<ul>
-<li>:func:<code>~bokeh.plotting.figure.Figure.scatter</code></li>
-</ul>
-<p>There are also specialized methods for stacking bars:</p>
-<ul>
-<li>bars: :func:<code>~bokeh.plotting.figure.Figure.hbar_stack</code>, :func:<code>~bokeh.plotting.figure.Figure.vbar_stack</code></li>
-<li>lines: :func:<code>~bokeh.plotting.figure.Figure.hline_stack</code>, :func:<code>~bokeh.plotting.figure.Figure.vline_stack</code></li>
-<li>areas: :func:<code>~bokeh.plotting.figure.Figure.harea_stack</code>, :func:<code>~bokeh.plotting.figure.Figure.varea_stack</code></li>
-</ul>
-<p>As well as one specialized method for making simple hexbin plots:</p>
-<ul>
-<li>:func:<code>~bokeh.plotting.figure.Figure.hexbin</code></li>
-</ul>
-<p>In addition to all the <code>Figure</code> property attributes, the following
-options are also accepted:</p>
-<p>.. bokeh-options:: FigureOptions
-:module: bokeh.plotting.figure</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -1370,12 +1261,7 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.BokehLayoutPlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>The base class for layoutable components.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>This is an abstract base class used to help organize the hierarchy of Bokeh
-model types. <strong>It is not useful to instantiate on its own.</strong></p>
-</div></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -1468,13 +1354,13 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.PlotlyPlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>Base class for all figure types (both widget and non-widget)</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.PlotlyPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, chart: plotly.graph_objs._figure.Figure)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, chart: <a title="datapane.client.api.files_optional.PFigure" href="files_optional.html#datapane.client.api.files_optional.PFigure">PFigure</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1527,99 +1413,13 @@ for interactive display in your report when viewed in the browser.</p></div>
 </dd>
 <dt id="datapane.client.api.files.FoliumPlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>Create a Map with Folium and Leaflet.js</p>
-<p>Generate a base map of given width and height with either default
-tilesets or a custom tileset URL. The following tilesets are built-in
-to Folium. Pass any of the following to the "tiles" keyword:</p>
-<pre><code>- "OpenStreetMap"
-- "Mapbox Bright" (Limited levels of zoom for free tiles)
-- "Mapbox Control Room" (Limited levels of zoom for free tiles)
-- "Stamen" (Terrain, Toner, and Watercolor)
-- "Cloudmade" (Must pass API key)
-- "Mapbox" (Must pass API key)
-- "CartoDB" (positron and dark_matter)
-</code></pre>
-<p>You can pass a custom tileset to Folium by passing a Leaflet-style
-URL to the tiles parameter: <code>http://{s}.yourtiles.com/{z}/{x}/{y}.png</code>.</p>
-<p>You can find a list of free tile providers here:
-<code>http://leaflet-extras.github.io/leaflet-providers/preview/</code>.
-Be sure to check their terms and conditions and to provide attribution
-with the <code>attr</code> keyword.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>location</code></strong> :&ensp;<code>tuple</code> or <code>list</code>, default <code>None</code></dt>
-<dd>Latitude and Longitude of Map (Northing, Easting).</dd>
-<dt><strong><code>width</code></strong> :&ensp;<code>pixel int</code> or <code>percentage string (default: '100%')</code></dt>
-<dd>Width of the map.</dd>
-<dt><strong><code>height</code></strong> :&ensp;<code>pixel int</code> or <code>percentage string (default: '100%')</code></dt>
-<dd>Height of the map.</dd>
-<dt><strong><code>tiles</code></strong> :&ensp;<code>str</code>, default <code>'OpenStreetMap'</code></dt>
-<dd>Map tileset to use. Can choose from a list of built-in tiles,
-pass a custom URL or pass <code>None</code> to create a map without tiles.
-For more advanced tile layer options, use the <code>TileLayer</code> class.</dd>
-<dt><strong><code>min_zoom</code></strong> :&ensp;<code>int</code>, default <code>0</code></dt>
-<dd>Minimum allowed zoom level for the tile layer that is created.</dd>
-<dt><strong><code>max_zoom</code></strong> :&ensp;<code>int</code>, default <code>18</code></dt>
-<dd>Maximum allowed zoom level for the tile layer that is created.</dd>
-<dt><strong><code>zoom_start</code></strong> :&ensp;<code>int</code>, default <code>10</code></dt>
-<dd>Initial zoom level for the map.</dd>
-<dt><strong><code>attr</code></strong> :&ensp;<code>string</code>, default <code>None</code></dt>
-<dd>Map tile attribution; only required if passing custom tile URL.</dd>
-<dt><strong><code>crs</code></strong> :&ensp;<code>str</code>, default <code>'EPSG3857'</code></dt>
-<dd>Defines coordinate reference systems for projecting geographical points
-into pixel (screen) coordinates and back.
-You can use Leaflet's values :
-* EPSG3857 : The most common CRS for online maps, used by almost all
-free and commercial tile providers. Uses Spherical Mercator projection.
-Set in by default in Map's crs option.
-* EPSG4326 : A common CRS among GIS enthusiasts.
-Uses simple Equirectangular projection.
-* EPSG3395 : Rarely used by some commercial tile providers.
-Uses Elliptical Mercator projection.
-* Simple : A simple CRS that maps longitude and latitude into
-x and y directly. May be used for maps of flat surfaces
-(e.g. game maps). Note that the y axis should still be inverted
-(going from bottom to top).</dd>
-<dt><strong><code>control_scale</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Whether to add a control scale on the map.</dd>
-<dt><strong><code>prefer_canvas</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Forces Leaflet to use the Canvas back-end (if available) for
-vector layers instead of SVG. This can increase performance
-considerably in some cases (e.g. many thousands of circle
-markers on the map).</dd>
-<dt><strong><code>no_touch</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Forces Leaflet to not use touch events even if it detects them.</dd>
-<dt><strong><code>disable_3d</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Forces Leaflet to not use hardware-accelerated CSS 3D
-transforms for positioning (which may cause glitches in some
-rare environments) even if they're supported.</dd>
-<dt><strong><code>zoom_control</code></strong> :&ensp;<code>bool</code>, default <code>True</code></dt>
-<dd>Display zoom controls on the map.</dd>
-<dt><strong><code>**kwargs</code></strong></dt>
-<dd>Additional keyword arguments are passed to Leaflets Map class:
-<a href="https://leafletjs.com/reference-1.6.0.html#map">https://leafletjs.com/reference-1.6.0.html#map</a></dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Folium Map Object</code></dt>
-<dd>&nbsp;</dd>
-</dl>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], width=750, height=500)
-&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], tiles='cartodb positron')
-&gt;&gt;&gt; m = folium.Map(
-...    location=[45.523, -122.675],
-...    zoom_start=2,
-...    tiles='https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=mytoken',
-...    attr='Mapbox attribution'
-...)
-</code></pre></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.FoliumPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, m: folium.folium.Map)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, m: <a title="datapane.client.api.files_optional.Map" href="files_optional.html#datapane.client.api.files_optional.Map">Map</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1676,99 +1476,13 @@ for interactive display in your …</p></div>
 </dd>
 <dt id="datapane.client.api.files.FoliumPlot.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
 <dd>
-<div class="desc"><p>Create a Map with Folium and Leaflet.js</p>
-<p>Generate a base map of given width and height with either default
-tilesets or a custom tileset URL. The following tilesets are built-in
-to Folium. Pass any of the following to the "tiles" keyword:</p>
-<pre><code>- "OpenStreetMap"
-- "Mapbox Bright" (Limited levels of zoom for free tiles)
-- "Mapbox Control Room" (Limited levels of zoom for free tiles)
-- "Stamen" (Terrain, Toner, and Watercolor)
-- "Cloudmade" (Must pass API key)
-- "Mapbox" (Must pass API key)
-- "CartoDB" (positron and dark_matter)
-</code></pre>
-<p>You can pass a custom tileset to Folium by passing a Leaflet-style
-URL to the tiles parameter: <code>http://{s}.yourtiles.com/{z}/{x}/{y}.png</code>.</p>
-<p>You can find a list of free tile providers here:
-<code>http://leaflet-extras.github.io/leaflet-providers/preview/</code>.
-Be sure to check their terms and conditions and to provide attribution
-with the <code>attr</code> keyword.</p>
-<h2 id="parameters">Parameters</h2>
-<dl>
-<dt><strong><code>location</code></strong> :&ensp;<code>tuple</code> or <code>list</code>, default <code>None</code></dt>
-<dd>Latitude and Longitude of Map (Northing, Easting).</dd>
-<dt><strong><code>width</code></strong> :&ensp;<code>pixel int</code> or <code>percentage string (default: '100%')</code></dt>
-<dd>Width of the map.</dd>
-<dt><strong><code>height</code></strong> :&ensp;<code>pixel int</code> or <code>percentage string (default: '100%')</code></dt>
-<dd>Height of the map.</dd>
-<dt><strong><code>tiles</code></strong> :&ensp;<code>str</code>, default <code>'OpenStreetMap'</code></dt>
-<dd>Map tileset to use. Can choose from a list of built-in tiles,
-pass a custom URL or pass <code>None</code> to create a map without tiles.
-For more advanced tile layer options, use the <code>TileLayer</code> class.</dd>
-<dt><strong><code>min_zoom</code></strong> :&ensp;<code>int</code>, default <code>0</code></dt>
-<dd>Minimum allowed zoom level for the tile layer that is created.</dd>
-<dt><strong><code>max_zoom</code></strong> :&ensp;<code>int</code>, default <code>18</code></dt>
-<dd>Maximum allowed zoom level for the tile layer that is created.</dd>
-<dt><strong><code>zoom_start</code></strong> :&ensp;<code>int</code>, default <code>10</code></dt>
-<dd>Initial zoom level for the map.</dd>
-<dt><strong><code>attr</code></strong> :&ensp;<code>string</code>, default <code>None</code></dt>
-<dd>Map tile attribution; only required if passing custom tile URL.</dd>
-<dt><strong><code>crs</code></strong> :&ensp;<code>str</code>, default <code>'EPSG3857'</code></dt>
-<dd>Defines coordinate reference systems for projecting geographical points
-into pixel (screen) coordinates and back.
-You can use Leaflet's values :
-* EPSG3857 : The most common CRS for online maps, used by almost all
-free and commercial tile providers. Uses Spherical Mercator projection.
-Set in by default in Map's crs option.
-* EPSG4326 : A common CRS among GIS enthusiasts.
-Uses simple Equirectangular projection.
-* EPSG3395 : Rarely used by some commercial tile providers.
-Uses Elliptical Mercator projection.
-* Simple : A simple CRS that maps longitude and latitude into
-x and y directly. May be used for maps of flat surfaces
-(e.g. game maps). Note that the y axis should still be inverted
-(going from bottom to top).</dd>
-<dt><strong><code>control_scale</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Whether to add a control scale on the map.</dd>
-<dt><strong><code>prefer_canvas</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Forces Leaflet to use the Canvas back-end (if available) for
-vector layers instead of SVG. This can increase performance
-considerably in some cases (e.g. many thousands of circle
-markers on the map).</dd>
-<dt><strong><code>no_touch</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Forces Leaflet to not use touch events even if it detects them.</dd>
-<dt><strong><code>disable_3d</code></strong> :&ensp;<code>bool</code>, default <code>False</code></dt>
-<dd>Forces Leaflet to not use hardware-accelerated CSS 3D
-transforms for positioning (which may cause glitches in some
-rare environments) even if they're supported.</dd>
-<dt><strong><code>zoom_control</code></strong> :&ensp;<code>bool</code>, default <code>True</code></dt>
-<dd>Display zoom controls on the map.</dd>
-<dt><strong><code>**kwargs</code></strong></dt>
-<dd>Additional keyword arguments are passed to Leaflets Map class:
-<a href="https://leafletjs.com/reference-1.6.0.html#map">https://leafletjs.com/reference-1.6.0.html#map</a></dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<dl>
-<dt><code>Folium Map Object</code></dt>
-<dd>&nbsp;</dd>
-</dl>
-<h2 id="examples">Examples</h2>
-<pre><code class="language-python-repl">&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], width=750, height=500)
-&gt;&gt;&gt; m = folium.Map(location=[45.523, -122.675], tiles='cartodb positron')
-&gt;&gt;&gt; m = folium.Map(
-...    location=[45.523, -122.675],
-...    zoom_start=2,
-...    tiles='https://api.mapbox.com/v4/mapbox.streets/{z}/{x}/{y}.png?access_token=mytoken',
-...    attr='Mapbox attribution'
-...)
-</code></pre></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.FoliumPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, m: folium.folium.Map)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, m: <a title="datapane.client.api.files_optional.Map" href="files_optional.html#datapane.client.api.files_optional.Map">Map</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

@@ -42,7 +42,7 @@ $ datapane logout
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="datapane.client.api.user.login"><code class="name flex">
-<span>def <span class="ident">login</span></span>(<span>token: str, server: str = 'https://datapane.com', env: str = 'default', cli_login: bool = True) ‑> str</span>
+<span>def <span class="ident">login</span></span>(<span>token: Optional[str], server: str = 'https://datapane.com', env: str = 'default', cli_login: bool = True) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Login to the specified Datapane Server, storing the token within a config-file called <code>env</code> for future use</p>
@@ -83,6 +83,18 @@ $ datapane logout
 <dd>
 <div class="desc"><p>Ping the Datapane Server to check login credentials</p></div>
 </dd>
+<dt id="datapane.client.api.user.signup"><code class="name flex">
+<span>def <span class="ident">signup</span></span>(<span>config: Optional[datapane.client.config.Config] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.user.hello"><code class="name flex">
+<span>def <span class="ident">hello</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 </section>
 <section>
@@ -106,6 +118,8 @@ $ datapane logout
 <li><code><a title="datapane.client.api.user.login" href="#datapane.client.api.user.login">login</a></code></li>
 <li><code><a title="datapane.client.api.user.logout" href="#datapane.client.api.user.logout">logout</a></code></li>
 <li><code><a title="datapane.client.api.user.ping" href="#datapane.client.api.user.ping">ping</a></code></li>
+<li><code><a title="datapane.client.api.user.signup" href="#datapane.client.api.user.signup">signup</a></code></li>
+<li><code><a title="datapane.client.api.user.hello" href="#datapane.client.api.user.hello">hello</a></code></li>
 </ul>
 </li>
 </ul>

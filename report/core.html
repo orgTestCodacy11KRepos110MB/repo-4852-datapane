@@ -51,8 +51,6 @@ can be analysed and shared by users in their Browser</p>
 <dd>Group to add to document</dd>
 <dt><strong><code>blocks</code></strong></dt>
 <dd>Allows providing the document blocks as a single list</dd>
-<dt><strong><code>type</code></strong></dt>
-<dd>Set the Report type, this will affect the formatting and layout of the document</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>A <code><a title="datapane.client.api.report.core.Report" href="#datapane.client.api.report.core.Report">Report</a></code> document object that can be uploaded, saved, etc.</p>
@@ -61,7 +59,7 @@ can be analysed and shared by users in their Browser</p>
 <p><code>dp.Report(plot, table)</code> or <code>dp.Report(blocks=[plot, table])</code></p>
 </div>
 <div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Create a list first to hold your blocks to edit them dynmically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
+<p class="admonition-title">Tip:&ensp;Create a list first to hold your blocks to edit them dynamically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
 </div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -72,7 +70,7 @@ can be analysed and shared by users in their Browser</p>
 <dl>
 <dt id="datapane.client.api.report.core.Report.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
 <dd>
-<div class="desc"><p>When set, the report is full-width suitable for use in a dashboard</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
@@ -153,7 +151,7 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>author</code></strong></dt>
 <dd>The report author / email / etc. (optional)</dd>
 <dt><strong><code>formatting</code></strong></dt>
-<dd>Set the basic styling for your report</dd>
+<dd>Sets the basic rport styling</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
@@ -217,7 +215,9 @@ can be analysed and shared by users in their Browser</p>
 </code></dt>
 <dd>
 <div class="desc"><p>The report visibility type, set for reports on Datapane Studio</p>
-<p>..note :: This is ignored on Datapane Enterprise, reports are always private</p></div>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;This is ignored on Datapane Enterprise, reports are always private</p>
+</div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>enum.IntEnum</li>

@@ -151,14 +151,23 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>author</code></strong></dt>
 <dd>The report author / email / etc. (optional)</dd>
 <dt><strong><code>formatting</code></strong></dt>
-<dd>Sets the basic rport styling</dd>
+<dd>Sets the basic report styling</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self) ‑> None</span>
+<span>def <span class="ident">preview</span></span>(<span>self, open: True, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"></div>
+<div class="desc"><p>Preview the report in a new browser window.
+Can be called multiple times, refreshing the existing created preview file.
+Pass open=False to stop openning a new tab on subsequent previews</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open in your browser after creating (default: True)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic report styling</dd>
+</dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.refresh"><code class="name flex">
 <span>def <span class="ident">refresh</span></span>(<span>self)</span>

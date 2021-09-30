@@ -564,7 +564,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.File"><code class="flex name class">
 <span>class <span class="ident">File</span></span>
-<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, is_json: bool = False, filename: Optional[str] = None, name: str = None, label: str = None)</span>
+<span>(</span><span>data: Optional[Any] = None, file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, is_json: bool = False, filename: Optional[str] = None, caption: Optional[str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
@@ -579,6 +579,8 @@ for interactive display in your report when viewed in the browser.</p>
 <dd>If <code>True</code>, treat the <code>data</code> as JSON data already</dd>
 <dt><strong><code>filename</code></strong></dt>
 <dd>Name to be used when downloading the file</dd>
+<dt><strong><code>caption</code></strong></dt>
+<dd>A caption to display below the file (optional)</dd>
 <dt><strong><code>name</code></strong></dt>
 <dd>A unique name for the block to reference when adding text or embedding (optional)</dd>
 <dt><strong><code>label</code></strong></dt>

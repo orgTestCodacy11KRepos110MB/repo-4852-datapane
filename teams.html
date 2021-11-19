@@ -44,20 +44,20 @@ Objects can be looked up by name using <code>.get()</code> and by id using <code
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="datapane.client.api.teams.Blob"><code class="flex name class">
-<span>class <span class="ident">Blob</span></span>
+<dt id="datapane.client.api.teams.File"><code class="flex name class">
+<span>class <span class="ident">File</span></span>
 <span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Blobs are files that can be uploaded and downloaded for use in your scripts,
+<div class="desc"><p>Files are files that can be uploaded and downloaded for use in your apps,
 for instance trained models, datasets, and (pickled) Python objects.
 They are generally large, but can be any size.</p>
 <h2 id="attributes">Attributes</h2>
 <dl>
 <dt><strong><code>content_type</code></strong></dt>
-<dd>the blob content-type</dd>
+<dd>the file content-type</dd>
 <dt><strong><code>size_bytes</code></strong></dt>
-<dd>the blob size</dd>
+<dd>the file size</dd>
 <dt><strong><code>num_rows</code></strong></dt>
 <dd>number of rows in the file (if a dataframe)</dd>
 <dt><strong><code>num_colums</code></strong></dt>
@@ -66,7 +66,7 @@ They are generally large, but can be any size.</p>
 <dd>number of cells in the file (if a dataframe)</dd>
 </dl>
 <div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Use the static methods to create <code>Blobs</code> rather than the constructor</p>
+<p class="admonition-title">Tip:&ensp;Use the static methods to create <code>Files</code> rather than the constructor</p>
 </div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -74,49 +74,47 @@ They are generally large, but can be any size.</p>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="datapane.client.api.teams.Blob.upload_df"><code class="name flex">
-<span>def <span class="ident">upload_df</span></span>(<span>df: pd.DataFrame, **kwargs) ‑> <a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></span>
+<dt id="datapane.client.api.teams.File.upload_df"><code class="name flex">
+<span>def <span class="ident">upload_df</span></span>(<span>df: pd.DataFrame, **kwargs) ‑> <a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a blob containing the dataframe provided</p>
+<div class="desc"><p>Create a file containing the dataframe provided</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>df</code></strong></dt>
-<dd>The pandas dataframe to upload as a Blob</dd>
+<dd>The pandas dataframe to upload as a File</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>An instance of the created <code><a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></code> object</p></div>
+<p>An instance of the created <code><a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></code> object</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.upload_file"><code class="name flex">
-<span>def <span class="ident">upload_file</span></span>(<span>fn: NPath, **kwargs) ‑> <a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></span>
+<dt id="datapane.client.api.teams.File.upload_file"><code class="name flex">
+<span>def <span class="ident">upload_file</span></span>(<span>fn: NPath, **kwargs) ‑> <a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a blob containing the contents of the file provided</p>
+<div class="desc"><p>Create a file containing the contents of the file provided</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>fn</code></strong></dt>
-<dd>Path to the file to upload as a Blob</dd>
+<dd>Path to the file to upload as a File</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>An instance of the created <code><a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></code> object</p></div>
+<p>An instance of the created <code><a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></code> object</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.upload_obj"><code class="name flex">
-<span>def <span class="ident">upload_obj</span></span>(<span>data: t.Any, as_json: bool = False, **kwargs: JSON) ‑> <a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></span>
+<dt id="datapane.client.api.teams.File.upload_obj"><code class="name flex">
+<span>def <span class="ident">upload_obj</span></span>(<span>data: t.Any, **kwargs: JSON) ‑> <a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a blob containing the contents of the Python object provided,
+<div class="desc"><p>Create a file containing the contents of the Python object provided,
 the object may be pickled or converted to JSON before storing.</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>data</code></strong></dt>
-<dd>Python object to upload as a Blob</dd>
-<dt><strong><code>as_json</code></strong></dt>
-<dd>Convert the data to JSON rather than pickling (optional)</dd>
+<dd>Python object to upload as a File</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>An instance of the created <code><a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></code> object</p></div>
+<p>An instance of the created <code><a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></code> object</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.get"><code class="name flex">
+<dt id="datapane.client.api.teams.File.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
@@ -126,7 +124,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </p>
 <div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.by_id"><code class="name flex">
+<dt id="datapane.client.api.teams.File.by_id"><code class="name flex">
 <span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
 </code></dt>
 <dd>
@@ -136,7 +134,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </p>
 <div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.list"><code class="name flex">
+<dt id="datapane.client.api.teams.File.list"><code class="name flex">
 <span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
 </code></dt>
 <dd>
@@ -149,34 +147,34 @@ the object may be pickled or converted to JSON before storing.</p>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="datapane.client.api.teams.Blob.download_df"><code class="name flex">
+<dt id="datapane.client.api.teams.File.download_df"><code class="name flex">
 <span>def <span class="ident">download_df</span></span>(<span>self) ‑> pd.DataFrame</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Download the blob and return it as a Dataframe</p>
+<div class="desc"><p>Download the file and return it as a Dataframe</p>
 <h2 id="returns">Returns</h2>
-<p>A pandas dataframe generated from the blob</p></div>
+<p>A pandas dataframe generated from the file</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.download_file"><code class="name flex">
+<dt id="datapane.client.api.teams.File.download_file"><code class="name flex">
 <span>def <span class="ident">download_file</span></span>(<span>self, fn: NPath) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Download the blob to the file provided</p>
+<div class="desc"><p>Download the file to the file provided</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>fn</code></strong></dt>
 <dd>Path representing the location to save the file</dd>
 </dl></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.download_obj"><code class="name flex">
+<dt id="datapane.client.api.teams.File.download_obj"><code class="name flex">
 <span>def <span class="ident">download_obj</span></span>(<span>self) ‑> Any</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Download the blob and return it as a Python object</p>
+<div class="desc"><p>Download the file and return it as a Python object</p>
 <h2 id="returns">Returns</h2>
-<p>The object created by deserialising the Blob (either via Pickle or JSON decoding)</p></div>
+<p>The object created by deserialising the File (either via Pickle or JSON decoding)</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.refresh"><code class="name flex">
+<dt id="datapane.client.api.teams.File.refresh"><code class="name flex">
 <span>def <span class="ident">refresh</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -187,7 +185,7 @@ the object may be pickled or converted to JSON before storing.</p>
 <div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
 - override to pull updated fields from dto to top-level</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Blob.delete"><code class="name flex">
+<dt id="datapane.client.api.teams.File.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -199,21 +197,25 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.teams.Variable"><code class="flex name class">
-<span>class <span class="ident">Variable</span></span>
+<dt id="datapane.client.api.teams.Environment"><code class="flex name class">
+<span>class <span class="ident">Environment</span></span>
 <span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>User Variables represent secure pieces of data, such as tokens, database connection strings, etc. that are needed inside your scripts</p>
+<div class="desc"><p>Environments are used to set environment variables and an optional docker image for running your apps</p>
 <div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Use the static methods to create <code>Variables</code> rather than the constructor</p>
+<p class="admonition-title">Tip:&ensp;Use the static methods to create <code><a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></code> rather than the constructor</p>
 </div>
 <h2 id="attributes">Attributes</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
-<dd>Name of the variable</dd>
-<dt><strong><code>value</code></strong></dt>
-<dd>Value of the variable</dd>
+<dd>Name of the environment</dd>
+<dt><strong><code>environment</code></strong></dt>
+<dd>Key-value pair of environment variables</dd>
+<dt><strong><code>docker_image</code></strong></dt>
+<dd>docker_image to be used with apps.</dd>
+<dt><strong><code>project</code></strong></dt>
+<dd>Project name (optional and only applicable for organisations)</dd>
 </dl></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -221,31 +223,33 @@ the object may be pickled or converted to JSON before storing.</p>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.teams.Variable.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
+<dt id="datapane.client.api.teams.Environment.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 </dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="datapane.client.api.teams.Variable.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>name: str, value: str, group: Optional[str] = None) ‑> <a title="datapane.client.api.teams.Variable" href="#datapane.client.api.teams.Variable">Variable</a></span>
+<dt id="datapane.client.api.teams.Environment.create"><code class="name flex">
+<span>def <span class="ident">create</span></span>(<span>name: str, environment: Optional[dict] = None, docker_image: Optional[str] = None, project: Optional[str] = None) ‑> <a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Create a shareable Datapane User Variable with provided <code>name</code> and <code>value</code></p>
+<div class="desc"><p>Create a shareable Datapane Environment with provided <code>name</code>, <code>environment</code> and <code>docker_image</code></p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
-<dd>Name of the variable</dd>
-<dt><strong><code>value</code></strong></dt>
-<dd>Value of the variable</dd>
-<dt><strong><code>group</code></strong></dt>
-<dd>Group name (optional and only applicable for organisations)</dd>
+<dd>Name of the environment</dd>
+<dt><strong><code>environment</code></strong></dt>
+<dd>Key-value pair of environment variables</dd>
+<dt><strong><code>docker_image</code></strong></dt>
+<dd>docker_image to be used with apps.</dd>
+<dt><strong><code>project</code></strong></dt>
+<dd>Project name (optional and only applicable for organisations)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>An instance of the created <code><a title="datapane.client.api.teams.Variable" href="#datapane.client.api.teams.Variable">Variable</a></code> object</p></div>
+<p>An instance of the created <code><a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></code> object</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Variable.get"><code class="name flex">
+<dt id="datapane.client.api.teams.Environment.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
@@ -255,7 +259,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </p>
 <div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Variable.by_id"><code class="name flex">
+<dt id="datapane.client.api.teams.Environment.by_id"><code class="name flex">
 <span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
 </code></dt>
 <dd>
@@ -265,7 +269,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </p>
 <div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Variable.list"><code class="name flex">
+<dt id="datapane.client.api.teams.Environment.list"><code class="name flex">
 <span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
 </code></dt>
 <dd>
@@ -278,7 +282,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="datapane.client.api.teams.Variable.refresh"><code class="name flex">
+<dt id="datapane.client.api.teams.Environment.refresh"><code class="name flex">
 <span>def <span class="ident">refresh</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -289,7 +293,7 @@ the object may be pickled or converted to JSON before storing.</p>
 <div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
 - override to pull updated fields from dto to top-level</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Variable.delete"><code class="name flex">
+<dt id="datapane.client.api.teams.Environment.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -301,15 +305,15 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.teams.Script"><code class="flex name class">
-<span>class <span class="ident">Script</span></span>
+<dt id="datapane.client.api.teams.App"><code class="flex name class">
+<span>class <span class="ident">App</span></span>
 <span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Scripts allow users to build, deploy, and automate data-driven Python workflows and apps
+<div class="desc"><p>Apps allow users to build, deploy, and automate data-driven Python workflows and apps
 to their cloud that can be customised and run by other users.</p>
 <div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;We recommend using either the Web UI or CLI, e.g. <code>datapane script deploy / run / ...</code> to work with scripts rather than using the low-level API</p>
+<p class="admonition-title">Tip:&ensp;We recommend using either the Web UI or CLI, e.g. <code>datapane app deploy / run / ...</code> to work with apps rather than using the low-level API</p>
 </div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
@@ -317,7 +321,7 @@ to their cloud that can be customised and run by other users.</p>
 </ul>
 <h3>Static methods</h3>
 <dl>
-<dt id="datapane.client.api.teams.Script.get"><code class="name flex">
+<dt id="datapane.client.api.teams.App.get"><code class="name flex">
 <span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
@@ -327,7 +331,7 @@ to their cloud that can be customised and run by other users.</p>
 </p>
 <div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Script.by_id"><code class="name flex">
+<dt id="datapane.client.api.teams.App.by_id"><code class="name flex">
 <span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
 </code></dt>
 <dd>
@@ -337,7 +341,7 @@ to their cloud that can be customised and run by other users.</p>
 </p>
 <div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Script.list"><code class="name flex">
+<dt id="datapane.client.api.teams.App.list"><code class="name flex">
 <span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
 </code></dt>
 <dd>
@@ -350,7 +354,7 @@ to their cloud that can be customised and run by other users.</p>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="datapane.client.api.teams.Script.refresh"><code class="name flex">
+<dt id="datapane.client.api.teams.App.refresh"><code class="name flex">
 <span>def <span class="ident">refresh</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -361,7 +365,7 @@ to their cloud that can be customised and run by other users.</p>
 <div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
 - override to pull updated fields from dto to top-level</p></div>
 </dd>
-<dt id="datapane.client.api.teams.Script.delete"><code class="name flex">
+<dt id="datapane.client.api.teams.App.delete"><code class="name flex">
 <span>def <span class="ident">delete</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -378,7 +382,7 @@ to their cloud that can be customised and run by other users.</p>
 <span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Runs represent the running of a script, indicating their status, output, errors, etc.</p>
+<div class="desc"><p>Runs represent the running of a app, indicating their status, output, errors, etc.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;We recommend using the CLI, e.g. <code>datapane schedule create / ...</code> to work with schedules rather than the low-level API</p>
 </div></div>
@@ -396,7 +400,7 @@ to their cloud that can be customised and run by other users.</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.teams.Schedule.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>script: <a title="datapane.client.api.teams.Script" href="#datapane.client.api.teams.Script">Script</a>, cron: str, parameters: SDict) ‑> <a title="datapane.client.api.teams.Schedule" href="#datapane.client.api.teams.Schedule">Schedule</a></span>
+<span>def <span class="ident">create</span></span>(<span>app: <a title="datapane.client.api.teams.App" href="#datapane.client.api.teams.App">App</a>, cron: str, parameters: SDict) ‑> <a title="datapane.client.api.teams.Schedule" href="#datapane.client.api.teams.Schedule">Schedule</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -482,40 +486,40 @@ to their cloud that can be customised and run by other users.</p>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="datapane.client.api.teams.Blob" href="#datapane.client.api.teams.Blob">Blob</a></code></h4>
+<h4><code><a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></code></h4>
 <ul class="two-column">
-<li><code><a title="datapane.client.api.teams.Blob.upload_df" href="#datapane.client.api.teams.Blob.upload_df">upload_df</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.upload_file" href="#datapane.client.api.teams.Blob.upload_file">upload_file</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.upload_obj" href="#datapane.client.api.teams.Blob.upload_obj">upload_obj</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.get" href="dp_object.html#datapane.client.api.teams.Blob.get">get</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.by_id" href="dp_object.html#datapane.client.api.teams.Blob.by_id">by_id</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.list" href="dp_object.html#datapane.client.api.teams.Blob.list">list</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.download_df" href="#datapane.client.api.teams.Blob.download_df">download_df</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.download_file" href="#datapane.client.api.teams.Blob.download_file">download_file</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.download_obj" href="#datapane.client.api.teams.Blob.download_obj">download_obj</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.refresh" href="dp_object.html#datapane.client.api.teams.Blob.refresh">refresh</a></code></li>
-<li><code><a title="datapane.client.api.teams.Blob.delete" href="dp_object.html#datapane.client.api.teams.Blob.delete">delete</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.upload_df" href="#datapane.client.api.teams.File.upload_df">upload_df</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.upload_file" href="#datapane.client.api.teams.File.upload_file">upload_file</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.upload_obj" href="#datapane.client.api.teams.File.upload_obj">upload_obj</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.get" href="dp_object.html#datapane.client.api.teams.File.get">get</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.by_id" href="dp_object.html#datapane.client.api.teams.File.by_id">by_id</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.list" href="dp_object.html#datapane.client.api.teams.File.list">list</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.download_df" href="#datapane.client.api.teams.File.download_df">download_df</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.download_file" href="#datapane.client.api.teams.File.download_file">download_file</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.download_obj" href="#datapane.client.api.teams.File.download_obj">download_obj</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.refresh" href="dp_object.html#datapane.client.api.teams.File.refresh">refresh</a></code></li>
+<li><code><a title="datapane.client.api.teams.File.delete" href="dp_object.html#datapane.client.api.teams.File.delete">delete</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="datapane.client.api.teams.Variable" href="#datapane.client.api.teams.Variable">Variable</a></code></h4>
+<h4><code><a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></code></h4>
 <ul class="two-column">
-<li><code><a title="datapane.client.api.teams.Variable.create" href="#datapane.client.api.teams.Variable.create">create</a></code></li>
-<li><code><a title="datapane.client.api.teams.Variable.get" href="dp_object.html#datapane.client.api.teams.Variable.get">get</a></code></li>
-<li><code><a title="datapane.client.api.teams.Variable.by_id" href="dp_object.html#datapane.client.api.teams.Variable.by_id">by_id</a></code></li>
-<li><code><a title="datapane.client.api.teams.Variable.list" href="dp_object.html#datapane.client.api.teams.Variable.list">list</a></code></li>
-<li><code><a title="datapane.client.api.teams.Variable.refresh" href="dp_object.html#datapane.client.api.teams.Variable.refresh">refresh</a></code></li>
-<li><code><a title="datapane.client.api.teams.Variable.delete" href="dp_object.html#datapane.client.api.teams.Variable.delete">delete</a></code></li>
+<li><code><a title="datapane.client.api.teams.Environment.create" href="#datapane.client.api.teams.Environment.create">create</a></code></li>
+<li><code><a title="datapane.client.api.teams.Environment.get" href="dp_object.html#datapane.client.api.teams.Environment.get">get</a></code></li>
+<li><code><a title="datapane.client.api.teams.Environment.by_id" href="dp_object.html#datapane.client.api.teams.Environment.by_id">by_id</a></code></li>
+<li><code><a title="datapane.client.api.teams.Environment.list" href="dp_object.html#datapane.client.api.teams.Environment.list">list</a></code></li>
+<li><code><a title="datapane.client.api.teams.Environment.refresh" href="dp_object.html#datapane.client.api.teams.Environment.refresh">refresh</a></code></li>
+<li><code><a title="datapane.client.api.teams.Environment.delete" href="dp_object.html#datapane.client.api.teams.Environment.delete">delete</a></code></li>
 </ul>
 </li>
 <li>
-<h4><code><a title="datapane.client.api.teams.Script" href="#datapane.client.api.teams.Script">Script</a></code></h4>
+<h4><code><a title="datapane.client.api.teams.App" href="#datapane.client.api.teams.App">App</a></code></h4>
 <ul class="">
-<li><code><a title="datapane.client.api.teams.Script.get" href="dp_object.html#datapane.client.api.teams.Script.get">get</a></code></li>
-<li><code><a title="datapane.client.api.teams.Script.by_id" href="dp_object.html#datapane.client.api.teams.Script.by_id">by_id</a></code></li>
-<li><code><a title="datapane.client.api.teams.Script.list" href="dp_object.html#datapane.client.api.teams.Script.list">list</a></code></li>
-<li><code><a title="datapane.client.api.teams.Script.refresh" href="dp_object.html#datapane.client.api.teams.Script.refresh">refresh</a></code></li>
-<li><code><a title="datapane.client.api.teams.Script.delete" href="dp_object.html#datapane.client.api.teams.Script.delete">delete</a></code></li>
+<li><code><a title="datapane.client.api.teams.App.get" href="dp_object.html#datapane.client.api.teams.App.get">get</a></code></li>
+<li><code><a title="datapane.client.api.teams.App.by_id" href="dp_object.html#datapane.client.api.teams.App.by_id">by_id</a></code></li>
+<li><code><a title="datapane.client.api.teams.App.list" href="dp_object.html#datapane.client.api.teams.App.list">list</a></code></li>
+<li><code><a title="datapane.client.api.teams.App.refresh" href="dp_object.html#datapane.client.api.teams.App.refresh">refresh</a></code></li>
+<li><code><a title="datapane.client.api.teams.App.delete" href="dp_object.html#datapane.client.api.teams.App.delete">delete</a></code></li>
 </ul>
 </li>
 <li>

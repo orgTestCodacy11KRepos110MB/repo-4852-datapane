@@ -35,13 +35,13 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="datapane.client.api.files.get_wrapper"><code class="name flex">
-<span>def <span class="ident">get_wrapper</span></span>(<span>x: Any, default_to_json: bool, error_msg: Optional[str] = None) ‑> <a title="datapane.client.api.files.BaseAsset" href="#datapane.client.api.files.BaseAsset">BaseAsset</a></span>
+<span>def <span class="ident">get_wrapper</span></span>(<span>x: Any, error_msg: Optional[str] = None) ‑> <a title="datapane.client.api.files.BaseAsset" href="#datapane.client.api.files.BaseAsset">BaseAsset</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.files.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>obj: Any, default_to_json: bool = False) ‑> datapane.client.api.common.DPTmpFile</span>
+<span>def <span class="ident">save</span></span>(<span>obj: Any) ‑> datapane.client.api.common.DPTmpFile</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -82,7 +82,6 @@ return default</p></div>
 </ul>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="datapane.client.api.files.BaseJsonWriter" href="#datapane.client.api.files.BaseJsonWriter">BaseJsonWriter</a></li>
 <li><a title="datapane.client.api.files.BasePickleWriter" href="#datapane.client.api.files.BasePickleWriter">BasePickleWriter</a></li>
 <li><a title="datapane.client.api.files.BaseTable" href="#datapane.client.api.files.BaseTable">BaseTable</a></li>
 <li><a title="datapane.client.api.files.PathWrapper" href="#datapane.client.api.files.PathWrapper">PathWrapper</a></li>
@@ -157,8 +156,11 @@ return default</p></div>
 </dd>
 <dt id="datapane.client.api.files.BasePickleWriter.block_type"><code class="name">var <span class="ident">block_type</span> : Type[<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]</code></dt>
 <dd>
-<div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
-<p>Any types of files may be attached, for instance, images (png / jpg), PDFs, JSON data, Excel files, etc.</p></div>
+<div class="desc"><p>Attachment blocks are used to attach a file to the report that can be downloaded by report viewers</p>
+<p>Any type of file may be attached, for instance, images (png / jpg), PDFs, JSON data, Excel files, etc.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;To attach streamable / viewable video, audio or images, use the <code>dp.Media</code> block instead</p>
+</div></div>
 </dd>
 <dt id="datapane.client.api.files.BasePickleWriter.ext"><code class="name">var <span class="ident">ext</span> : str</code></dt>
 <dd>
@@ -172,51 +174,6 @@ return default</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.BasePickleWriter.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, x: Any)</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
-<dt id="datapane.client.api.files.BaseJsonWriter"><code class="flex name class">
-<span>class <span class="ident">BaseJsonWriter</span></span>
-</code></dt>
-<dd>
-<div class="desc"><p>Creates a JSON file from any object</p></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="datapane.client.api.files.BaseAsset" href="#datapane.client.api.files.BaseAsset">BaseAsset</a></li>
-<li>typing.Generic</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.files.BaseJsonWriter.file_mode"><code class="name">var <span class="ident">file_mode</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.files.BaseJsonWriter.mimetype"><code class="name">var <span class="ident">mimetype</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.files.BaseJsonWriter.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.files.BaseJsonWriter.block_type"><code class="name">var <span class="ident">block_type</span> : Type[<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]</code></dt>
-<dd>
-<div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
-<p>Any types of files may be attached, for instance, images (png / jpg), PDFs, JSON data, Excel files, etc.</p></div>
-</dd>
-<dt id="datapane.client.api.files.BaseJsonWriter.ext"><code class="name">var <span class="ident">ext</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.files.BaseJsonWriter.write_file"><code class="name flex">
 <span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, x: Any)</span>
 </code></dt>
 <dd>
@@ -286,7 +243,7 @@ errors defaults to 'strict'.</p></div>
 <span>class <span class="ident">PathWrapper</span></span>
 </code></dt>
 <dd>
-<div class="desc"><p>Creates a File block around Path objects</p></div>
+<div class="desc"><p>Creates an Attachment block around Path objects</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li><a title="datapane.client.api.files.BaseAsset" href="#datapane.client.api.files.BaseAsset">BaseAsset</a></li>
@@ -318,8 +275,11 @@ but cannot instantiate a WindowsPath on a POSIX system or vice versa.</p></div>
 </dd>
 <dt id="datapane.client.api.files.PathWrapper.block_type"><code class="name">var <span class="ident">block_type</span> : Type[<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]</code></dt>
 <dd>
-<div class="desc"><p>File blocks are used to attach a file to the report that can be displayed (if possible) and downloaded by report viewers</p>
-<p>Any types of files may be attached, for instance, images (png / jpg), PDFs, JSON data, Excel files, etc.</p></div>
+<div class="desc"><p>Attachment blocks are used to attach a file to the report that can be downloaded by report viewers</p>
+<p>Any type of file may be attached, for instance, images (png / jpg), PDFs, JSON data, Excel files, etc.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;To attach streamable / viewable video, audio or images, use the <code>dp.Media</code> block instead</p>
+</div></div>
 </dd>
 </dl>
 <h3>Methods</h3>
@@ -1524,12 +1484,6 @@ for interactive display in your …</p></div>
 <h4><code><a title="datapane.client.api.files.BasePickleWriter" href="#datapane.client.api.files.BasePickleWriter">BasePickleWriter</a></code></h4>
 <ul class="">
 <li><code><a title="datapane.client.api.files.BasePickleWriter.write_file" href="#datapane.client.api.files.BasePickleWriter.write_file">write_file</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.files.BaseJsonWriter" href="#datapane.client.api.files.BaseJsonWriter">BaseJsonWriter</a></code></h4>
-<ul class="">
-<li><code><a title="datapane.client.api.files.BaseJsonWriter.write_file" href="#datapane.client.api.files.BaseJsonWriter.write_file">write_file</a></code></li>
 </ul>
 </li>
 <li>

@@ -40,7 +40,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dl>
 <dt id="datapane.client.api.report.core.Report"><code class="flex name class">
 <span>class <span class="ident">Report</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), Any]] = None, **kwargs)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]] = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Report documents collate plots, text, tables, and files into an interactive document that
@@ -63,11 +63,14 @@ can be analysed and shared by users in their Browser</p>
 </div></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>datapane.client.api.report.core.BaseReport</li>
 <li><a title="datapane.client.api.dp_object.DPObjectRef" href="../dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
+<dt id="datapane.client.api.report.core.Report.pages"><code class="name">var <span class="ident">pages</span> : List[<a title="datapane.client.api.report.blocks.Page" href="blocks.html#datapane.client.api.report.blocks.Page">Page</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 <dt id="datapane.client.api.report.core.Report.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
 <dd>
 <div class="desc"></div>
@@ -106,10 +109,17 @@ can be analysed and shared by users in their Browser</p>
 <div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
 </dd>
 </dl>
+<h3>Instance variables</h3>
+<dl>
+<dt id="datapane.client.api.report.core.Report.edit_url"><code class="name">var <span class="ident">edit_url</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, str] = '', tags: List[str] = None, group: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, **kwargs) ‑> None</span>
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, str] = '', tags: List[str] = None, project: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, **kwargs) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
@@ -125,8 +135,8 @@ can be analysed and shared by users in their Browser</p>
 <dd>"UNLISTED" (default), "PRIVATE", or "PUBLISHED" (for studio product only, ignored on enterprise)</dd>
 <dt><strong><code>tags</code></strong></dt>
 <dd>A list of tags (as strings) used to categorise your document</dd>
-<dt><strong><code>group</code></strong></dt>
-<dd>Group to add the report to (Teams only)</dd>
+<dt><strong><code>project</code></strong></dt>
+<dd>Project to add the report to (Teams only)</dd>
 <dt><strong><code>source_file</code></strong></dt>
 <dd>Path of jupyter notebook file to upload</dd>
 <dt><strong><code>open</code></strong></dt>
@@ -134,6 +144,34 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>formatting</code></strong></dt>
 <dd>Set the basic styling for your report</dd>
 </dl></div>
+</dd>
+<dt id="datapane.client.api.report.core.Report.update_assets"><code class="name flex">
+<span>def <span class="ident">update_assets</span></span>(<span>self, *arg_blocks: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty')], blocks: Union[Dict[str, Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]], List[Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty')]]] = None, open: bool = False, **kw_blocks: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Upload updated plots, text, tables, and files for a report.
+Blocks can be created with the <code>name</code> parameter, if not set, one can be provided here using keyword args.
+Use the blocks dict parameter to add a dynamically generated set of named blocks, useful when working in Jupyter</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*arg_blocks</code></strong></dt>
+<dd>List of blocks to add to document, these must be wrapped, e.g. using dp.DataTable(df) instead of df</dd>
+<dt><strong><code>blocks</code></strong></dt>
+<dd>Allows providing the document blocks as a single list/dictionary of named blocks</dd>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open the report in your browser for editing after updating</dd>
+<dt><strong><code>**kw_blocks</code></strong></dt>
+<dd>Keyword argument set of blocks, whose block name will be that given in the keyword</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>None</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Blocks can be passed using either arg parameters or the <code>blocks</code> kwarg as a dictionary, e.g.</p>
+<p><code>report.update_assets(my_plot=plot, my_table=table)</code> or <code>report.update_assets(blocks={"my_plot": plot, "my_table":table})</code></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Create a dictionary first to hold your blocks to edit them dynamically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
+</div></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.save"><code class="name flex">
 <span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
@@ -272,6 +310,7 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 <li><code><a title="datapane.client.api.report.core.Report.by_id" href="../dp_object.html#datapane.client.api.report.core.Report.by_id">by_id</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.list" href="../dp_object.html#datapane.client.api.report.core.Report.list">list</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.upload" href="#datapane.client.api.report.core.Report.upload">upload</a></code></li>
+<li><code><a title="datapane.client.api.report.core.Report.update_assets" href="#datapane.client.api.report.core.Report.update_assets">update_assets</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.save" href="#datapane.client.api.report.core.Report.save">save</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.preview" href="#datapane.client.api.report.core.Report.preview">preview</a></code></li>
 <li><code><a title="datapane.client.api.report.core.Report.refresh" href="../dp_object.html#datapane.client.api.report.core.Report.refresh">refresh</a></code></li>

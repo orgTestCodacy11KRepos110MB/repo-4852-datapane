@@ -40,7 +40,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dl>
 <dt id="datapane.client.api.report.core.Report"><code class="flex name class">
 <span>class <span class="ident">Report</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]] = None, **kwargs)</span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], blocks: List[Union[ForwardRef('Page'), ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]] = None, layout: Optional[datapane.client.api.report.core.PageLayout] = None, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Report documents collate plots, text, tables, and files into an interactive document that
@@ -68,6 +68,10 @@ can be analysed and shared by users in their Browser</p>
 <h3>Class variables</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.pages"><code class="name">var <span class="ident">pages</span> : List[<a title="datapane.client.api.report.blocks.Page" href="blocks.html#datapane.client.api.report.blocks.Page">Page</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.report.core.Report.page_layout"><code class="name">var <span class="ident">page_layout</span> : Optional[datapane.client.api.report.core.PageLayout]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>

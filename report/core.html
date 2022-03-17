@@ -83,7 +83,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -123,7 +123,7 @@ can be analysed and shared by users in their Browser</p>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.report.core.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', visibility: Union[<a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a>, str] = '', tags: List[str] = None, project: Optional[str] = None, source_file: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, **kwargs) ‑> None</span>
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', publicly_visible: bool = False, tags: List[str] = None, project: Optional[str] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, overwrite: bool = False, **kwargs) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
@@ -135,18 +135,18 @@ can be analysed and shared by users in their Browser</p>
 <dd>A high-level description for the document, this is displayed in searches and thumbnails</dd>
 <dt><strong><code>source_url</code></strong></dt>
 <dd>A URL pointing to the source code for the document, e.g. a GitHub repo or a Colab notebook</dd>
-<dt><strong><code>visibility</code></strong></dt>
-<dd>"UNLISTED" (default), "PRIVATE", or "PUBLISHED" (for studio product only, ignored on enterprise)</dd>
+<dt><strong><code>publicly_visible</code></strong></dt>
+<dd>Visible to anyone with the link</dd>
 <dt><strong><code>tags</code></strong></dt>
 <dd>A list of tags (as strings) used to categorise your document</dd>
 <dt><strong><code>project</code></strong></dt>
 <dd>Project to add the report to (Teams only)</dd>
-<dt><strong><code>source_file</code></strong></dt>
-<dd>Path of jupyter notebook file to upload</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
 <dt><strong><code>formatting</code></strong></dt>
 <dd>Set the basic styling for your report</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Overwrite the report</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.update_assets"><code class="name flex">
@@ -260,37 +260,6 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.report.core.Visibility"><code class="flex name class">
-<span>class <span class="ident">Visibility</span></span>
-<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>The report visibility type, set for reports on Datapane Studio</p>
-<div class="admonition note">
-<p class="admonition-title">Note:&ensp;This is ignored on Datapane Enterprise, reports are always private</p>
-</div></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>enum.IntEnum</li>
-<li>builtins.int</li>
-<li>enum.Enum</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.report.core.Visibility.DEFAULT"><code class="name">var <span class="ident">DEFAULT</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.core.Visibility.PORTFOLIO"><code class="name">var <span class="ident">PORTFOLIO</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.core.Visibility.PRIVATE"><code class="name">var <span class="ident">PRIVATE</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-</dd>
 </dl>
 </section>
 </article>
@@ -323,9 +292,6 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.report.core.ReportWidth" href="#datapane.client.api.report.core.ReportWidth">ReportWidth</a></code></h4>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.report.core.Visibility" href="#datapane.client.api.report.core.Visibility">Visibility</a></code></h4>
 </li>
 </ul>
 </li>

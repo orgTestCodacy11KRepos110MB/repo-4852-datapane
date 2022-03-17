@@ -75,16 +75,16 @@ and accessible by the client API</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.dp_object.DPObjectRef.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Lookup and retrieve an object from the Datapane Server by its name</p>
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>name</code></strong></dt>
-<dd>The name of the object, e.g. 'my-file-3<code> or </code>fred/my-file-3`</dd>
-<dt><strong><code>owner</code></strong></dt>
-<dd>The owner of the object, e.g. <code>fred</code> (can be provided with the name as shown above)</dd>
+<dd>The name of the object, e.g. 'my-file-3<code> or </code>project1/my-file-3`</dd>
+<dt><strong><code>project</code></strong></dt>
+<dd>The project of the object, e.g. <code>project1</code> (can be provided with the name as shown above)</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>The object if found</p></div>
@@ -103,13 +103,13 @@ and accessible by the client API</p>
 <p>The object if found</p></div>
 </dd>
 <dt id="datapane.client.api.dp_object.DPObjectRef.post_with_files"><code class="name flex">
-<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, **kwargs) ‑> ~U</span>
+<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **kwargs) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.dp_object.DPObjectRef.post"><code class="name flex">
-<span>def <span class="ident">post</span></span>(<span>**kwargs) ‑> ~U</span>
+<span>def <span class="ident">post</span></span>(<span>overwrite: bool = False, **kwargs) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

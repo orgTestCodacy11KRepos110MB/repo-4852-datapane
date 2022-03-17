@@ -64,6 +64,8 @@ They are generally large, but can be any size.</p>
 <dd>number of colums in the file (if a dataframe)</dd>
 <dt><strong><code>cells</code></strong></dt>
 <dd>number of cells in the file (if a dataframe)</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>overwrite the file in project</dd>
 </dl>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;Use the static methods to create <code>Files</code> rather than the constructor</p>
@@ -115,7 +117,7 @@ the object may be pickled or converted to JSON before storing.</p>
 <p>An instance of the created <code><a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></code> object</p></div>
 </dd>
 <dt id="datapane.client.api.teams.File.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -231,7 +233,7 @@ the object may be pickled or converted to JSON before storing.</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.teams.Environment.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>name: str, environment: Optional[dict] = None, docker_image: Optional[str] = None, project: Optional[str] = None) ‑> <a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></span>
+<span>def <span class="ident">create</span></span>(<span>name: str, environment: Optional[dict] = None, docker_image: Optional[str] = None, project: Optional[str] = None, overwrite: bool = False) ‑> <a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a shareable Datapane Environment with provided <code>name</code>, <code>environment</code> and <code>docker_image</code></p>
@@ -245,12 +247,14 @@ the object may be pickled or converted to JSON before storing.</p>
 <dd>docker_image to be used with apps.</dd>
 <dt><strong><code>project</code></strong></dt>
 <dd>Project name (optional and only applicable for organisations)</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Overwrite an existing environment</dd>
 </dl>
 <h2 id="returns">Returns</h2>
 <p>An instance of the created <code><a title="datapane.client.api.teams.Environment" href="#datapane.client.api.teams.Environment">Environment</a></code> object</p></div>
 </dd>
 <dt id="datapane.client.api.teams.Environment.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -322,7 +326,7 @@ to their cloud that can be customised and run by other users.</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.teams.App.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <p class="inheritance">
@@ -406,7 +410,7 @@ to their cloud that can be customised and run by other users.</p>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.teams.Schedule.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, owner: Optional[str] = None) ‑> ~U</span>
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
 </code></dt>
 <dd>
 <p class="inheritance">

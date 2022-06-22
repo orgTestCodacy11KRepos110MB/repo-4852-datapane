@@ -39,6 +39,187 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <section>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="datapane.client.api.common.HTTPError"><code class="flex name class">
+<span>class <span class="ident">HTTPError</span></span>
+<span>(</span><span>*args, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An HTTP error occurred.</p>
+<p>Initialize RequestException with <code>request</code> and <code>response</code> objects.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>requests.exceptions.RequestException</li>
+<li>builtins.OSError</li>
+<li>builtins.Exception</li>
+<li>builtins.BaseException</li>
+</ul>
+</dd>
+<dt id="datapane.client.api.common.Response"><code class="flex name class">
+<span>class <span class="ident">Response</span></span>
+</code></dt>
+<dd>
+<div class="desc"><p>The :class:<code>Response &lt;Response&gt;</code> object, which contains a
+server's response to an HTTP request.</p></div>
+<h3>Instance variables</h3>
+<dl>
+<dt id="datapane.client.api.common.Response.ok"><code class="name">var <span class="ident">ok</span></code></dt>
+<dd>
+<div class="desc"><p>Returns True if :attr:<code>status_code</code> is less than 400, False if not.</p>
+<p>This attribute checks if the status code of the response is between
+400 and 600 to see if there was a client error or a server error. If
+the status code is between 200 and 400, this will return True. This
+is <strong>not</strong> a check to see if the response code is <code>200 OK</code>.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.is_redirect"><code class="name">var <span class="ident">is_redirect</span></code></dt>
+<dd>
+<div class="desc"><p>True if this Response is a well-formed HTTP redirect that could have
+been processed automatically (by :meth:<code>Session.resolve_redirects</code>).</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.is_permanent_redirect"><code class="name">var <span class="ident">is_permanent_redirect</span></code></dt>
+<dd>
+<div class="desc"><p>True if this Response one of the permanent versions of redirect.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.next"><code class="name">var <span class="ident">next</span></code></dt>
+<dd>
+<div class="desc"><p>Returns a PreparedRequest for the next request in a redirect chain, if there is one.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.apparent_encoding"><code class="name">var <span class="ident">apparent_encoding</span></code></dt>
+<dd>
+<div class="desc"><p>The apparent encoding, provided by the charset_normalizer or chardet libraries.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.content"><code class="name">var <span class="ident">content</span></code></dt>
+<dd>
+<div class="desc"><p>Content of the response, in bytes.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.text"><code class="name">var <span class="ident">text</span></code></dt>
+<dd>
+<div class="desc"><p>Content of the response, in unicode.</p>
+<p>If Response.encoding is None, encoding will be guessed using
+<code>charset_normalizer</code> or <code>chardet</code>.</p>
+<p>The encoding of the response content is determined based solely on HTTP
+headers, following RFC 2616 to the letter. If you can take advantage of
+non-HTTP knowledge to make a better guess at the encoding, you should
+set <code>r.encoding</code> appropriately before accessing this property.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.links"><code class="name">var <span class="ident">links</span></code></dt>
+<dd>
+<div class="desc"><p>Returns the parsed header links of the response, if any.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.status_code"><code class="name">var <span class="ident">status_code</span></code></dt>
+<dd>
+<div class="desc"><p>Integer Code of responded HTTP Status, e.g. 404 or 200.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.headers"><code class="name">var <span class="ident">headers</span></code></dt>
+<dd>
+<div class="desc"><p>Case-insensitive Dictionary of Response Headers.
+For example, <code>headers['content-encoding']</code> will return the
+value of a <code>'Content-Encoding'</code> response header.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.raw"><code class="name">var <span class="ident">raw</span></code></dt>
+<dd>
+<div class="desc"><p>File-like object representation of response (for advanced usage).
+Use of <code>raw</code> requires that <code>stream=True</code> be set on the request.
+This requirement does not apply for use internally to Requests.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.url"><code class="name">var <span class="ident">url</span></code></dt>
+<dd>
+<div class="desc"><p>Final URL location of Response.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.encoding"><code class="name">var <span class="ident">encoding</span></code></dt>
+<dd>
+<div class="desc"><p>Encoding to decode with when accessing r.text.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.history"><code class="name">var <span class="ident">history</span></code></dt>
+<dd>
+<div class="desc"><p>A list of :class:<code>Response &lt;Response&gt;</code> objects from
+the history of the Request. Any redirect responses will end
+up here. The list is sorted from the oldest to the most recent request.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.reason"><code class="name">var <span class="ident">reason</span></code></dt>
+<dd>
+<div class="desc"><p>Textual reason of responded HTTP Status, e.g. "Not Found" or "OK".</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.cookies"><code class="name">var <span class="ident">cookies</span></code></dt>
+<dd>
+<div class="desc"><p>A CookieJar of Cookies the server sent back.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.elapsed"><code class="name">var <span class="ident">elapsed</span></code></dt>
+<dd>
+<div class="desc"><p>The amount of time elapsed between sending the request
+and the arrival of the response (as a timedelta).
+This property specifically measures the time taken between sending
+the first byte of the request and finishing parsing the headers. It
+is therefore unaffected by consuming the response content or the
+value of the <code>stream</code> keyword argument.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.request"><code class="name">var <span class="ident">request</span></code></dt>
+<dd>
+<div class="desc"><p>The :class:<code>PreparedRequest &lt;PreparedRequest&gt;</code> object to which this
+is a response.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.common.Response.iter_content"><code class="name flex">
+<span>def <span class="ident">iter_content</span></span>(<span>self, chunk_size=1, decode_unicode=False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Iterates over the response data.
+When stream=True is set on the
+request, this avoids reading the content at once into memory for
+large responses.
+The chunk size is the number of bytes it should
+read into memory.
+This is not necessarily the length of each item
+returned as decoding can take place.</p>
+<p>chunk_size must be of type int or None. A value of None will
+function differently depending on the value of <code>stream</code>.
+stream=True will read data as it arrives in whatever size the
+chunks are received. If stream=False, data is returned as
+a single chunk.</p>
+<p>If decode_unicode is True, content will be decoded using the best
+available encoding based on the response.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.iter_lines"><code class="name flex">
+<span>def <span class="ident">iter_lines</span></span>(<span>self, chunk_size=512, decode_unicode=False, delimiter=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Iterates over the response data, one line at a time.
+When
+stream=True is set on the request, this avoids reading the
+content at once into memory for large responses.</p>
+<div class="admonition note">
+<p class="admonition-title">Note:&ensp;This method is not reentrant safe.</p>
+</div></div>
+</dd>
+<dt id="datapane.client.api.common.Response.json"><code class="name flex">
+<span>def <span class="ident">json</span></span>(<span>self, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the json-encoded content of a response, if any.</p>
+<p>:param **kwargs: Optional arguments that <code>json.loads</code> takes.
+:raises requests.exceptions.JSONDecodeError: If the response body does not
+contain valid json.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.raise_for_status"><code class="name flex">
+<span>def <span class="ident">raise_for_status</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Raises :class:<code><a title="datapane.client.api.common.HTTPError" href="#datapane.client.api.common.HTTPError">HTTPError</a></code>, if one occurred.</p></div>
+</dd>
+<dt id="datapane.client.api.common.Response.close"><code class="name flex">
+<span>def <span class="ident">close</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Releases the connection back to the pool. Once this method has been
+called the underlying <code>raw</code> object must not be accessed again.</p>
+<p><em>Note: Should not normally need to be called explicitly.</em></p></div>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -52,6 +233,23 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <li><h3>Super-module</h3>
 <ul>
 <li><code><a title="datapane.client.api" href="index.html">datapane.client.api</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="datapane.client.api.common.HTTPError" href="#datapane.client.api.common.HTTPError">HTTPError</a></code></h4>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.common.Response" href="#datapane.client.api.common.Response">Response</a></code></h4>
+<ul class="">
+<li><code><a title="datapane.client.api.common.Response.iter_content" href="#datapane.client.api.common.Response.iter_content">iter_content</a></code></li>
+<li><code><a title="datapane.client.api.common.Response.iter_lines" href="#datapane.client.api.common.Response.iter_lines">iter_lines</a></code></li>
+<li><code><a title="datapane.client.api.common.Response.json" href="#datapane.client.api.common.Response.json">json</a></code></li>
+<li><code><a title="datapane.client.api.common.Response.raise_for_status" href="#datapane.client.api.common.Response.raise_for_status">raise_for_status</a></code></li>
+<li><code><a title="datapane.client.api.common.Response.close" href="#datapane.client.api.common.Response.close">close</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -546,7 +546,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.Text"><code class="flex name class">
 <span>class <span class="ident">Text</span></span>
-<span>(</span><span>text: str = None, file: Union[str, pathlib.Path, os.PathLike] = None, name: str = None, label: str = None)</span>
+<span>(</span><span>text: str = None, file: Union[pathlib.Path, os.PathLike, str] = None, name: str = None, label: str = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Markdown objects store Markdown text that can be displayed as formatted text when viewing your report.</p>
@@ -707,7 +707,7 @@ for interactive display in your report when viewed in the browser.</p>
 </dd>
 <dt id="datapane.client.api.report.blocks.Media"><code class="flex name class">
 <span>class <span class="ident">Media</span></span>
-<span>(</span><span>file: Union[str, pathlib.Path, os.PathLike], name: str = None, label: str = None, caption: Optional[str] = None)</span>
+<span>(</span><span>file: Union[pathlib.Path, os.PathLike, str], name: str = None, label: str = None, caption: Optional[str] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Media blocks are used to attach a file to the report that can be viewed or streamed by report viewers</p>

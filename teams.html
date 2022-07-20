@@ -46,7 +46,7 @@ Objects can be looked up by name using <code>.get()</code> and by id using <code
 <dl>
 <dt id="datapane.client.api.teams.File"><code class="flex name class">
 <span>class <span class="ident">File</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Files are files that can be uploaded and downloaded for use in your apps,
@@ -103,7 +103,7 @@ They are generally large, but can be any size.</p>
 <p>An instance of the created <code><a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></code> object</p></div>
 </dd>
 <dt id="datapane.client.api.teams.File.upload_obj"><code class="name flex">
-<span>def <span class="ident">upload_obj</span></span>(<span>data: t.Any, **kwargs: JSON) ‑> <a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></span>
+<span>def <span class="ident">upload_obj</span></span>(<span>data: t.Any, **kwargs) ‑> <a title="datapane.client.api.teams.File" href="#datapane.client.api.teams.File">File</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a file containing the contents of the Python object provided,
@@ -201,7 +201,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 <dt id="datapane.client.api.teams.Environment"><code class="flex name class">
 <span>class <span class="ident">Environment</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Environments are used to set environment variables and an optional docker image for running your apps</p>
@@ -311,7 +311,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 <dt id="datapane.client.api.teams.App"><code class="flex name class">
 <span>class <span class="ident">App</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Apps allow users to build, deploy, and automate data-driven Python workflows and apps
@@ -383,7 +383,7 @@ to their cloud that can be customised and run by other users.</p>
 </dd>
 <dt id="datapane.client.api.teams.Schedule"><code class="flex name class">
 <span>class <span class="ident">Schedule</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Runs represent the running of a app, indicating their status, output, errors, etc.</p>

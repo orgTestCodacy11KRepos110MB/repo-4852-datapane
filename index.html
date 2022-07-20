@@ -248,13 +248,13 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.Resource.post_files"><code class="name flex">
-<span>def <span class="ident">post_files</span></span>(<span>self, files: Dict[str, List[pathlib.Path]], overwrite: bool = False, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> Union[str, int, float, bool, ForwardRef(None), Mapping[str, Union[str, int, float, bool, ForwardRef(None), Mapping[str, JSON], List[JSON]]], List[Union[str, int, float, bool, ForwardRef(None), Mapping[str, JSON], List[JSON]]]]</span>
+<span>def <span class="ident">post_files</span></span>(<span>self, files: Dict[str, List[pathlib.Path]], overwrite: bool = False, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> munch.Munch</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.Resource.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>self, empty_ok: bool = False, **params) ‑> Union[str, int, float, bool, ForwardRef(None), Mapping[str, Union[str, int, float, bool, ForwardRef(None), Mapping[str, JSON], List[JSON]]], List[Union[str, int, float, bool, ForwardRef(None), Mapping[str, JSON], List[JSON]]]]</span>
+<span>def <span class="ident">get</span></span>(<span>self, empty_ok: bool = False, **params) ‑> munch.Munch</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -272,7 +272,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.Resource.nest_endpoint"><code class="name flex">
-<span>def <span class="ident">nest_endpoint</span></span>(<span>self, endpoint: str) ‑> ContextManager[datapane.client.api.common.Resource]</span>
+<span>def <span class="ident">nest_endpoint</span></span>(<span>self, endpoint: str) ‑> Generator[datapane.client.api.common.Resource, None, None]</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns a context manager allowing recursive nesting in endpoints</p></div>
@@ -281,7 +281,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </dd>
 <dt id="datapane.client.api.DPObjectRef"><code class="flex name class">
 <span>class <span class="ident">DPObjectRef</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Abstract class used to reference core Datapane server objects - not used directly.</p></div>
@@ -340,7 +340,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <p>The object if found</p></div>
 </dd>
 <dt id="datapane.client.api.DPObjectRef.post_with_files"><code class="name flex">
-<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **kwargs) ‑> ~U</span>
+<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **kwargs: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1226,7 +1226,7 @@ can be analysed and shared by users in their Browser</p>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="datapane.client.api.Report.edit_url"><code class="name">var <span class="ident">edit_url</span></code></dt>
+<dt id="datapane.client.api.Report.edit_url"><code class="name">var <span class="ident">edit_url</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1270,7 +1270,7 @@ Use the blocks dict parameter to add a dynamically generated set of named blocks
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>*arg_blocks</code></strong></dt>
-<dd>List of blocks to add to document, these must be wrapped, e.g. using dp.DataTable(df) instead of df</dd>
+<dd>List of blocks to add</dd>
 <dt><strong><code>blocks</code></strong></dt>
 <dd>Allows providing the document blocks as a single list/dictionary of named blocks</dd>
 <dt><strong><code>open</code></strong></dt>
@@ -1308,7 +1308,7 @@ Use the blocks dict parameter to add a dynamically generated set of named blocks
 </dl></div>
 </dd>
 <dt id="datapane.client.api.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self, open: True, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
+<span>def <span class="ident">preview</span></span>(<span>self, open: bool, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Preview the report in a new browser window.
@@ -1446,7 +1446,7 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 </dd>
 <dt id="datapane.client.api.App"><code class="flex name class">
 <span>class <span class="ident">App</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Apps allow users to build, deploy, and automate data-driven Python workflows and apps
@@ -1519,7 +1519,7 @@ to their cloud that can be customised and run by other users.</p>
 <div class="desc"><p>Download, install, and call the app with the provided params</p></div>
 </dd>
 <dt id="datapane.client.api.App.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>self, parameters=None, cache=True) ‑> datapane.client.api.teams.Run</span>
+<span>def <span class="ident">run</span></span>(<span>self, parameters: t.Dict[str, t.Any] = None, cache: bool = True) ‑> datapane.client.api.teams.Run</span>
 </code></dt>
 <dd>
 <div class="desc"><p>(remote) run the given app (cloning if needed?)</p></div>
@@ -1555,7 +1555,7 @@ to their cloud that can be customised and run by other users.</p>
 </dd>
 <dt id="datapane.client.api.Environment"><code class="flex name class">
 <span>class <span class="ident">Environment</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Environments are used to set environment variables and an optional docker image for running your apps</p>
@@ -1669,7 +1669,7 @@ to their cloud that can be customised and run by other users.</p>
 </dd>
 <dt id="datapane.client.api.File"><code class="flex name class">
 <span>class <span class="ident">File</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Files are files that can be uploaded and downloaded for use in your apps,
@@ -1733,7 +1733,7 @@ They are generally large, but can be any size.</p>
 <p>An instance of the created <code><a title="datapane.client.api.File" href="#datapane.client.api.File">File</a></code> object</p></div>
 </dd>
 <dt id="datapane.client.api.File.upload_obj"><code class="name flex">
-<span>def <span class="ident">upload_obj</span></span>(<span>data: t.Any, **kwargs: JSON) ‑> <a title="datapane.client.api.teams.File" href="teams.html#datapane.client.api.teams.File">File</a></span>
+<span>def <span class="ident">upload_obj</span></span>(<span>data: t.Any, **kwargs) ‑> <a title="datapane.client.api.teams.File" href="teams.html#datapane.client.api.teams.File">File</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Create a file containing the contents of the Python object provided,
@@ -1831,7 +1831,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 <dt id="datapane.client.api.Run"><code class="flex name class">
 <span>class <span class="ident">Run</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Runs represent the running of a app, indicating their status, output, errors, etc.</p>
@@ -1915,7 +1915,7 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 <dt id="datapane.client.api.Schedule"><code class="flex name class">
 <span>class <span class="ident">Schedule</span></span>
-<span>(</span><span>dto: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]] = None)</span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Runs represent the running of a app, indicating their status, output, errors, etc.</p>

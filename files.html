@@ -150,10 +150,6 @@ return default</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.files.BasePickleWriter.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
 <dt id="datapane.client.api.files.BasePickleWriter.block_type"><code class="name">var <span class="ident">block_type</span> : Type[<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]</code></dt>
 <dd>
 <div class="desc"><p>Attachment blocks are used to attach a file to the report that can be downloaded by report viewers</p>
@@ -170,11 +166,15 @@ return default</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="datapane.client.api.files.BasePickleWriter.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.BasePickleWriter.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, x: Any)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, x: Any)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -202,18 +202,6 @@ return default</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.files.StringWrapper.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
-<dd>
-<div class="desc"><p>str(object='') -&gt; str
-str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
-<p>Create a new string object from the given object. If encoding or
-errors is specified, then the object must expose a data buffer
-that will be decoded using the given encoding and error handler.
-Otherwise, returns the result of object.<strong>str</strong>() (if defined)
-or repr(object).
-encoding defaults to sys.getdefaultencoding().
-errors defaults to 'strict'.</p></div>
-</dd>
 <dt id="datapane.client.api.files.StringWrapper.block_type"><code class="name">var <span class="ident">block_type</span> : Type[<a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a>]</code></dt>
 <dd>
 <div class="desc"><p>Markdown objects store Markdown text that can be displayed as formatted text when viewing your report.</p>
@@ -228,11 +216,23 @@ errors defaults to 'strict'.</p></div>
 <dd>
 <div class="desc"></div>
 </dd>
+<dt id="datapane.client.api.files.StringWrapper.obj_type"><code class="name">var <span class="ident">obj_type</span> : ~T</code></dt>
+<dd>
+<div class="desc"><p>str(object='') -&gt; str
+str(bytes_or_buffer[, encoding[, errors]]) -&gt; str</p>
+<p>Create a new string object from the given object. If encoding or
+errors is specified, then the object must expose a data buffer
+that will be decoded using the given encoding and error handler.
+Otherwise, returns the result of object.<strong>str</strong>() (if defined)
+or repr(object).
+encoding defaults to sys.getdefaultencoding().
+errors defaults to 'strict'.</p></div>
+</dd>
 </dl>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.StringWrapper.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, x: Any)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, x: str)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -285,7 +285,7 @@ but cannot instantiate a WindowsPath on a POSIX system or vice versa.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.PathWrapper.to_block"><code class="name flex">
-<span>def <span class="ident">to_block</span></span>(<span>self, x: ~T) ‑> <a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a></span>
+<span>def <span class="ident">to_block</span></span>(<span>self, x: pathlib.Path) ‑> <a title="datapane.client.api.report.blocks.DataBlock" href="report/blocks.html#datapane.client.api.report.blocks.DataBlock">DataBlock</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1135,7 +1135,7 @@ for interactive …</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.BokehBasePlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, app)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, app: Model)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1271,7 +1271,7 @@ the _rootschema class attribute) which is used for validation.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.AltairPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, chart: altair.utils.schemapi.SchemaBase)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, chart: altair.utils.schemapi.SchemaBase)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1321,7 +1321,7 @@ for interactive …</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.PlotlyPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'TextIO'>, chart: <a title="datapane.client.api.files_optional.PFigure" href="files_optional.html#datapane.client.api.files_optional.PFigure">PFigure</a>)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, chart: <a title="datapane.client.api.files_optional.PFigure" href="files_optional.html#datapane.client.api.files_optional.PFigure">PFigure</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1384,7 +1384,7 @@ for interactive …</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.FoliumPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, m: <a title="datapane.client.api.files_optional.Map" href="files_optional.html#datapane.client.api.files_optional.Map">Map</a>)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, m: <a title="datapane.client.api.files_optional.Map" href="files_optional.html#datapane.client.api.files_optional.Map">Map</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1443,7 +1443,7 @@ for interactive display in your report when viewed in the browser.</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.PlotapiPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, chart: <a title="datapane.client.api.files_optional.Visualisation" href="files_optional.html#datapane.client.api.files_optional.Visualisation">Visualisation</a>)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, chart: <a title="datapane.client.api.files_optional.Visualisation" href="files_optional.html#datapane.client.api.files_optional.Visualisation">Visualisation</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1506,7 +1506,7 @@ for interactive …</p></div>
 <h3>Methods</h3>
 <dl>
 <dt id="datapane.client.api.files.PlotapiPlot.write_file"><code class="name flex">
-<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'BinaryIO'>, chart: <a title="datapane.client.api.files_optional.Visualisation" href="files_optional.html#datapane.client.api.files_optional.Visualisation">Visualisation</a>)</span>
+<span>def <span class="ident">write_file</span></span>(<span>self, f: <class 'IO'>, chart: <a title="datapane.client.api.files_optional.Visualisation" href="files_optional.html#datapane.client.api.files_optional.Visualisation">Visualisation</a>)</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

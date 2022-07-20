@@ -115,7 +115,7 @@ can be analysed and shared by users in their Browser</p>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="datapane.client.api.report.core.Report.edit_url"><code class="name">var <span class="ident">edit_url</span></code></dt>
+<dt id="datapane.client.api.report.core.Report.edit_url"><code class="name">var <span class="ident">edit_url</span> : str</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -159,7 +159,7 @@ Use the blocks dict parameter to add a dynamically generated set of named blocks
 <h2 id="args">Args</h2>
 <dl>
 <dt><strong><code>*arg_blocks</code></strong></dt>
-<dd>List of blocks to add to document, these must be wrapped, e.g. using dp.DataTable(df) instead of df</dd>
+<dd>List of blocks to add</dd>
 <dt><strong><code>blocks</code></strong></dt>
 <dd>Allows providing the document blocks as a single list/dictionary of named blocks</dd>
 <dt><strong><code>open</code></strong></dt>
@@ -197,7 +197,7 @@ Use the blocks dict parameter to add a dynamically generated set of named blocks
 </dl></div>
 </dd>
 <dt id="datapane.client.api.report.core.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self, open: True, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
+<span>def <span class="ident">preview</span></span>(<span>self, open: bool, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Preview the report in a new browser window.

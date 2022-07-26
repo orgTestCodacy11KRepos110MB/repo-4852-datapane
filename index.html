@@ -1260,34 +1260,6 @@ can be analysed and shared by users in their Browser</p>
 <dd>Overwrite the report</dd>
 </dl></div>
 </dd>
-<dt id="datapane.client.api.Report.update_assets"><code class="name flex">
-<span>def <span class="ident">update_assets</span></span>(<span>self, *arg_blocks: Union[ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>')], blocks: Union[Dict[str, Union[ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any]], List[Union[ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>')]]] = None, open: bool = False, **kw_blocks: Union[ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any]) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Upload updated plots, text, tables, and files for a report.
-Blocks can be created with the <code>name</code> parameter, if not set, one can be provided here using keyword args.
-Use the blocks dict parameter to add a dynamically generated set of named blocks, useful when working in Jupyter</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>*arg_blocks</code></strong></dt>
-<dd>List of blocks to add</dd>
-<dt><strong><code>blocks</code></strong></dt>
-<dd>Allows providing the document blocks as a single list/dictionary of named blocks</dd>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open the report in your browser for editing after updating</dd>
-<dt><strong><code>**kw_blocks</code></strong></dt>
-<dd>Keyword argument set of blocks, whose block name will be that given in the keyword</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>None</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Blocks can be passed using either arg parameters or the <code>blocks</code> kwarg as a dictionary, e.g.</p>
-<p><code>report.update_assets(my_plot=plot, my_table=table)</code> or <code>report.update_assets(blocks={"my_plot": plot, "my_table":table})</code></p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Create a dictionary first to hold your blocks to edit them dynamically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
-</div></div>
-</dd>
 <dt id="datapane.client.api.Report.save"><code class="name flex">
 <span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
 </code></dt>
@@ -2148,7 +2120,6 @@ the object may be pickled or converted to JSON before storing.</p>
 <li><code><a title="datapane.client.api.Report.by_id" href="dp_object.html#datapane.client.api.Report.by_id">by_id</a></code></li>
 <li><code><a title="datapane.client.api.Report.list" href="dp_object.html#datapane.client.api.Report.list">list</a></code></li>
 <li><code><a title="datapane.client.api.Report.upload" href="#datapane.client.api.Report.upload">upload</a></code></li>
-<li><code><a title="datapane.client.api.Report.update_assets" href="#datapane.client.api.Report.update_assets">update_assets</a></code></li>
 <li><code><a title="datapane.client.api.Report.save" href="#datapane.client.api.Report.save">save</a></code></li>
 <li><code><a title="datapane.client.api.Report.preview" href="#datapane.client.api.Report.preview">preview</a></code></li>
 <li><code><a title="datapane.client.api.Report.refresh" href="dp_object.html#datapane.client.api.Report.refresh">refresh</a></code></li>

@@ -103,13 +103,13 @@ and accessible by the client API</p>
 <p>The object if found</p></div>
 </dd>
 <dt id="datapane.client.api.dp_object.DPObjectRef.post_with_files"><code class="name flex">
-<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **kwargs: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
+<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.dp_object.DPObjectRef.post"><code class="name flex">
-<span>def <span class="ident">post</span></span>(<span>overwrite: bool = False, **kwargs) ‑> ~U</span>
+<span>def <span class="ident">post</span></span>(<span>overwrite: bool = False, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -152,7 +152,7 @@ and accessible by the client API</p>
 <div class="desc"><p>Delete the object on the server</p></div>
 </dd>
 <dt id="datapane.client.api.dp_object.DPObjectRef.update"><code class="name flex">
-<span>def <span class="ident">update</span></span>(<span>self, **kwargs)</span>
+<span>def <span class="ident">update</span></span>(<span>self, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>

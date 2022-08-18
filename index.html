@@ -27,11 +27,11 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </header>
 <section id="section-intro">
 <h1 id="api-docs-for-datapane-client">API docs for Datapane Client</h1>
-<p>These docs describe the Python API for building Datapane documents, along with additional information on the Datapane Teams API.</p>
+<p>These docs describe the Python API for building Datapane documents.</p>
 <p>Usage docs for Datapane can be found at <a href="https://docs.datapane.com">https://docs.datapane.com</a></p>
 <p>These objects are all available under the <code>datapane</code> module, via <code>import datapane as dp</code> (they are re-exported from <code><a title="datapane.client.api" href="#datapane.client.api">datapane.client.api</a></code>).</p>
 <h3 id="datapane-reports-api">Datapane Reports API</h3>
-<p>The core document APIs are available for both Datapane Community and Datapane Teams, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
+<p>The core document APIs, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
 <ul>
 <li><code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code></li>
 <li>Layout Blocks<ul>
@@ -53,7 +53,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </ul>
 </li>
 </ul>
-<h3 id="datapane-teams">Datapane Teams</h3>
+<h3 id="datapane-enterprise-beta">Datapane Enterprise (beta)</h3>
 <p>Additional API docs are found in <code><a title="datapane.client.api.teams" href="teams.html">datapane.client.api.teams</a></code> that provide building, deployment, and sharing of data analytics apps and workflows</p>
 <ul>
 <li><code><a title="datapane.client.api.teams.File" href="teams.html#datapane.client.api.teams.File">File</a></code></li>
@@ -340,13 +340,13 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <p>The object if found</p></div>
 </dd>
 <dt id="datapane.client.api.DPObjectRef.post_with_files"><code class="name flex">
-<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **kwargs: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
+<span>def <span class="ident">post_with_files</span></span>(<span>files: Dict[str, List[pathlib.Path]] = None, file: Optional[pathlib.Path] = None, overwrite: bool = False, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
 <dt id="datapane.client.api.DPObjectRef.post"><code class="name flex">
-<span>def <span class="ident">post</span></span>(<span>overwrite: bool = False, **kwargs) ‑> ~U</span>
+<span>def <span class="ident">post</span></span>(<span>overwrite: bool = False, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]]) ‑> ~U</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -389,7 +389,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <div class="desc"><p>Delete the object on the server</p></div>
 </dd>
 <dt id="datapane.client.api.DPObjectRef.update"><code class="name flex">
-<span>def <span class="ident">update</span></span>(<span>self, **kwargs)</span>
+<span>def <span class="ident">update</span></span>(<span>self, **data: Union[str, int, float, bool, ForwardRef(None), Mapping[str, ForwardRef('JSON')], List[ForwardRef('JSON')]])</span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -1251,7 +1251,7 @@ can be analysed and shared by users in their Browser</p>
 <dt><strong><code>tags</code></strong></dt>
 <dd>A list of tags (as strings) used to categorise your document</dd>
 <dt><strong><code>project</code></strong></dt>
-<dd>Project to add the report to (Teams only)</dd>
+<dd>Project to add the report to</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open the file in your browser after creating</dd>
 <dt><strong><code>formatting</code></strong></dt>
@@ -1988,7 +1988,7 @@ the object may be pickled or converted to JSON before storing.</p>
 <ul>
 <li><a href="#api-docs-for-datapane-client">API docs for Datapane Client</a><ul>
 <li><a href="#datapane-reports-api">Datapane Reports API</a></li>
-<li><a href="#datapane-teams">Datapane Teams</a></li>
+<li><a href="#datapane-enterprise-beta">Datapane Enterprise (beta)</a></li>
 </ul>
 </li>
 </ul>

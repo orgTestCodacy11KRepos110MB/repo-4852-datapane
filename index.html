@@ -1261,7 +1261,7 @@ can be analysed and shared by users in their Browser</p>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, cdn_base: str = 'https://datapane-cdn.com/v0.15.1') ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the report document to a local HTML file</p>
@@ -1271,16 +1271,20 @@ can be analysed and shared by users in their Browser</p>
 <dd>File path to store the document</dd>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open in your browser after creating (default: False)</dd>
+<dt><strong><code>standalone</code></strong></dt>
+<dd>Inline the report source in the HTML report file rather than loading via CDN (default: False)</dd>
 <dt><strong><code>name</code></strong></dt>
 <dd>Name of the document (optional: uses path if not provided)</dd>
 <dt><strong><code>author</code></strong></dt>
 <dd>The report author / email / etc. (optional)</dd>
 <dt><strong><code>formatting</code></strong></dt>
 <dd>Sets the basic report styling</dd>
+<dt><strong><code>cdn_base</code></strong></dt>
+<dd>The base url to use for standalone reports (default: <a href="https://datapane-cdn.com/{version}">https://datapane-cdn.com/{version}</a>)</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self, open: bool, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
+<span>def <span class="ident">preview</span></span>(<span>self, open: bool, standalone: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Preview the report in a new browser window.
@@ -1290,8 +1294,52 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 <dl>
 <dt><strong><code>open</code></strong></dt>
 <dd>Open in your browser after creating (default: True)</dd>
+<dt><strong><code>standalone</code></strong></dt>
+<dd>Inline the report source in the HTML report file rather than loading via CDN (default: False)</dd>
 <dt><strong><code>formatting</code></strong></dt>
 <dd>Sets the basic report styling</dd>
+</dl></div>
+</dd>
+<dt id="datapane.client.api.Report.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>self, name: str = 'report', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, compress_assets: bool = False, overwrite: bool = False) ‑> pathlib.Path</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Build a report which can be served by a local http server</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the report, which will also be the name of the report directory</dd>
+<dt><strong><code>dest</code></strong></dt>
+<dd>File path to store the report directory</dd>
+<dt><strong><code>compress_assets</code></strong></dt>
+<dd>Compress user assets during report generation (default: True)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic report styling</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Replace existing report with the same name and destination if already exists (default: False)</dd>
+</dl></div>
+</dd>
+<dt id="datapane.client.api.Report.serve"><code class="name flex">
+<span>def <span class="ident">serve</span></span>(<span>self, name: str = 'report', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, port: int = 8000, host: str = 'localhost', formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, open: bool = True, overwrite: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Serve the report from a local http server</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the report, which will also be the name of the report directory</dd>
+<dt><strong><code>dest</code></strong></dt>
+<dd>File path to store the report directory</dd>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open in your browser after creating (default: False)</dd>
+<dt><strong><code>port</code></strong></dt>
+<dd>The port used to serve the report (default: 8000)</dd>
+<dt><strong><code>host</code></strong></dt>
+<dd>The host used to serve the report (default: localhost)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic report styling; note that this is ignored if a report exists at the specified path</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Replace existing report with the same name and destination if already exists (default: False)</dd>
 </dl></div>
 </dd>
 <dt id="datapane.client.api.Report.refresh"><code class="name flex">
@@ -2122,6 +2170,8 @@ the object may be pickled or converted to JSON before storing.</p>
 <li><code><a title="datapane.client.api.Report.upload" href="#datapane.client.api.Report.upload">upload</a></code></li>
 <li><code><a title="datapane.client.api.Report.save" href="#datapane.client.api.Report.save">save</a></code></li>
 <li><code><a title="datapane.client.api.Report.preview" href="#datapane.client.api.Report.preview">preview</a></code></li>
+<li><code><a title="datapane.client.api.Report.build" href="#datapane.client.api.Report.build">build</a></code></li>
+<li><code><a title="datapane.client.api.Report.serve" href="#datapane.client.api.Report.serve">serve</a></code></li>
 <li><code><a title="datapane.client.api.Report.refresh" href="dp_object.html#datapane.client.api.Report.refresh">refresh</a></code></li>
 <li><code><a title="datapane.client.api.Report.delete" href="dp_object.html#datapane.client.api.Report.delete">delete</a></code></li>
 </ul>

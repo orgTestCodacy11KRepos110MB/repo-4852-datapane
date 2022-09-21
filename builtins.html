@@ -53,7 +53,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <p>A Select block that provides the figure and the code in tabs that can be selected by the user</p></div>
 </dd>
 <dt id="datapane.client.api.builtins.add_header"><code class="name flex">
-<span>def <span class="ident">add_header</span></span>(<span>report: <a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a>, header: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], all_pages: bool = True) ‑> <a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></span>
+<span>def <span class="ident">add_header</span></span>(<span>report: <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a>, header: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], all_pages: bool = True) ‑> <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a header to the report, returning a modified version of the same report</p>
@@ -70,7 +70,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <p>A modified report with the header applied</p></div>
 </dd>
 <dt id="datapane.client.api.builtins.add_footer"><code class="name flex">
-<span>def <span class="ident">add_footer</span></span>(<span>report: <a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a>, footer: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], all_pages: bool = True) ‑> <a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></span>
+<span>def <span class="ident">add_footer</span></span>(<span>report: <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a>, footer: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], all_pages: bool = True) ‑> <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Add a footer to the report, returning a modified version of the same report</p>
@@ -87,7 +87,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <p>A modified report with the footer applied</p></div>
 </dd>
 <dt id="datapane.client.api.builtins.build_md_report"><code class="name flex">
-<span>def <span class="ident">build_md_report</span></span>(<span>text_or_file: Union[pathlib.Path, os.PathLike, str], *args: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], **kwargs: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]) ‑> <a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></span>
+<span>def <span class="ident">build_md_report</span></span>(<span>text_or_file: Union[pathlib.Path, os.PathLike, str], *args: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any], **kwargs: Union[ForwardRef('Group'), ForwardRef('Select'), ForwardRef('DataBlock'), ForwardRef('Empty'), Any]) ‑> <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>An easy way to build a complete report from a single top-level markdown text / file template.
@@ -102,7 +102,7 @@ Any additional context can be passed in and will be inserted into the Markdown t
 <dd>keyword template context arguments</dd>
 </dl>
 <h2 id="returns">Returns</h2>
-<p>A datapane Report object for saving or uploading</p>
+<p>A datapane App object for saving or uploading</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip:&ensp;Either text or file is required as input</p>
 </div>
@@ -111,12 +111,12 @@ Any additional context can be passed in and will be inserted into the Markdown t
 </div></div>
 </dd>
 <dt id="datapane.client.api.builtins.build_demo_report"><code class="name flex">
-<span>def <span class="ident">build_demo_report</span></span>(<span>) ‑> <a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></span>
+<span>def <span class="ident">build_demo_report</span></span>(<span>) ‑> <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></span>
 </code></dt>
 <dd>
 <div class="desc"><p>Generate a sample demo report</p>
 <h2 id="returns">Returns</h2>
-<p>A datapane Report object for saving or uploading</p></div>
+<p>A datapane App object for saving or uploading</p></div>
 </dd>
 <dt id="datapane.client.api.builtins.gen_df"><code class="name flex">
 <span>def <span class="ident">gen_df</span></span>(<span>dim: int = 4) ‑> pandas.core.frame.DataFrame</span>

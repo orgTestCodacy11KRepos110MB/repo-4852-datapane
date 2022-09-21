@@ -33,7 +33,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <h3 id="datapane-reports-api">Datapane Reports API</h3>
 <p>The core document APIs, these are found in <code><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code>, including,</p>
 <ul>
-<li><code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code></li>
+<li><code><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code></li>
 <li>Layout Blocks<ul>
 <li><code><a title="datapane.client.api.report.blocks.Page" href="report/blocks.html#datapane.client.api.report.blocks.Page">Page</a></code></li>
 <li><code><a title="datapane.client.api.report.blocks.Group" href="report/blocks.html#datapane.client.api.report.blocks.Group">Group</a></code></li>
@@ -58,7 +58,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <ul>
 <li><code><a title="datapane.client.api.teams.File" href="teams.html#datapane.client.api.teams.File">File</a></code></li>
 <li><code><a title="datapane.client.api.teams.Environment" href="teams.html#datapane.client.api.teams.Environment">Environment</a></code></li>
-<li><code><a title="datapane.client.api.teams.App" href="teams.html#datapane.client.api.teams.App">App</a></code></li>
+<li><code>datapane.client.api.teams.LegacyApp</code></li>
 <li><code><a title="datapane.client.api.teams.Schedule" href="teams.html#datapane.client.api.teams.Schedule">Schedule</a></code></li>
 </ul>
 <div class="admonition note">
@@ -93,7 +93,7 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 </dd>
 <dt><code class="name"><a title="datapane.client.api.report" href="report/index.html">datapane.client.api.report</a></code></dt>
 <dd>
-<div class="desc"><p>Main Document API module, includes both the core <code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code> object, and the blocks in …</p></div>
+<div class="desc"><p>Main Document API module, includes both the core <code>datapane.client.api.report.core.Report</code> object, and the blocks in …</p></div>
 </dd>
 <dt><code class="name"><a title="datapane.client.api.runtime" href="runtime.html">datapane.client.api.runtime</a></code></dt>
 <dd>
@@ -186,6 +186,199 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
+<dt id="datapane.client.api.App"><code class="flex name class">
+<span>class <span class="ident">App</span></span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.Page" href="#datapane.client.api.Page">Page</a>'), ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.Page" href="#datapane.client.api.Page">Page</a>'), ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any]] = None, layout: Optional[datapane.client.api.report.core.PageLayout] = None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>App documents collate plots, text, tables, and files into an interactive document that
+can be analysed and shared by users in their Browser</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*arg_blocks</code></strong></dt>
+<dd>Group to add to document</dd>
+<dt><strong><code>blocks</code></strong></dt>
+<dd>Allows providing the document blocks as a single list</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A <code><a title="datapane.client.api.App" href="#datapane.client.api.App">App</a></code> document object that can be uploaded, saved, etc.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Blocks can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
+<p><code>dp.App(plot, table)</code> or <code>dp.App(blocks=[plot, table])</code></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Create a list first to hold your blocks to edit them dynamically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
+</div></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
+</ul>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>datapane.client.api.report.core.Report</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.App.pages"><code class="name">var <span class="ident">pages</span> : List[<a title="datapane.client.api.report.blocks.Page" href="report/blocks.html#datapane.client.api.report.blocks.Page">Page</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.App.page_layout"><code class="name">var <span class="ident">page_layout</span> : Optional[datapane.client.api.report.core.PageLayout]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.App.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.App.endpoint"><code class="name">var <span class="ident">endpoint</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="datapane.client.api.App.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.get" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.get">get</a></code>
+</p>
+<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
+</dd>
+<dt id="datapane.client.api.App.by_id"><code class="name flex">
+<span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.by_id" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.by_id">by_id</a></code>
+</p>
+<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
+</dd>
+<dt id="datapane.client.api.App.list"><code class="name flex">
+<span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.list" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.list">list</a></code>
+</p>
+<div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.App.upload"><code class="name flex">
+<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', publicly_visible: bool = False, tags: List[str] = None, project: Optional[str] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, overwrite: bool = False, **kwargs) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.App.save"><code class="name flex">
+<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, cdn_base: str = 'https://test.datapane-cdn.com/v0.15.2') ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.App.refresh"><code class="name flex">
+<span>def <span class="ident">refresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.refresh" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.refresh">refresh</a></code>
+</p>
+<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
+- override to pull updated fields from dto to top-level</p></div>
+</dd>
+<dt id="datapane.client.api.App.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.delete" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Delete the object on the server</p></div>
+</dd>
+</dl>
+</dd>
+<dt id="datapane.client.api.AppFormatting"><code class="flex name class">
+<span>class <span class="ident">AppFormatting</span></span>
+<span>(</span><span>bg_color: str = '#FFF', accent_color: str = '#4E46E5', font: Union[datapane.client.api.report.core.FontChoice, str] = FontChoice.DEFAULT, text_alignment: datapane.client.api.report.core.TextAlignment = TextAlignment.JUSTIFY, width: <a title="datapane.client.api.report.core.AppWidth" href="report/core.html#datapane.client.api.report.core.AppWidth">AppWidth</a> = AppWidth.MEDIUM, light_prose: bool = False)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Sets the app styling and formatting</p></div>
+<h3>Subclasses</h3>
+<ul class="hlist">
+<li>datapane.client.api.report.core.ReportFormatting</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.AppFormatting.bg_color"><code class="name">var <span class="ident">bg_color</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppFormatting.accent_color"><code class="name">var <span class="ident">accent_color</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppFormatting.font"><code class="name">var <span class="ident">font</span> : Union[datapane.client.api.report.core.FontChoice, str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppFormatting.text_alignment"><code class="name">var <span class="ident">text_alignment</span> : datapane.client.api.report.core.TextAlignment</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppFormatting.width"><code class="name">var <span class="ident">width</span> : <a title="datapane.client.api.report.core.AppWidth" href="report/core.html#datapane.client.api.report.core.AppWidth">AppWidth</a></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppFormatting.light_prose"><code class="name">var <span class="ident">light_prose</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.AppFormatting.to_css"><code class="name flex">
+<span>def <span class="ident">to_css</span></span>(<span>self) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="datapane.client.api.AppWidth"><code class="flex name class">
+<span>class <span class="ident">AppWidth</span></span>
+<span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>An enumeration.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>enum.Enum</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.AppWidth.NARROW"><code class="name">var <span class="ident">NARROW</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppWidth.MEDIUM"><code class="name">var <span class="ident">MEDIUM</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.AppWidth.FULL"><code class="name">var <span class="ident">FULL</span></code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
 <dt id="datapane.client.api.IncompatibleVersionError"><code class="flex name class">
 <span>class <span class="ident">IncompatibleVersionError</span></span>
 <span>(</span><span>*args, **kwargs)</span>
@@ -287,10 +480,10 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <div class="desc"><p>Abstract class used to reference core Datapane server objects - not used directly.</p></div>
 <h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></li>
-<li><a title="datapane.client.api.teams.App" href="teams.html#datapane.client.api.teams.App">App</a></li>
+<li><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></li>
 <li><a title="datapane.client.api.teams.Environment" href="teams.html#datapane.client.api.teams.Environment">Environment</a></li>
 <li><a title="datapane.client.api.teams.File" href="teams.html#datapane.client.api.teams.File">File</a></li>
+<li>datapane.client.api.teams.LegacyApp</li>
 <li>datapane.client.api.teams.Run</li>
 <li><a title="datapane.client.api.teams.Schedule" href="teams.html#datapane.client.api.teams.Schedule">Schedule</a></li>
 </ul>
@@ -764,6 +957,115 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 </dd>
 </dl>
 </dd>
+<dt id="datapane.client.api.LegacyApp"><code class="flex name class">
+<span>class <span class="ident">LegacyApp</span></span>
+<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Apps allow users to build, deploy, and automate data-driven Python workflows and apps
+to their cloud that can be customised and run by other users.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;We recommend using either the Web UI or CLI, e.g. <code>datapane app deploy / run / ...</code> to work with apps rather than using the low-level API</p>
+</div></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.LegacyApp.endpoint"><code class="name">var <span class="ident">endpoint</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="datapane.client.api.LegacyApp.upload_pkg"><code class="name flex">
+<span>def <span class="ident">upload_pkg</span></span>(<span>sdist: Path, dp_cfg: DatapaneCfg, overwrite: bool = False, **kwargs) ‑> datapane.client.api.teams.LegacyApp</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.get" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.get">get</a></code>
+</p>
+<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.by_id"><code class="name flex">
+<span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.by_id" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.by_id">by_id</a></code>
+</p>
+<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.list"><code class="name flex">
+<span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.list" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.list">list</a></code>
+</p>
+<div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.LegacyApp.download_pkg"><code class="name flex">
+<span>def <span class="ident">download_pkg</span></span>(<span>self) ‑> pathlib.Path</span>
+</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.call"><code class="name flex">
+<span>def <span class="ident">call</span></span>(<span>self, env: SSDict, **params)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Download, install, and call the app with the provided params</p></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.run"><code class="name flex">
+<span>def <span class="ident">run</span></span>(<span>self, parameters: t.Dict[str, t.Any] = None, cache: bool = True) ‑> datapane.client.api.teams.Run</span>
+</code></dt>
+<dd>
+<div class="desc"><p>(remote) run the given app (cloning if needed?)</p></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.local_run"><code class="name flex">
+<span>def <span class="ident">local_run</span></span>(<span>self, parameters=None) ‑> datapane.client.api.teams.Run</span>
+</code></dt>
+<dd>
+<div class="desc"><p>(local) run the given app</p></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.refresh"><code class="name flex">
+<span>def <span class="ident">refresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.refresh" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.refresh">refresh</a></code>
+</p>
+<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
+- override to pull updated fields from dto to top-level</p></div>
+</dd>
+<dt id="datapane.client.api.LegacyApp.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.delete" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Delete the object on the server</p></div>
+</dd>
+</dl>
+</dd>
 <dt id="datapane.client.api.Media"><code class="flex name class">
 <span>class <span class="ident">Media</span></span>
 <span>(</span><span>file: Union[pathlib.Path, os.PathLike, str], name: str = None, label: str = None, caption: Optional[str] = None)</span>
@@ -812,7 +1114,7 @@ as Tables, Plots, etc.. - they may even hold Group themselves recursively.</p>
 <span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any]] = None, title: str = None, name: str = None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>All <code><a title="datapane.client.api.report.core.Report" href="report/core.html#datapane.client.api.report.core.Report">Report</a></code>s consist of a list of Pages.
+<div class="desc"><p>All <code>datapane.client.api.report.core.Report</code>s consist of a list of Pages.
 A Page itself is a Block, but is only allowed at the top-level and cannot be nested.</p>
 <p>Page objects take a list of blocks which make up the Page.</p>
 <div class="admonition note">
@@ -890,6 +1192,110 @@ for interactive display in your report when viewed in the browser.</p>
 <dt id="datapane.client.api.Plot.caption"><code class="name">var <span class="ident">caption</span> : Optional[str]</code></dt>
 <dd>
 <div class="desc"></div>
+</dd>
+</dl>
+</dd>
+<dt id="datapane.client.api.Report"><code class="flex name class">
+<span>class <span class="ident">Report</span></span>
+<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.Page" href="#datapane.client.api.Page">Page</a>'), ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.Page" href="#datapane.client.api.Page">Page</a>'), ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any]] = None, layout: Optional[datapane.client.api.report.core.PageLayout] = None, **kwargs)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Deprecated (renamed to App)</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>*arg_blocks</code></strong></dt>
+<dd>Group to add to document</dd>
+<dt><strong><code>blocks</code></strong></dt>
+<dd>Allows providing the document blocks as a single list</dd>
+</dl>
+<h2 id="returns">Returns</h2>
+<p>A <code><a title="datapane.client.api.App" href="#datapane.client.api.App">App</a></code> document object that can be uploaded, saved, etc.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Blocks can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
+<p><code>dp.App(plot, table)</code> or <code>dp.App(blocks=[plot, table])</code></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip:&ensp;Create a list first to hold your blocks to edit them dynamically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
+</div></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></li>
+<li><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.Report.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Report.endpoint"><code class="name">var <span class="ident">endpoint</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Report.pages"><code class="name">var <span class="ident">pages</span> : List[<a title="datapane.client.api.report.blocks.Page" href="report/blocks.html#datapane.client.api.report.blocks.Page">Page</a>]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Report.page_layout"><code class="name">var <span class="ident">page_layout</span> : Optional[datapane.client.api.report.core.PageLayout]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="datapane.client.api.Report.get"><code class="name flex">
+<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code>.<code><a title="datapane.client.api.report.core.App.get" href="dp_object.html#datapane.client.api.report.core.App.get">get</a></code>
+</p>
+<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
+</dd>
+<dt id="datapane.client.api.Report.by_id"><code class="name flex">
+<span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code>.<code><a title="datapane.client.api.report.core.App.by_id" href="dp_object.html#datapane.client.api.report.core.App.by_id">by_id</a></code>
+</p>
+<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
+</dd>
+<dt id="datapane.client.api.Report.list"><code class="name flex">
+<span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code>.<code><a title="datapane.client.api.report.core.App.list" href="dp_object.html#datapane.client.api.report.core.App.list">list</a></code>
+</p>
+<div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.Report.refresh"><code class="name flex">
+<span>def <span class="ident">refresh</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code>.<code><a title="datapane.client.api.report.core.App.refresh" href="dp_object.html#datapane.client.api.report.core.App.refresh">refresh</a></code>
+</p>
+<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
+- override to pull updated fields from dto to top-level</p></div>
+</dd>
+<dt id="datapane.client.api.Report.delete"><code class="name flex">
+<span>def <span class="ident">delete</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<p class="inheritance">
+<em>Inherited from:</em>
+<code><a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code>.<code><a title="datapane.client.api.report.core.App.delete" href="dp_object.html#datapane.client.api.report.core.App.delete">delete</a></code>
+</p>
+<div class="desc inherited"><p>Delete the object on the server</p></div>
 </dd>
 </dl>
 </dd>
@@ -1145,232 +1551,35 @@ pandas' <code>Styler</code> API.</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.Report"><code class="flex name class">
-<span>class <span class="ident">Report</span></span>
-<span>(</span><span>*arg_blocks: Union[ForwardRef('<a title="datapane.client.api.Page" href="#datapane.client.api.Page">Page</a>'), ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any], blocks: List[Union[ForwardRef('<a title="datapane.client.api.Page" href="#datapane.client.api.Page">Page</a>'), ForwardRef('<a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a>'), ForwardRef('<a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a>'), ForwardRef('DataBlock'), ForwardRef('<a title="datapane.client.api.Empty" href="#datapane.client.api.Empty">Empty</a>'), Any]] = None, layout: Optional[datapane.client.api.report.core.PageLayout] = None, **kwargs)</span>
+<dt id="datapane.client.api.Processor"><code class="flex name class">
+<span>class <span class="ident">Processor</span></span>
+<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Report documents collate plots, text, tables, and files into an interactive document that
-can be analysed and shared by users in their Browser</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>*arg_blocks</code></strong></dt>
-<dd>Group to add to document</dd>
-<dt><strong><code>blocks</code></strong></dt>
-<dd>Allows providing the document blocks as a single list</dd>
-</dl>
-<h2 id="returns">Returns</h2>
-<p>A <code><a title="datapane.client.api.Report" href="#datapane.client.api.Report">Report</a></code> document object that can be uploaded, saved, etc.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Blocks can be passed using either arg parameters or the <code>blocks</code> kwarg, e.g.</p>
-<p><code>dp.Report(plot, table)</code> or <code>dp.Report(blocks=[plot, table])</code></p>
-</div>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;Create a list first to hold your blocks to edit them dynamically, for instance when using Jupyter, and use the <code>blocks</code> parameter</p>
-</div></div>
-<h3>Ancestors</h3>
+<div class="desc"><p>Contains logic for generating an App document and converting to XML</p></div>
+<h3>Subclasses</h3>
 <ul class="hlist">
-<li><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
+<li>datapane.client.api.report.processors.LocalProcessor</li>
+<li><a title="datapane.client.api.report.processors.Uploader" href="report/processors.html#datapane.client.api.report.processors.Uploader">Uploader</a></li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.Report.pages"><code class="name">var <span class="ident">pages</span> : List[<a title="datapane.client.api.report.blocks.Page" href="report/blocks.html#datapane.client.api.report.blocks.Page">Page</a>]</code></dt>
+<dt id="datapane.client.api.Processor.app"><code class="name">var <span class="ident">app</span> : <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.Report.page_layout"><code class="name">var <span class="ident">page_layout</span> : Optional[datapane.client.api.report.core.PageLayout]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.Report.list_fields"><code class="name">var <span class="ident">list_fields</span> : List[str]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.Report.endpoint"><code class="name">var <span class="ident">endpoint</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="datapane.client.api.Report.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.get" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.get">get</a></code>
-</p>
-<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
-</dd>
-<dt id="datapane.client.api.Report.by_id"><code class="name flex">
-<span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.by_id" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.by_id">by_id</a></code>
-</p>
-<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
-</dd>
-<dt id="datapane.client.api.Report.list"><code class="name flex">
-<span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.list" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.list">list</a></code>
-</p>
-<div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
-</dd>
-</dl>
-<h3>Instance variables</h3>
-<dl>
-<dt id="datapane.client.api.Report.edit_url"><code class="name">var <span class="ident">edit_url</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.Report.upload"><code class="name flex">
-<span>def <span class="ident">upload</span></span>(<span>self, name: str, description: str = '', source_url: str = '', publicly_visible: bool = False, tags: List[str] = None, project: Optional[str] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, overwrite: bool = False, **kwargs) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Upload the report document, including its attached assets, to the logged-in Datapane Server.</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>name</code></strong></dt>
-<dd>The document name - can include spaces, caps, symbols, etc., e.g. "Profit &amp; Loss 2020"</dd>
-<dt><strong><code>description</code></strong></dt>
-<dd>A high-level description for the document, this is displayed in searches and thumbnails</dd>
-<dt><strong><code>source_url</code></strong></dt>
-<dd>A URL pointing to the source code for the document, e.g. a GitHub repo or a Colab notebook</dd>
-<dt><strong><code>publicly_visible</code></strong></dt>
-<dd>Visible to anyone with the link</dd>
-<dt><strong><code>tags</code></strong></dt>
-<dd>A list of tags (as strings) used to categorise your document</dd>
-<dt><strong><code>project</code></strong></dt>
-<dd>Project to add the report to</dd>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open the file in your browser after creating</dd>
-<dt><strong><code>formatting</code></strong></dt>
-<dd>Set the basic styling for your report</dd>
-<dt><strong><code>overwrite</code></strong></dt>
-<dd>Overwrite the report</dd>
-</dl></div>
-</dd>
-<dt id="datapane.client.api.Report.save"><code class="name flex">
-<span>def <span class="ident">save</span></span>(<span>self, path: str, open: bool = False, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, cdn_base: str = 'https://datapane-cdn.com/v0.15.1') ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Save the report document to a local HTML file</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>path</code></strong></dt>
-<dd>File path to store the document</dd>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open in your browser after creating (default: False)</dd>
-<dt><strong><code>standalone</code></strong></dt>
-<dd>Inline the report source in the HTML report file rather than loading via CDN (default: False)</dd>
-<dt><strong><code>name</code></strong></dt>
-<dd>Name of the document (optional: uses path if not provided)</dd>
-<dt><strong><code>author</code></strong></dt>
-<dd>The report author / email / etc. (optional)</dd>
-<dt><strong><code>formatting</code></strong></dt>
-<dd>Sets the basic report styling</dd>
-<dt><strong><code>cdn_base</code></strong></dt>
-<dd>The base url to use for standalone reports (default: <a href="https://datapane-cdn.com/{version}">https://datapane-cdn.com/{version}</a>)</dd>
-</dl></div>
-</dd>
-<dt id="datapane.client.api.Report.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self, open: bool, standalone: bool = False, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Preview the report in a new browser window.
-Can be called multiple times, refreshing the existing created preview file.
-Pass open=False to stop openning a new tab on subsequent previews</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open in your browser after creating (default: True)</dd>
-<dt><strong><code>standalone</code></strong></dt>
-<dd>Inline the report source in the HTML report file rather than loading via CDN (default: False)</dd>
-<dt><strong><code>formatting</code></strong></dt>
-<dd>Sets the basic report styling</dd>
-</dl></div>
-</dd>
-<dt id="datapane.client.api.Report.build"><code class="name flex">
-<span>def <span class="ident">build</span></span>(<span>self, name: str = 'report', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, compress_assets: bool = False, overwrite: bool = False) ‑> pathlib.Path</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Build a report which can be served by a local http server</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>name</code></strong></dt>
-<dd>The name of the report, which will also be the name of the report directory</dd>
-<dt><strong><code>dest</code></strong></dt>
-<dd>File path to store the report directory</dd>
-<dt><strong><code>compress_assets</code></strong></dt>
-<dd>Compress user assets during report generation (default: True)</dd>
-<dt><strong><code>formatting</code></strong></dt>
-<dd>Sets the basic report styling</dd>
-<dt><strong><code>overwrite</code></strong></dt>
-<dd>Replace existing report with the same name and destination if already exists (default: False)</dd>
-</dl></div>
-</dd>
-<dt id="datapane.client.api.Report.serve"><code class="name flex">
-<span>def <span class="ident">serve</span></span>(<span>self, name: str = 'report', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, port: int = 8000, host: str = 'localhost', formatting: Optional[datapane.client.api.report.core.ReportFormatting] = None, open: bool = True, overwrite: bool = False) ‑> None</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Serve the report from a local http server</p>
-<h2 id="args">Args</h2>
-<dl>
-<dt><strong><code>name</code></strong></dt>
-<dd>The name of the report, which will also be the name of the report directory</dd>
-<dt><strong><code>dest</code></strong></dt>
-<dd>File path to store the report directory</dd>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open in your browser after creating (default: False)</dd>
-<dt><strong><code>port</code></strong></dt>
-<dd>The port used to serve the report (default: 8000)</dd>
-<dt><strong><code>host</code></strong></dt>
-<dd>The host used to serve the report (default: localhost)</dd>
-<dt><strong><code>formatting</code></strong></dt>
-<dd>Sets the basic report styling; note that this is ignored if a report exists at the specified path</dd>
-<dt><strong><code>overwrite</code></strong></dt>
-<dd>Replace existing report with the same name and destination if already exists (default: False)</dd>
-</dl></div>
-</dd>
-<dt id="datapane.client.api.Report.refresh"><code class="name flex">
-<span>def <span class="ident">refresh</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.refresh" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.refresh">refresh</a></code>
-</p>
-<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
-- override to pull updated fields from dto to top-level</p></div>
-</dd>
-<dt id="datapane.client.api.Report.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.delete" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Delete the object on the server</p></div>
 </dd>
 </dl>
 </dd>
 <dt id="datapane.client.api.ReportFormatting"><code class="flex name class">
 <span>class <span class="ident">ReportFormatting</span></span>
-<span>(</span><span>bg_color: str = '#FFF', accent_color: str = '#4E46E5', font: Union[datapane.client.api.report.core.FontChoice, str] = FontChoice.DEFAULT, text_alignment: datapane.client.api.report.core.TextAlignment = TextAlignment.JUSTIFY, width: <a title="datapane.client.api.report.core.ReportWidth" href="report/core.html#datapane.client.api.report.core.ReportWidth">ReportWidth</a> = ReportWidth.MEDIUM, light_prose: bool = False)</span>
+<span>(</span><span>bg_color: str = '#FFF', accent_color: str = '#4E46E5', font: Union[datapane.client.api.report.core.FontChoice, str] = FontChoice.DEFAULT, text_alignment: datapane.client.api.report.core.TextAlignment = TextAlignment.JUSTIFY, width: <a title="datapane.client.api.report.core.AppWidth" href="report/core.html#datapane.client.api.report.core.AppWidth">AppWidth</a> = AppWidth.MEDIUM, light_prose: bool = False)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Sets the report styling and formatting</p></div>
+<div class="desc"><p>ReportFormatting(bg_color: str = '#FFF', accent_color: str = '#4E46E5', font: Union[datapane.client.api.report.core.FontChoice, str] = <FontChoice.DEFAULT: 'Inter var, ui-sans-serif, system-ui'>, text_alignment: datapane.client.api.report.core.TextAlignment = <TextAlignment.JUSTIFY: 'justify'>, width: datapane.client.api.report.core.AppWidth = <AppWidth.MEDIUM: 'medium'>, light_prose: bool = False)</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>datapane.client.api.report.core.AppFormatting</li>
+</ul>
 <h3>Class variables</h3>
 <dl>
 <dt id="datapane.client.api.ReportFormatting.bg_color"><code class="name">var <span class="ident">bg_color</span> : str</code></dt>
@@ -1389,7 +1598,7 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.ReportFormatting.width"><code class="name">var <span class="ident">width</span> : <a title="datapane.client.api.report.core.ReportWidth" href="report/core.html#datapane.client.api.report.core.ReportWidth">ReportWidth</a></code></dt>
+<dt id="datapane.client.api.ReportFormatting.width"><code class="name">var <span class="ident">width</span> : <a title="datapane.client.api.report.core.AppWidth" href="report/core.html#datapane.client.api.report.core.AppWidth">AppWidth</a></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1398,37 +1607,28 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 <div class="desc"></div>
 </dd>
 </dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.ReportFormatting.to_css"><code class="name flex">
-<span>def <span class="ident">to_css</span></span>(<span>self) ‑> str</span>
-</code></dt>
-<dd>
-<div class="desc"></div>
 </dd>
-</dl>
-</dd>
-<dt id="datapane.client.api.ReportWidth"><code class="flex name class">
+<dt id="datapane.client.api.AppWidth"><code class="flex name class">
 <span>class <span class="ident">ReportWidth</span></span>
 <span>(</span><span>value, names=None, *, module=None, qualname=None, type=None, start=1)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>The document width</p></div>
+<div class="desc"><p>An enumeration.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
 <li>enum.Enum</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.ReportWidth.NARROW"><code class="name">var <span class="ident">NARROW</span></code></dt>
+<dt id="datapane.client.api.AppWidth.NARROW"><code class="name">var <span class="ident">NARROW</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.ReportWidth.MEDIUM"><code class="name">var <span class="ident">MEDIUM</span></code></dt>
+<dt id="datapane.client.api.AppWidth.MEDIUM"><code class="name">var <span class="ident">MEDIUM</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.ReportWidth.FULL"><code class="name">var <span class="ident">FULL</span></code></dt>
+<dt id="datapane.client.api.AppWidth.FULL"><code class="name">var <span class="ident">FULL</span></code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
@@ -1464,112 +1664,219 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.App"><code class="flex name class">
-<span>class <span class="ident">App</span></span>
-<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
+<dt id="datapane.client.api.Uploader"><code class="flex name class">
+<span>class <span class="ident">Uploader</span></span>
+<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Apps allow users to build, deploy, and automate data-driven Python workflows and apps
-to their cloud that can be customised and run by other users.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;We recommend using either the Web UI or CLI, e.g. <code>datapane app deploy / run / ...</code> to work with apps rather than using the low-level API</p>
-</div></div>
+<div class="desc"><p>Uploads a given App to the server that the user is logged into (e.g. datapane.com)</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
+<li>datapane.client.api.report.processors.Processor</li>
 </ul>
 <h3>Class variables</h3>
 <dl>
-<dt id="datapane.client.api.App.endpoint"><code class="name">var <span class="ident">endpoint</span> : str</code></dt>
+<dt id="datapane.client.api.Uploader.app"><code class="name">var <span class="ident">app</span> : <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a></code></dt>
 <dd>
 <div class="desc"></div>
-</dd>
-</dl>
-<h3>Static methods</h3>
-<dl>
-<dt id="datapane.client.api.App.upload_pkg"><code class="name flex">
-<span>def <span class="ident">upload_pkg</span></span>(<span>sdist: Path, dp_cfg: DatapaneCfg, overwrite: bool = False, **kwargs) ‑> <a title="datapane.client.api.teams.App" href="teams.html#datapane.client.api.teams.App">App</a></span>
-</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.App.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.get" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.get">get</a></code>
-</p>
-<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
-</dd>
-<dt id="datapane.client.api.App.by_id"><code class="name flex">
-<span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.by_id" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.by_id">by_id</a></code>
-</p>
-<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
-</dd>
-<dt id="datapane.client.api.App.list"><code class="name flex">
-<span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.list" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.list">list</a></code>
-</p>
-<div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
 </dd>
 </dl>
 <h3>Methods</h3>
 <dl>
-<dt id="datapane.client.api.App.download_pkg"><code class="name flex">
-<span>def <span class="ident">download_pkg</span></span>(<span>self) ‑> pathlib.Path</span>
+<dt id="datapane.client.api.Uploader.go"><code class="name flex">
+<span>def <span class="ident">go</span></span>(<span>self, name: str, description: str = '', source_url: str = '', publicly_visible: bool = False, tags: List[str] = None, project: Optional[str] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, overwrite: bool = False, **kwargs) ‑> None</span>
 </code></dt>
+<dd>
+<div class="desc"><p>Upload the app document, including its attached assets, to the logged-in Datapane Server.</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The document name - can include spaces, caps, symbols, etc., e.g. "Profit &amp; Loss 2020"</dd>
+<dt><strong><code>description</code></strong></dt>
+<dd>A high-level description for the document, this is displayed in searches and thumbnails</dd>
+<dt><strong><code>source_url</code></strong></dt>
+<dd>A URL pointing to the source code for the document, e.g. a GitHub repo or a Colab notebook</dd>
+<dt><strong><code>publicly_visible</code></strong></dt>
+<dd>Visible to anyone with the link</dd>
+<dt><strong><code>tags</code></strong></dt>
+<dd>A list of tags (as strings) used to categorise your document</dd>
+<dt><strong><code>project</code></strong></dt>
+<dd>Project to add the app to</dd>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open the file in your browser after creating</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Set the basic styling for your app</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Overwrite the app</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="datapane.client.api.Saver"><code class="flex name class">
+<span>class <span class="ident">Saver</span></span>
+<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Saves a given App as a single HTML file</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>datapane.client.api.report.processors.LocalProcessor</li>
+<li>datapane.client.api.report.processors.Processor</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.Saver.template"><code class="name">var <span class="ident">template</span> : Optional[jinja2.environment.Template]</code></dt>
 <dd>
 <div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.App.call"><code class="name flex">
-<span>def <span class="ident">call</span></span>(<span>self, env: SSDict, **params)</span>
-</code></dt>
+<dt id="datapane.client.api.Saver.assets"><code class="name">var <span class="ident">assets</span> : pathlib.Path</code></dt>
 <dd>
-<div class="desc"><p>Download, install, and call the app with the provided params</p></div>
+<div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.App.run"><code class="name flex">
-<span>def <span class="ident">run</span></span>(<span>self, parameters: t.Dict[str, t.Any] = None, cache: bool = True) ‑> datapane.client.api.teams.Run</span>
-</code></dt>
+<dt id="datapane.client.api.Saver.logo"><code class="name">var <span class="ident">logo</span> : str</code></dt>
 <dd>
-<div class="desc"><p>(remote) run the given app (cloning if needed?)</p></div>
+<div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.App.local_run"><code class="name flex">
-<span>def <span class="ident">local_run</span></span>(<span>self, parameters=None) ‑> datapane.client.api.teams.Run</span>
-</code></dt>
+<dt id="datapane.client.api.Saver.report_id"><code class="name">var <span class="ident">report_id</span> : str</code></dt>
 <dd>
-<div class="desc"><p>(local) run the given app</p></div>
+<div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.App.refresh"><code class="name flex">
-<span>def <span class="ident">refresh</span></span>(<span>self)</span>
-</code></dt>
+<dt id="datapane.client.api.Saver.served"><code class="name">var <span class="ident">served</span> : bool</code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.refresh" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.refresh">refresh</a></code>
-</p>
-<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
-- override to pull updated fields from dto to top-level</p></div>
+<div class="desc"></div>
 </dd>
-<dt id="datapane.client.api.App.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
+<dt id="datapane.client.api.Saver.template_name"><code class="name">var <span class="ident">template_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.Saver.go"><code class="name flex">
+<span>def <span class="ident">go</span></span>(<span>self, path: str, open: bool = False, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, cdn_base: str = 'https://test.datapane-cdn.com/v0.15.2') ‑> None</span>
 </code></dt>
 <dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.delete" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Delete the object on the server</p></div>
+<div class="desc"><p>Save the app document to a local HTML file</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>path</code></strong></dt>
+<dd>File path to store the document</dd>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open in your browser after creating (default: False)</dd>
+<dt><strong><code>standalone</code></strong></dt>
+<dd>Inline the app source in the HTML app file rather than loading via CDN (default: False)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>Name of the document (optional: uses path if not provided)</dd>
+<dt><strong><code>author</code></strong></dt>
+<dd>The app author / email / etc. (optional)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic app styling</dd>
+<dt><strong><code>cdn_base</code></strong></dt>
+<dd>The base url to use for standalone apps (default: <a href="https://datapane-cdn.com/{version}">https://datapane-cdn.com/{version}</a>)</dd>
+</dl></div>
+</dd>
+<dt id="datapane.client.api.Saver.preview"><code class="name flex">
+<span>def <span class="ident">preview</span></span>(<span>self, open: bool, standalone: bool = False, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Preview the app in a new browser window.
+Can be called multiple times, refreshing the existing created preview file.
+Pass open=False to stop openning a new tab on subsequent previews</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open in your browser after creating (default: True)</dd>
+<dt><strong><code>standalone</code></strong></dt>
+<dd>Inline the app source in the HTML app file rather than loading via CDN (default: False)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic app styling</dd>
+</dl></div>
+</dd>
+</dl>
+</dd>
+<dt id="datapane.client.api.Server"><code class="flex name class">
+<span>class <span class="ident">Server</span></span>
+<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="report/core.html#datapane.client.api.report.core.App">App</a>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Builds a given App for use in a server environment, or serves the App directly in a local server</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>datapane.client.api.report.processors.LocalProcessor</li>
+<li>datapane.client.api.report.processors.Processor</li>
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="datapane.client.api.Server.template"><code class="name">var <span class="ident">template</span> : Optional[jinja2.environment.Template]</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Server.assets"><code class="name">var <span class="ident">assets</span> : pathlib.Path</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Server.logo"><code class="name">var <span class="ident">logo</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Server.report_id"><code class="name">var <span class="ident">report_id</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Server.served"><code class="name">var <span class="ident">served</span> : bool</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+<dt id="datapane.client.api.Server.template_name"><code class="name">var <span class="ident">template_name</span> : str</code></dt>
+<dd>
+<div class="desc"></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="datapane.client.api.Server.go"><code class="name flex">
+<span>def <span class="ident">go</span></span>(<span>self, name: str = 'app', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, port: int = 8000, host: str = 'localhost', formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, open: bool = True, overwrite: bool = False) ‑> None</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Serve the app from a local http server</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the app, which will also be the name of the app directory</dd>
+<dt><strong><code>dest</code></strong></dt>
+<dd>File path to store the app directory</dd>
+<dt><strong><code>open</code></strong></dt>
+<dd>Open in your browser after creating (default: False)</dd>
+<dt><strong><code>port</code></strong></dt>
+<dd>The port used to serve the app (default: 8000)</dd>
+<dt><strong><code>host</code></strong></dt>
+<dd>The host used to serve the app (default: localhost)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic app styling; note that this is ignored if a app exists at the specified path</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Replace existing app with the same name and destination if already exists (default: False)</dd>
+</dl></div>
+</dd>
+<dt id="datapane.client.api.Server.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>self, name: str = 'app', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, compress_assets: bool = False, overwrite: bool = False) ‑> pathlib.Path</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Build a app which can be served by a local http server</p>
+<h2 id="args">Args</h2>
+<dl>
+<dt><strong><code>name</code></strong></dt>
+<dd>The name of the app, which will also be the name of the app directory</dd>
+<dt><strong><code>dest</code></strong></dt>
+<dd>File path to store the app directory</dd>
+<dt><strong><code>compress_assets</code></strong></dt>
+<dd>Compress user assets during app generation (default: True)</dd>
+<dt><strong><code>formatting</code></strong></dt>
+<dd>Sets the basic app styling</dd>
+<dt><strong><code>overwrite</code></strong></dt>
+<dd>Replace existing app with the same name and destination if already exists (default: False)</dd>
+</dl></div>
 </dd>
 </dl>
 </dd>
@@ -1960,7 +2267,7 @@ the object may be pickled or converted to JSON before storing.</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.Schedule.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>app: <a title="datapane.client.api.App" href="#datapane.client.api.App">App</a>, cron: str, parameters: SDict) ‑> <a title="datapane.client.api.teams.Schedule" href="teams.html#datapane.client.api.teams.Schedule">Schedule</a></span>
+<span>def <span class="ident">create</span></span>(<span>app: <a title="datapane.client.api.LegacyApp" href="#datapane.client.api.LegacyApp">LegacyApp</a>, cron: str, parameters: SDict) ‑> <a title="datapane.client.api.teams.Schedule" href="teams.html#datapane.client.api.teams.Schedule">Schedule</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -2069,6 +2376,27 @@ the object may be pickled or converted to JSON before storing.</p>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
+<h4><code><a title="datapane.client.api.App" href="#datapane.client.api.App">App</a></code></h4>
+<ul class="two-column">
+<li><code><a title="datapane.client.api.App.get" href="dp_object.html#datapane.client.api.App.get">get</a></code></li>
+<li><code><a title="datapane.client.api.App.by_id" href="dp_object.html#datapane.client.api.App.by_id">by_id</a></code></li>
+<li><code><a title="datapane.client.api.App.list" href="dp_object.html#datapane.client.api.App.list">list</a></code></li>
+<li><code><a title="datapane.client.api.App.upload" href="#datapane.client.api.App.upload">upload</a></code></li>
+<li><code><a title="datapane.client.api.App.save" href="#datapane.client.api.App.save">save</a></code></li>
+<li><code><a title="datapane.client.api.App.refresh" href="dp_object.html#datapane.client.api.App.refresh">refresh</a></code></li>
+<li><code><a title="datapane.client.api.App.delete" href="dp_object.html#datapane.client.api.App.delete">delete</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.AppFormatting" href="#datapane.client.api.AppFormatting">AppFormatting</a></code></h4>
+<ul class="">
+<li><code><a title="datapane.client.api.AppFormatting.to_css" href="#datapane.client.api.AppFormatting.to_css">to_css</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.AppWidth" href="#datapane.client.api.AppWidth">AppWidth</a></code></h4>
+</li>
+<li>
 <h4><code><a title="datapane.client.api.IncompatibleVersionError" href="#datapane.client.api.IncompatibleVersionError">IncompatibleVersionError</a></code></h4>
 </li>
 <li>
@@ -2129,6 +2457,21 @@ the object may be pickled or converted to JSON before storing.</p>
 <h4><code><a title="datapane.client.api.Group" href="#datapane.client.api.Group">Group</a></code></h4>
 </li>
 <li>
+<h4><code><a title="datapane.client.api.LegacyApp" href="#datapane.client.api.LegacyApp">LegacyApp</a></code></h4>
+<ul class="two-column">
+<li><code><a title="datapane.client.api.LegacyApp.upload_pkg" href="#datapane.client.api.LegacyApp.upload_pkg">upload_pkg</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.get" href="dp_object.html#datapane.client.api.LegacyApp.get">get</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.by_id" href="dp_object.html#datapane.client.api.LegacyApp.by_id">by_id</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.list" href="dp_object.html#datapane.client.api.LegacyApp.list">list</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.download_pkg" href="#datapane.client.api.LegacyApp.download_pkg">download_pkg</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.call" href="#datapane.client.api.LegacyApp.call">call</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.run" href="#datapane.client.api.LegacyApp.run">run</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.local_run" href="#datapane.client.api.LegacyApp.local_run">local_run</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.refresh" href="dp_object.html#datapane.client.api.LegacyApp.refresh">refresh</a></code></li>
+<li><code><a title="datapane.client.api.LegacyApp.delete" href="dp_object.html#datapane.client.api.LegacyApp.delete">delete</a></code></li>
+</ul>
+</li>
+<li>
 <h4><code><a title="datapane.client.api.Media" href="#datapane.client.api.Media">Media</a></code></h4>
 </li>
 <li>
@@ -2136,6 +2479,16 @@ the object may be pickled or converted to JSON before storing.</p>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.Plot" href="#datapane.client.api.Plot">Plot</a></code></h4>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.Report" href="#datapane.client.api.Report">Report</a></code></h4>
+<ul class="">
+<li><code><a title="datapane.client.api.Report.get" href="dp_object.html#datapane.client.api.Report.get">get</a></code></li>
+<li><code><a title="datapane.client.api.Report.by_id" href="dp_object.html#datapane.client.api.Report.by_id">by_id</a></code></li>
+<li><code><a title="datapane.client.api.Report.list" href="dp_object.html#datapane.client.api.Report.list">list</a></code></li>
+<li><code><a title="datapane.client.api.Report.refresh" href="dp_object.html#datapane.client.api.Report.refresh">refresh</a></code></li>
+<li><code><a title="datapane.client.api.Report.delete" href="dp_object.html#datapane.client.api.Report.delete">delete</a></code></li>
+</ul>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.Select" href="#datapane.client.api.Select">Select</a></code></h4>
@@ -2162,45 +2515,35 @@ the object may be pickled or converted to JSON before storing.</p>
 <h4><code><a title="datapane.client.api.PageLayout" href="#datapane.client.api.PageLayout">PageLayout</a></code></h4>
 </li>
 <li>
-<h4><code><a title="datapane.client.api.Report" href="#datapane.client.api.Report">Report</a></code></h4>
-<ul class="two-column">
-<li><code><a title="datapane.client.api.Report.get" href="dp_object.html#datapane.client.api.Report.get">get</a></code></li>
-<li><code><a title="datapane.client.api.Report.by_id" href="dp_object.html#datapane.client.api.Report.by_id">by_id</a></code></li>
-<li><code><a title="datapane.client.api.Report.list" href="dp_object.html#datapane.client.api.Report.list">list</a></code></li>
-<li><code><a title="datapane.client.api.Report.upload" href="#datapane.client.api.Report.upload">upload</a></code></li>
-<li><code><a title="datapane.client.api.Report.save" href="#datapane.client.api.Report.save">save</a></code></li>
-<li><code><a title="datapane.client.api.Report.preview" href="#datapane.client.api.Report.preview">preview</a></code></li>
-<li><code><a title="datapane.client.api.Report.build" href="#datapane.client.api.Report.build">build</a></code></li>
-<li><code><a title="datapane.client.api.Report.serve" href="#datapane.client.api.Report.serve">serve</a></code></li>
-<li><code><a title="datapane.client.api.Report.refresh" href="dp_object.html#datapane.client.api.Report.refresh">refresh</a></code></li>
-<li><code><a title="datapane.client.api.Report.delete" href="dp_object.html#datapane.client.api.Report.delete">delete</a></code></li>
-</ul>
+<h4><code><a title="datapane.client.api.Processor" href="#datapane.client.api.Processor">Processor</a></code></h4>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.ReportFormatting" href="#datapane.client.api.ReportFormatting">ReportFormatting</a></code></h4>
-<ul class="">
-<li><code><a title="datapane.client.api.ReportFormatting.to_css" href="#datapane.client.api.ReportFormatting.to_css">to_css</a></code></li>
-</ul>
 </li>
 <li>
-<h4><code><a title="datapane.client.api.ReportWidth" href="#datapane.client.api.ReportWidth">ReportWidth</a></code></h4>
+<h4><code><a title="datapane.client.api.AppWidth" href="#datapane.client.api.AppWidth">AppWidth</a></code></h4>
 </li>
 <li>
 <h4><code><a title="datapane.client.api.TextAlignment" href="#datapane.client.api.TextAlignment">TextAlignment</a></code></h4>
 </li>
 <li>
-<h4><code><a title="datapane.client.api.App" href="#datapane.client.api.App">App</a></code></h4>
-<ul class="two-column">
-<li><code><a title="datapane.client.api.App.upload_pkg" href="#datapane.client.api.App.upload_pkg">upload_pkg</a></code></li>
-<li><code><a title="datapane.client.api.App.get" href="dp_object.html#datapane.client.api.App.get">get</a></code></li>
-<li><code><a title="datapane.client.api.App.by_id" href="dp_object.html#datapane.client.api.App.by_id">by_id</a></code></li>
-<li><code><a title="datapane.client.api.App.list" href="dp_object.html#datapane.client.api.App.list">list</a></code></li>
-<li><code><a title="datapane.client.api.App.download_pkg" href="#datapane.client.api.App.download_pkg">download_pkg</a></code></li>
-<li><code><a title="datapane.client.api.App.call" href="#datapane.client.api.App.call">call</a></code></li>
-<li><code><a title="datapane.client.api.App.run" href="#datapane.client.api.App.run">run</a></code></li>
-<li><code><a title="datapane.client.api.App.local_run" href="#datapane.client.api.App.local_run">local_run</a></code></li>
-<li><code><a title="datapane.client.api.App.refresh" href="dp_object.html#datapane.client.api.App.refresh">refresh</a></code></li>
-<li><code><a title="datapane.client.api.App.delete" href="dp_object.html#datapane.client.api.App.delete">delete</a></code></li>
+<h4><code><a title="datapane.client.api.Uploader" href="#datapane.client.api.Uploader">Uploader</a></code></h4>
+<ul class="">
+<li><code><a title="datapane.client.api.Uploader.go" href="#datapane.client.api.Uploader.go">go</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.Saver" href="#datapane.client.api.Saver">Saver</a></code></h4>
+<ul class="">
+<li><code><a title="datapane.client.api.Saver.go" href="#datapane.client.api.Saver.go">go</a></code></li>
+<li><code><a title="datapane.client.api.Saver.preview" href="#datapane.client.api.Saver.preview">preview</a></code></li>
+</ul>
+</li>
+<li>
+<h4><code><a title="datapane.client.api.Server" href="#datapane.client.api.Server">Server</a></code></h4>
+<ul class="">
+<li><code><a title="datapane.client.api.Server.go" href="#datapane.client.api.Server.go">go</a></code></li>
+<li><code><a title="datapane.client.api.Server.build" href="#datapane.client.api.Server.build">build</a></code></li>
 </ul>
 </li>
 <li>

@@ -306,78 +306,6 @@ the object may be pickled or converted to JSON before storing.</p>
 </dd>
 </dl>
 </dd>
-<dt id="datapane.client.api.teams.App"><code class="flex name class">
-<span>class <span class="ident">App</span></span>
-<span>(</span><span>dto: Optional[munch.Munch] = None)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Apps allow users to build, deploy, and automate data-driven Python workflows and apps
-to their cloud that can be customised and run by other users.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip:&ensp;We recommend using either the Web UI or CLI, e.g. <code>datapane app deploy / run / ...</code> to work with apps rather than using the low-level API</p>
-</div></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></li>
-</ul>
-<h3>Static methods</h3>
-<dl>
-<dt id="datapane.client.api.teams.App.get"><code class="name flex">
-<span>def <span class="ident">get</span></span>(<span>name: str, project: Optional[str] = None) ‑> ~U</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.get" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.get">get</a></code>
-</p>
-<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its name …</p></div>
-</dd>
-<dt id="datapane.client.api.teams.App.by_id"><code class="name flex">
-<span>def <span class="ident">by_id</span></span>(<span>id_or_url: str) ‑> ~U</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.by_id" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.by_id">by_id</a></code>
-</p>
-<div class="desc inherited"><p>Lookup and retrieve an object from the Datapane Server by its id …</p></div>
-</dd>
-<dt id="datapane.client.api.teams.App.list"><code class="name flex">
-<span>def <span class="ident">list</span></span>(<span>) ‑> Iterable[Dict[str, Any]]</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.list" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.list">list</a></code>
-</p>
-<div class="desc inherited"><p>Returns: A list of the Datapane objects of this type that are owned by the user</p></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.teams.App.refresh"><code class="name flex">
-<span>def <span class="ident">refresh</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.refresh" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.refresh">refresh</a></code>
-</p>
-<div class="desc inherited"><p>Refresh the object with the latest data from the Datapane Server
-- override to pull updated fields from dto to top-level</p></div>
-</dd>
-<dt id="datapane.client.api.teams.App.delete"><code class="name flex">
-<span>def <span class="ident">delete</span></span>(<span>self)</span>
-</code></dt>
-<dd>
-<p class="inheritance">
-<em>Inherited from:</em>
-<code><a title="datapane.client.api.dp_object.DPObjectRef" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef">DPObjectRef</a></code>.<code><a title="datapane.client.api.dp_object.DPObjectRef.delete" href="dp_object.html#datapane.client.api.dp_object.DPObjectRef.delete">delete</a></code>
-</p>
-<div class="desc inherited"><p>Delete the object on the server</p></div>
-</dd>
-</dl>
-</dd>
 <dt id="datapane.client.api.teams.Schedule"><code class="flex name class">
 <span>class <span class="ident">Schedule</span></span>
 <span>(</span><span>dto: Optional[munch.Munch] = None)</span>
@@ -401,7 +329,7 @@ to their cloud that can be customised and run by other users.</p>
 <h3>Static methods</h3>
 <dl>
 <dt id="datapane.client.api.teams.Schedule.create"><code class="name flex">
-<span>def <span class="ident">create</span></span>(<span>app: <a title="datapane.client.api.teams.App" href="#datapane.client.api.teams.App">App</a>, cron: str, parameters: SDict) ‑> <a title="datapane.client.api.teams.Schedule" href="#datapane.client.api.teams.Schedule">Schedule</a></span>
+<span>def <span class="ident">create</span></span>(<span>app: LegacyApp, cron: str, parameters: SDict) ‑> <a title="datapane.client.api.teams.Schedule" href="#datapane.client.api.teams.Schedule">Schedule</a></span>
 </code></dt>
 <dd>
 <div class="desc"></div>
@@ -511,16 +439,6 @@ to their cloud that can be customised and run by other users.</p>
 <li><code><a title="datapane.client.api.teams.Environment.list" href="dp_object.html#datapane.client.api.teams.Environment.list">list</a></code></li>
 <li><code><a title="datapane.client.api.teams.Environment.refresh" href="dp_object.html#datapane.client.api.teams.Environment.refresh">refresh</a></code></li>
 <li><code><a title="datapane.client.api.teams.Environment.delete" href="dp_object.html#datapane.client.api.teams.Environment.delete">delete</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.teams.App" href="#datapane.client.api.teams.App">App</a></code></h4>
-<ul class="">
-<li><code><a title="datapane.client.api.teams.App.get" href="dp_object.html#datapane.client.api.teams.App.get">get</a></code></li>
-<li><code><a title="datapane.client.api.teams.App.by_id" href="dp_object.html#datapane.client.api.teams.App.by_id">by_id</a></code></li>
-<li><code><a title="datapane.client.api.teams.App.list" href="dp_object.html#datapane.client.api.teams.App.list">list</a></code></li>
-<li><code><a title="datapane.client.api.teams.App.refresh" href="dp_object.html#datapane.client.api.teams.App.refresh">refresh</a></code></li>
-<li><code><a title="datapane.client.api.teams.App.delete" href="dp_object.html#datapane.client.api.teams.App.delete">delete</a></code></li>
 </ul>
 </li>
 <li>

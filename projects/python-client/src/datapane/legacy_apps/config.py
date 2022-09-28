@@ -12,9 +12,8 @@ import jsonschema
 import stringcase
 import yaml
 
-from datapane.client import DPError
-from datapane.client.utils import MissingCloudPackagesError
-from datapane.common import SDict, log, utf_read_text
+from datapane.client.utils import DPClientError, MissingCloudPackagesError, log
+from datapane.common import SDict, utf_read_text
 
 # script paths
 DATAPANE_YAML = Path("datapane.yaml")
@@ -42,7 +41,7 @@ def generate_name(postfix: str) -> str:
 # TODO(obsolete) - not really needed now, can remove in future
 def validate_name(x: str):
     if re_check_name.match(x) is None:
-        raise DPError(f"'{x}' is not a valid service name")
+        raise DPClientError(f"'{x}' is not a valid service name")
 
 
 @dc.dataclass

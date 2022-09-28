@@ -29,13 +29,11 @@ from furl import furl
 from munch import Munch
 
 from datapane import __version__
-from datapane.common import URL
-from datapane.common.utils import pushd
+from datapane.common import URL, pushd
+from datapane.client import DPClientError, capture, capture_event, display_msg
+from datapane.client import config as c
+from datapane.client.commands import failure_msg, success_msg
 
-from .. import DPError
-from .. import config as c
-from ..analytics import capture, capture_event
-from ..utils import display_msg, failure_msg, success_msg
 from .common import _process_res
 
 __all__ = ["login", "logout", "ping", "hello_world", "template"]
@@ -139,7 +137,7 @@ def _run_template(template_path: Path):
             )
         # Notify the user of missing packages that are required by the template
         except ModuleNotFoundError as e:
-            raise DPError(f"Please install the following packages to run this template\n{e.name}") from e
+            raise DPClientError(f"Please install the following packages to run this template\n{e.name}") from e
 
 
 def _download_template(url: URL):
@@ -159,7 +157,7 @@ def _download_template(url: URL):
 
     # Avoid overwriting user's data
     if target_dir_exists:
-        raise DPError(f"Directory {target} already exists.")
+        raise DPClientError(f"Directory {target} already exists.")
 
     # Shallowest clone of the template repo
     template_repo = porcelain.clone(url, target=target, depth=1)
@@ -184,7 +182,7 @@ def _check_repo_url(url: URL):
         # e.g., unintended repo download/execution
         special_chars = [":", "/"]
         if any(special_char in url for special_char in special_chars):
-            raise DPError(f"{url} is not a valid template repository.")
+            raise DPClientError(f"{url} is not a valid template repository.")
 
         try:
             # Try appending the supplied url to the datapane organization
@@ -193,7 +191,7 @@ def _check_repo_url(url: URL):
             # that has been located with a relative path.
             porcelain.ls_remote(full_url)
         except (errors.NotGitRepository, client.HTTPUnauthorized) as e:
-            raise DPError(f"{url} is not a valid template repository.") from e
+            raise DPClientError(f"{url} is not a valid template repository.") from e
         else:
             # Update the URL with absolute URI
             url = URL(full_url)

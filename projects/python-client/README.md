@@ -83,6 +83,7 @@ Create a report from pandas DataFrames, plots from your favorite libraries, and 
 <p>
 
 ```python
+import datapane.blocks.asset
 import altair as alt
 from vega_datasets import data
 import datapane as dp
@@ -92,14 +93,14 @@ fig = (
     alt.Chart(df)
     .mark_point()
     .encode(
-      x="petalLength:Q",
-      y="petalWidth:Q",
-      color="species:N"
+        x="petalLength:Q",
+        y="petalWidth:Q",
+        color="species:N"
     )
 )
 report = dp.Report(
-    dp.Plot(fig),
-    dp.DataTable(df)
+    datapane.blocks.asset.Plot(fig),
+    datapane.blocks.asset.DataTable(df)
 )
 report.save(path="my_report.html")
 ```
@@ -117,26 +118,29 @@ Add dropdowns, selects, grid, pages, and 10+ other blocks to make your reports d
 <p >
 
 ```python
-
+import datapane.blocks.misc_blocks
+import datapane.blocks.layout
+import datapane.blocks.text
+import datapane.blocks.asset
 
 ...
 
 dp.Report(
-    dp.Formula("x^2 + y^2 = z^2"),
-    dp.Group(
-        dp.BigNumber(
+    datapane.blocks.inline_text.Formula("x^2 + y^2 = z^2"),
+    datapane.blocks.layout.Group(
+        datapane.blocks.misc_blocks.BigNumber(
             heading="Number of percentage points",
             value="84%",
             change="2%",
             is_upward_change=True
         ),
-        dp.BigNumber(
+        datapane.blocks.misc_blocks.BigNumber(
             heading="Simple Statistic", value=100
         ), columns=2
     ),
-    dp.Select(
-        dp.Plot(fig, label="Chart"),
-        dp.DataTable(df, label="Data")
+    datapane.blocks.layout.Select(
+        datapane.blocks.asset.Plot(fig, label="Chart"),
+        datapane.blocks.asset.DataTable(df, label="Data")
     ),
 ).save(path="Layout_example.html")
 

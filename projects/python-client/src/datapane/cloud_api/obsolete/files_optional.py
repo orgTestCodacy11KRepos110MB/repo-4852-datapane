@@ -1,7 +1,7 @@
 from packaging import version as v
 from packaging.specifiers import SpecifierSet
 
-from datapane.common import log
+from datapane.client import log
 
 # NOTE - need to update this and keep in sync with JS
 BOKEH_V_SPECIFIER = SpecifierSet("~=2.4.2")

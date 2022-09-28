@@ -1,25 +1,41 @@
+"""
+Wrappers to support common operations required for native / Jupyter assets/types
+Uses singledispatch to add additional operations (save and wrap) for assets, e.g. plots
+
+# TODO - just bring in multidispatch? to handle both blocks wrapping and asset saving
+# python dispatchbyvalue
+"""
+from __future__ import annotations
+
 import abc
 import json
 import os
 import pickle
+import typing
 from functools import singledispatch
 from pathlib import Path
 from typing import IO, TYPE_CHECKING, Any, Generic, List, Optional, Type, TypeVar
 
+import pandas as pd
 from altair.utils import SchemaBase
 from numpy import ndarray
 from pandas import DataFrame
 from pandas.io.formats.style import Styler
 
-from datapane.common import log
+from datapane.common import ArrowFormat, log
+from datapane.common.df_processor import to_df
 
 from .. import DPError
 from .common import DPTmpFile
 from .files_optional import Axes, BFigure, BLayout, Figure, Map, PFigure, Visualisation
-from .report.blocks import Attachment, DataBlock, DataTable, Plot, Table, Text
+from .report.blocks import DataBlock
+from ...blocks.text import Text
+from ... import Attachment, DataTable, Plot, Table
 
 if TYPE_CHECKING:
     from bokeh.model import Model
+
+    from .report.processors import FileEntry, FileStore
 
 T = TypeVar("T")
 U = TypeVar("U", DataFrame, Styler)
@@ -34,6 +50,16 @@ class BaseAsset(Generic[T], abc.ABC):
     block_type: Type[DataBlock]
     ext: str
     file_mode: str = "w"
+
+    def add_to_store(self, x: T, fs: FileStore) -> FileEntry:
+        # TODO - maybe we just get the file constructor from filestore so can write and add manually
+        # with fs.write_file(self.ext, self.file_mode) as f:
+        #     self.write_file(f, x)
+        #     return fs._add_file(f)
+        f = fs.get_file(self.ext, self.mimetype)
+        self.write_file(f.file, x)
+        fs.add_file(f)
+        return f
 
     def write(self, x: T) -> DPTmpFile:
         fn = DPTmpFile(self.ext)
@@ -104,7 +130,8 @@ class BaseTable(BaseAsset, Generic[U]):
                 f"Dataframe over limit of {self.TABLE_CELLS_LIMIT} cells for dp.Table, consider using dp.DataTable instead or aggregating the df first"
             )
 
-        f.write(self.render_html(x))
+        b_str = self.render_html(x).encode()
+        f.write(b_str)
 
     def to_block(self, x: T) -> DataBlock:
         return Table(x) if self._get_cells(x) <= self.TABLE_CELLS_LIMIT else DataTable(x)
@@ -197,7 +224,7 @@ class BokehBasePlot(PlotAsset):
     mimetype = "application/vnd.bokeh.show+json"
     ext = ".bokeh.json"
 
-    def write_file(self, f: IO, app: "Model"):
+    def write_file(self, f: IO, app: Model):
         from bokeh.embed import json_item
 
         json.dump(json_item(app), f)
@@ -254,8 +281,8 @@ class PlotapiPlot(PlotAsset):
 
 
 ################################################################################
-# register all the plot types
-plots: List = [
+# register all supported native assets
+asset_types: List = [
     StringWrapper,
     PathWrapper,
     # dataframes / tables
@@ -283,8 +310,8 @@ def get_wrapper(x: Any, error_msg: Optional[str] = None) -> BaseAsset:
     return BasePickleWriter()
 
 
-for p in plots:
-    get_wrapper.register(p.obj_type, lambda _, error_msg, p=p: p())
+for x in asset_types:
+    get_wrapper.register(x.obj_type, lambda _, error_msg, x=x: x())
 
 
 # Entry Points
@@ -294,7 +321,11 @@ def save(obj: Any) -> DPTmpFile:
     return fn
 
 
-def convert(obj: Any) -> "DataBlock":
+def add_to_store(obj: Any, fs: FileStore) -> FileEntry:
+    return get_wrapper(obj, error_msg=None).add_to_store(obj, fs)
+
+
+def convert(obj: Any) -> DataBlock:
     """Attempt to convert/wrap a 'primitive' Python object into a Datapane 'boxed' object"""
     error_msg = f"{type(obj)} not supported directly, please pass into in the appropriate dp object (including dp.Attachment if want to upload as a pickle)"
     return get_wrapper(obj, error_msg=error_msg).to_block(obj)

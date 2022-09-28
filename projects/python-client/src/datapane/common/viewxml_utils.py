@@ -7,16 +7,14 @@ from lxml import etree
 from lxml.etree import DocumentInvalid
 from micawber import ProviderException, bootstrap_basic, bootstrap_noembed, cache
 
-from datapane.client import DPError
-from datapane.common import HTML
+from .dp_types import HTML, DPError, SSDict, log
 
-from .dp_types import SSDict
-from .utils import log
 
 local_report_def = ir.files("datapane.resources.report_def")
 rng_validator = etree.RelaxNG(file=str(local_report_def / "full_schema.rng"))
 
 dp_namespace: str = "https://datapane.com/schemas/report/1/"
+ViewXML = str
 
 
 def load_doc(x: str) -> etree._Element:
@@ -66,6 +64,8 @@ def mk_attribs(**attribs: t.Any) -> SSDict:
     return {str(k): conv_attrib(v) for (k, v) in attribs.items() if conv_attrib(v) is not None}
 
 
+#####################################################################
+# Embed Asset Helpers
 providers = bootstrap_basic(cache=cache.Cache())
 
 

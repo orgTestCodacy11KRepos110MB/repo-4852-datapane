@@ -3,7 +3,6 @@ Datapane built-in helper functions to make creating your reports a bit simpler a
 """
 import random
 import typing as t
-from copy import deepcopy
 from pathlib import Path
 
 import altair as alt
@@ -11,10 +10,15 @@ import importlib_resources as ir
 import numpy as np
 import pandas as pd
 
+import datapane.blocks.asset
+import datapane.blocks.layout
+import datapane.blocks.misc_blocks
+import datapane.blocks.text
 from datapane.common import NPath
 
-from .report import blocks as b
-from .report.core import App
+from datapane import blocks as b
+from datapane.blocks import View
+from datapane.cloud_api import App
 
 __all__ = [
     "add_code",
@@ -27,21 +31,21 @@ __all__ = [
     "gen_plot",
 ]
 
+#
+# def _map_page_blocks(page: b.Page, f: t.Callable[[b.BlockList], b.BlockList]) -> b.Page:
+#     page.blocks = f(page.blocks)
+#     return page
+#
+#
+# def _map_report_pages(r: App, f: t.Callable[[b.Page], b.Page], all_pages: bool = True) -> App:
+#     def g(i: int, page: b.Page) -> b.Page:
+#         return f(page) if all_pages or i == 0 else page
+#
+#     r.pages = [g(*x) for x in enumerate(r.pages)]
+#     return r
 
-def _map_page_blocks(page: b.Page, f: t.Callable[[b.BlockList], b.BlockList]) -> b.Page:
-    page.blocks = f(page.blocks)
-    return page
 
-
-def _map_report_pages(r: App, f: t.Callable[[b.Page], b.Page], all_pages: bool = True) -> App:
-    def g(i: int, page: b.Page) -> b.Page:
-        return f(page) if all_pages or i == 0 else page
-
-    r.pages = [g(*x) for x in enumerate(r.pages)]
-    return r
-
-
-def add_code(block: b.BlockOrPrimitive, code: str, language: str = "python") -> b.Select:
+def add_code(block: b.BlockOrPrimitive, code: str, language: str = "python") -> datapane.blocks.layout.Select:
     """
     Attach code fragment to an existing plot/figure/dataframe for use within a report
 
@@ -56,7 +60,7 @@ def add_code(block: b.BlockOrPrimitive, code: str, language: str = "python") -> 
 
     w_block = b.wrap_block(block)
     w_block._add_attributes(label="Figure")
-    return b.Select(w_block, b.Code(code, language, label="Code"), type=b.SelectType.TABS)
+    return datapane.blocks.layout.Select(w_block, datapane.blocks.inline_text.Code(code, language, label="Code"), type=b.SelectType.TABS)
 
 
 def build_md_report(
@@ -81,12 +85,12 @@ def build_md_report(
 
     """
     try:
-        b_text = b.Text(file=text_or_file) if Path(text_or_file).exists() else b.Text(text=t.cast(str, text_or_file))
+        b_text = datapane.blocks.inline_text.Text(file=text_or_file) if Path(text_or_file).exists() else datapane.blocks.inline_text.Text(text=t.cast(str, text_or_file))
     except OSError:
-        b_text = b.Text(text=t.cast(str, text_or_file))
+        b_text = datapane.blocks.inline_text.Text(text=t.cast(str, text_or_file))
 
     group = b_text.format(*args, **kwargs)
-    return App(b.Page(group))
+    return App(View(group))
 
 
 def add_header(report: App, header: b.BlockOrPrimitive, all_pages: bool = True) -> App:
@@ -101,11 +105,11 @@ def add_header(report: App, header: b.BlockOrPrimitive, all_pages: bool = True) 
     Returns:
         A modified report with the header applied
     """
-
-    report = deepcopy(report)
-    return _map_report_pages(
-        report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=[header] + p.blocks)]), all_pages=all_pages
-    )
+    return None
+    # report = deepcopy(report)
+    # return _map_report_pages(
+    #     report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=[header] + p.blocks)]), all_pages=all_pages
+    # )
 
 
 def add_footer(report: App, footer: b.BlockOrPrimitive, all_pages: bool = True) -> App:
@@ -120,10 +124,11 @@ def add_footer(report: App, footer: b.BlockOrPrimitive, all_pages: bool = True) 
     Returns:
         A modified report with the footer applied
     """
-    report = deepcopy(report)
-    return _map_report_pages(
-        report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=p.blocks + [footer])]), all_pages=all_pages
-    )
+    return None
+    # report = deepcopy(report)
+    # return _map_report_pages(
+    #     report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=p.blocks + [footer])]), all_pages=all_pages
+    # )
 
 
 def gen_df(dim: int = 4) -> pd.DataFrame:
@@ -179,7 +184,7 @@ def build_demo_report() -> App:
         return fig
 
     def _gen_html(w: int = 30, h: int = 30):
-        return b.HTML(
+        return datapane.blocks.inline_text.HTML(
             f"""
     <div style="width: {w}rem; height: {h}rem; background-color: rgba(0, 0, 255, 0.2); position: relative">
         <div style="position: absolute; right: 50%; bottom: 50%; transform: translate(50%, 50%);">
@@ -253,14 +258,14 @@ Additionally layout blocks provide the ability nest blocks to create groups of c
 
     """
     logo = ir.files("datapane.resources.templates") / "datapane-logo.png"
-    other = b.Group(
-        b.Media(file=str(logo)),
-        b.BigNumber(heading="Datapane Blocks", value=11, prev_value=6, is_upward_change=True),
-        b.Formula(r"\frac{1}{\sqrt{x^2 + 1}}", caption="Simple formula"),
+    other = datapane.blocks.layout.Group(
+        datapane.blocks.asset.Media(file=str(logo)),
+        datapane.blocks.misc_blocks.BigNumber(heading="Datapane Blocks", value=11, prev_value=6, is_upward_change=True),
+        datapane.blocks.inline_text.Formula(r"\frac{1}{\sqrt{x^2 + 1}}", caption="Simple formula"),
         columns=0,
     )
-    page_1 = b.Page(
-        b.Text(basics).format(table=b.Table(gen_table_df(), caption="A table"), plot=vega_sine, other=other),
+    page_1 = datapane.blocks.layout.Select(
+        datapane.blocks.inline_text.Text(basics).format(table=datapane.blocks.asset.Table(gen_table_df(), caption="A table"), plot=vega_sine, other=other),
         title="Intro",
     )
 
@@ -307,14 +312,14 @@ dp.Select(group1, df)
 {{nested}}
 """
 
-    group1 = b.Group(vega_bar, vega_sine, columns=2)
-    group2 = b.Group(*[f"### Cell {x}" for x in range(6)], columns=3)
-    select1 = b.Select(vega_bar, vega_sine, type=b.SelectType.TABS, name="vega_select")
-    select2 = b.Select(vega_bar, vega_sine, type=b.SelectType.DROPDOWN)
+    group1 = datapane.blocks.layout.Group(vega_bar, vega_sine, columns=2)
+    group2 = datapane.blocks.layout.Group(*[f"### Cell {x}" for x in range(6)], columns=3)
+    select1 = datapane.blocks.layout.Select(vega_bar, vega_sine, type=b.SelectType.TABS, name="vega_select")
+    select2 = datapane.blocks.layout.Select(vega_bar, vega_sine, type=b.SelectType.DROPDOWN)
 
-    nested = b.Select(group1, b.Table(gen_table_df()))
-    page_2 = b.Page(
-        b.Text(layout).format(group1=group1, group2=group2, select1=select1, select2=select2, nested=nested),
+    nested = datapane.blocks.layout.Select(group1, datapane.blocks.asset.Table(gen_table_df()))
+    page_2 = datapane.blocks.layout.Select(
+        datapane.blocks.inline_text.Text(layout).format(group1=group1, group2=group2, select1=select1, select2=select2, nested=nested),
         title="Layout",
     )
 
@@ -379,41 +384,41 @@ dp.Attachment(data=[1,2,3])
 {{media}}
 """
 
-    plots = b.Group(
-        b.Plot(vega_sine, name="vega", caption="Altair Plot"),
-        b.Plot(_gen_bokeh(), name="bokeh", caption="Bokeh Plot"),
-        b.Plot(_gen_matplotlib(), name="matplotlib", caption="Matplotlib Plot"),
-        b.Plot(_gen_plotly(), name="plotly", caption="Plotly Plot"),
-        b.Plot(_gen_folium(), name="folium", caption="Folium Plot"),
+    plots = datapane.blocks.layout.Group(
+        datapane.blocks.asset.Plot(vega_sine, name="vega", caption="Altair Plot"),
+        datapane.blocks.asset.Plot(_gen_bokeh(), name="bokeh", caption="Bokeh Plot"),
+        datapane.blocks.asset.Plot(_gen_matplotlib(), name="matplotlib", caption="Matplotlib Plot"),
+        datapane.blocks.asset.Plot(_gen_plotly(), name="plotly", caption="Plotly Plot"),
+        datapane.blocks.asset.Plot(_gen_folium(), name="folium", caption="Folium Plot"),
         name="plots_group",
         columns=2,
     )
-    tables = b.Group(
-        b.Table(df1, name="table1", caption="Basic Table"),
-        b.Table(styler1, name="styled-table", caption="Styled Table"),
-        b.DataTable(gen_table_df(1000), name="data_table", caption="Interactive DataTable"),
+    tables = datapane.blocks.layout.Group(
+        datapane.blocks.asset.Table(df1, name="table1", caption="Basic Table"),
+        datapane.blocks.asset.Table(styler1, name="styled-table", caption="Styled Table"),
+        datapane.blocks.asset.DataTable(gen_table_df(1000), name="data_table", caption="Interactive DataTable"),
     )
-    text = b.Group(
-        b.Text("Hello, __world__!", name="markdown"),
-        b.Code("print('Hello, world!'", name="code"),
-        b.Formula(r"\frac{1}{\sqrt{x^2 + 1}}"),
-        b.HTML("<h1>Hello World</h1>", name="HTML"),
-        b.BigNumber(heading="Datapane Blocks", value=11, prev_value=6, is_upward_change=True, name="big_num"),
+    text = datapane.blocks.layout.Group(
+        datapane.blocks.inline_text.Text("Hello, __world__!", name="markdown"),
+        datapane.blocks.inline_text.Code("print('Hello, world!'", name="code"),
+        datapane.blocks.inline_text.Formula(r"\frac{1}{\sqrt{x^2 + 1}}"),
+        datapane.blocks.inline_text.HTML("<h1>Hello World</h1>", name="HTML"),
+        datapane.blocks.misc_blocks.BigNumber(heading="Datapane Blocks", value=11, prev_value=6, is_upward_change=True, name="big_num"),
         columns=0,
     )
-    embed = b.Group(
-        b.Embed("https://www.youtube.com/watch?v=JDe14ulcfLA", name="youtube_embed"),
-        b.Embed("https://twitter.com/datapaneapp/status/1300831345413890050"),
+    embed = datapane.blocks.layout.Group(
+        datapane.blocks.inline_text.Embed("https://www.youtube.com/watch?v=JDe14ulcfLA", name="youtube_embed"),
+        datapane.blocks.inline_text.Embed("https://twitter.com/datapaneapp/status/1300831345413890050"),
         columns=2,
     )
-    media = b.Group(
-        b.Media(file=str(logo), name="logo_img"),
-        b.Attachment(data=[1, 2, 3]),
+    media = datapane.blocks.layout.Group(
+        datapane.blocks.asset.Media(file=str(logo), name="logo_img"),
+        datapane.blocks.asset.Attachment(data=[1, 2, 3]),
         columns=2,
     )
 
-    page_3 = b.Page(
-        b.Text(adv_blocks).format(plots=plots, tables=tables, text=text, embed=embed, media=media), title="Blocks"
+    page_3 = datapane.blocks.layout.Select(
+        datapane.blocks.inline_text.Text(adv_blocks).format(plots=plots, tables=tables, text=text, embed=embed, media=media), title="Blocks"
     )
 
-    return App(page_1, page_2, page_3)
+    return App(View(page_1, page_2, page_3))

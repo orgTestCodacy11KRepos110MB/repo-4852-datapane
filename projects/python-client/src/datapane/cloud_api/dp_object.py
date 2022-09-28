@@ -5,6 +5,8 @@ and accessible by the client API
 
 ..note:: This module is not used directly
 """
+from __future__ import annotations
+
 import json
 import os
 import pprint
@@ -18,15 +20,12 @@ import validators as v
 from munch import Munch
 from requests import HTTPError
 
-from datapane import log
-from datapane.client import DPError
+from datapane.client import log, DPClientError
 from datapane.common import JSON, URL, ArrowFormat, SDict
 from datapane.common.df_processor import to_df
 
-from . import Resource
-from .common import DPTmpFile, FileList
+from .common import DPTmpFile, FileAttachmentList, Resource
 
-__all__ = ["DPObjectRef"]
 
 U = t.TypeVar("U", bound="DPObjectRef")
 
@@ -72,7 +71,7 @@ class DPObjectRef:
             if not url.startswith("http"):
                 url = f"https://{url}"
             if not v.url(url):
-                raise DPError(f"{url} is not a valid object ref")
+                raise DPClientError(f"{url} is not a valid object ref")
             x: up.SplitResult = up.urlsplit(url)
             _id = list(filter(None, x.path.split("/")))[-1]
         else:
@@ -131,14 +130,16 @@ class DPObjectRef:
 
     @classmethod
     def post_with_files(
-        cls: Type[U], files: FileList = None, file: t.Optional[Path] = None, overwrite: bool = False, **data: JSON
+        cls: Type[U], files: FileAttachmentList = None, file: t.Optional[Path] = None, overwrite: bool = False, **data: JSON
     ) -> U:
         # TODO - move into UploadedFileMixin ?
         if file:
-            # wrap up a single file into a FileList
-            files = dict(uploaded_file=[file])
-
-        res = Resource(cls.endpoint).post_files(files=files, overwrite=overwrite, **data)
+            with file.open("b") as f:
+                # wrap up a single file into a FileList
+                files: FileAttachmentList = dict(uploaded_file=[f])
+                res = Resource(cls.endpoint).post_files(files=files, overwrite=overwrite, **data)
+        else:
+            res = Resource(cls.endpoint).post_files(files=files, overwrite=overwrite, **data)
         return cls(dto=res)
 
     @classmethod
@@ -227,7 +228,7 @@ def save_df(df: pd.DataFrame) -> DPTmpFile:
     # create a copy of the df to process
     df = to_df(df)
     if df.size == 0:
-        raise DPError("Empty DataFrame provided")
+        raise DPClientError("Empty DataFrame provided")
 
     # process_df called in Arrow.save_file
     # process_df(df)

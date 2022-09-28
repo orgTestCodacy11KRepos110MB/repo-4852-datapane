@@ -10,12 +10,12 @@ import typing as t
 from collections import deque
 from pathlib import Path
 
-from datapane import ON_DATAPANE
+from datapane.client.utils import ON_DATAPANE
 from datapane.client.apps import DATAPANE_YAML, DatapaneCfg
 from datapane.common import NPath, SDict, log
 
 if t.TYPE_CHECKING:
-    from .report.core import App
+    from .report.app import App
 
 ###############################################################################
 # top level functions here - move to runner?

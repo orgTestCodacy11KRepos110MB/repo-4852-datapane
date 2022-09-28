@@ -43,8 +43,8 @@ from contextlib import contextmanager
 from pathlib import Path
 from unittest.mock import Mock
 
-from datapane.client.utils import MissingCloudPackagesError
-from datapane.common.utils import log, temp_fname
+from datapane.client.utils import MissingCloudPackagesError, log
+from datapane.common import temp_fname
 
 from .config import DatapaneCfg, extract_py_notebook
 

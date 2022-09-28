@@ -16,13 +16,17 @@ from requests import HTTPError
 from tabulate import tabulate
 
 from datapane import __rev__, __version__
-from datapane.common import DPError, SDict, _setup_dp_logging, dict_drop_empty, log
-from datapane.common.dp_types import URL, add_help_text
+from datapane import cloud_api as api
+from datapane import legacy_apps as apps
+from datapane.client import log
+from datapane.client.utils import _setup_dp_logging
+from datapane.common import SDict, dict_drop_empty
+from datapane.common.dp_types import URL
+from datapane.legacy_apps import config as sc
 
-from . import analytics, api, apps
+from . import analytics
 from . import config as c
-from .apps import config as sc
-from .utils import failure_msg, process_cmd_param_vals, success_msg
+from .utils import DPClientError, add_help_text, process_cmd_param_vals
 
 EXTRA_OUT: bool = False
 
@@ -75,7 +79,7 @@ class GlobalCommandHandler(click.Group):
             analytics.capture("CLI Error", msg=str(e), type=str(type(e)))
             if EXTRA_OUT:
                 log.exception(e)
-            if isinstance(e, DPError):
+            if isinstance(e, DPClientError):
                 failure_msg(str(e))
             else:
                 failure_msg(add_help_text(str(e)), do_exit=True)
@@ -549,3 +553,17 @@ def delete(id: str):
     """Delete a schedule by its id/url"""
     api.Schedule.by_id(id).delete()
     success_msg(f"Deleted schedule {id}")
+
+
+def success_msg(msg: str):
+    click.secho(msg, fg="green")
+
+
+def failure_msg(msg: str, do_exit: bool = False):
+    click.secho(msg, fg="red")
+    if do_exit:
+        ctx: click.Context = click.get_current_context(silent=True)
+        if ctx:
+            ctx.exit(2)
+        else:
+            exit(2)

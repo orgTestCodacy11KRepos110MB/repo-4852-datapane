@@ -1,4 +1,5 @@
 """
+TODO - move to root
 Datapane helper functions to improve the Datapane UX in IPython notebooks
 """
 from __future__ import annotations
@@ -11,17 +12,41 @@ import typing
 from contextlib import suppress
 from pathlib import Path
 
-from datapane.client import DPError
-from datapane.client.analytics import capture_event
-from datapane.client.utils import display_msg, is_jupyter
+from .analytics import capture_event
+from .utils import DPClientError, display_msg
 
 if typing.TYPE_CHECKING:
-    from .report.blocks import BaseElement
+    from datapane.blocks import BaseElement
+
+
+###############################################################################
+# Env checks
+def is_jupyter() -> bool:
+    """Checks if inside ipython shell inside browser"""
+    try:
+        return get_ipython().__class__.__name__ == "ZMQInteractiveShell"  # type: ignore [name-defined]  # noqa: F821
+    except Exception:
+        return False
+
+
+# TODO - this should be an enum
+def get_environment_type() -> str:
+    """Try and get the name of the IDE the script is running in"""
+    if "PYCHARM_HOSTED" in os.environ:
+        return "pycharm"
+    if "google.colab" in sys.modules:
+        return "colab"
+    elif "VSCODE_PID" in os.environ:
+        return "vscode"
+    elif is_jupyter():
+        return "jupyter"
+
+    return "unknown"
 
 
 def block_to_iframe(block: BaseElement) -> str:
     """Convert a Block to HTML, placed within an iFrame"""
-    from .report.core import App
+    from .report.app import App
 
     app = App(block)
     block_html_string = app.stringify(template_name="ipython_template.html")
@@ -45,9 +70,9 @@ def get_jupyter_notebook_json() -> dict:
         nb_path = ipynbname.path()
         notebook_json = read_notebook_json(nb_path)
     except IndexError:
-        raise DPError("Environment not supported.")
+        raise DPClientError("Environment not supported.")
     except FileNotFoundError as e:
-        raise DPError(
+        raise DPClientError(
             "Notebook not found. This command must be executed from within a Jupyter notebook environment."
         ) from e
 
@@ -71,12 +96,12 @@ def get_vscode_notebook_json() -> dict:
             # VSCode path name in sesssion is suffixed with -jvsc-[identifier]
             nb_path = Path(str(nb_path).split("-jvsc-")[0] + ".ipynb")
         except Exception as e:
-            raise DPError("Environment not supported.") from e
+            raise DPClientError("Environment not supported.") from e
 
     try:
         notebook_json = read_notebook_json(nb_path)
     except FileNotFoundError as e:
-        raise DPError("Notebook not found. This command must be executed from within a notebook environment.") from e
+        raise DPClientError("Notebook not found. This command must be executed from within a notebook environment.") from e
 
     return notebook_json
 
@@ -94,7 +119,7 @@ def get_colab_notebook_json() -> dict:
     try:
         auth.authenticate_user()
     except Exception as e:
-        raise DPError(
+        raise DPClientError(
             "Google Drive authentication failed. Please allow this notebook to access your Google Drive."
         ) from e
 
@@ -124,7 +149,7 @@ def get_notebook_json() -> dict:
     elif is_jupyter():
         notebook_json = get_jupyter_notebook_json()
     else:
-        raise DPError("Can't detect notebook environment")
+        raise DPClientError("Can't detect notebook environment")
 
     return notebook_json
 
@@ -176,13 +201,13 @@ def cells_to_blocks(opt_out: bool = True) -> typing.List[BaseElement]:
         if (opt_out and "dp-exclude" not in tags) or (not opt_out and "dp-include" in tags):
 
             if cell["cell_type"] == "markdown":
-                from .report.blocks import Text
+                from ...blocks.text import Text
 
                 markdown_block: BaseElement = Text("".join(cell["source"]))
                 blocks.append(markdown_block)
             elif cell["cell_type"] == "code":
                 if "dp-show-code" in tags:
-                    from .report.blocks import Code
+                    from ...blocks.text import Code
 
                     code_block: BaseElement = Code("".join(cell["source"]))
                     blocks.append(code_block)

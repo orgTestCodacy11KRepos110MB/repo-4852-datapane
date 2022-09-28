@@ -3,12 +3,16 @@ import datapane as dp
 import altair as alt
 from vega_datasets import data
 
+import datapane.blocks.asset
+import datapane.blocks.layout
+import datapane.blocks.text
+
 df = data.iris()
 fig = alt.Chart(df).mark_point().encode(x="petalLength:Q", y="petalWidth:Q", color="species:N")
 
 
 report = dp.App(
-    dp.Text(
+    datapane.blocks.inline_text.Text(
         """
 # Hello world
 
@@ -19,14 +23,14 @@ Reports can be exported as standalone HTML documents or hosted on Datapane Cloud
 This [_Hello world_](https://github.com/datapane/datapane/blob/master/src/datapane/resources/templates/hello/hello.py) page itself was generated with Datapane!
         """
     ),
-    dp.Text(
+    datapane.blocks.inline_text.Text(
         """
 ## Our first Report
 
 Let’s create a simple report! In this scenario, we have a dataset and visualization that we need to share with our colleagues.
         """
     ),
-    dp.Code(
+    datapane.blocks.inline_text.Code(
         """
 import altair as alt
 from vega_datasets import data
@@ -39,12 +43,12 @@ fig = (
 )
         """
     ),
-    dp.Text(
+    datapane.blocks.inline_text.Text(
         """
         Datapane makes generating a report simple – all it takes is the following.
         """
     ),
-    dp.Code(
+    datapane.blocks.inline_text.Code(
         """
 import datapane as dp
 
@@ -56,14 +60,14 @@ report = dp.App(
 report.save(path="my_report.html")
         """
     ),
-    dp.Text(
+    datapane.blocks.inline_text.Text(
         """
 This will generate an HTML file, `my_report.html`, containing our interactive report:
         """
     ),
-    dp.Plot(fig),
-    dp.DataTable(df),
-    dp.Text(
+    datapane.blocks.asset.Plot(fig),
+    datapane.blocks.asset.DataTable(df),
+    datapane.blocks.inline_text.Text(
         """
 We can now open our standalone HTML report with a web browser and email it to our colleagues who can do the same. 
 
@@ -76,21 +80,21 @@ Datapane Cloud is free! Share reports privately, or embed them into platforms li
 To sign up go to https://datapane.com/accounts/signup/ and then login by doing the following
 """
     ),
-    dp.Select(
-        dp.Code("$ datapane login", label="Terminal"),
-        dp.Code("!datapane login", label="Python/Jupyter"),
+    datapane.blocks.layout.Select(
+        datapane.blocks.inline_text.Code("$ datapane login", label="Terminal"),
+        datapane.blocks.inline_text.Code("!datapane login", label="Python/Jupyter"),
     ),
-    dp.Text(
+    datapane.blocks.inline_text.Text(
         """
 Once we've logged in, [the API key](https://datapane.com/settings/) will be stored in the current environment.
         """
     ),
-    dp.Code(
+    datapane.blocks.inline_text.Code(
         """
 report.upload(name="My report")
         """
     ),
-    dp.Text(
+    datapane.blocks.inline_text.Text(
         """
 By using `upload()` in place of `save()`, our report is uploaded to Datapane Cloud and a shareable link is generated. 
 

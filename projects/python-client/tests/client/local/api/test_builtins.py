@@ -2,6 +2,7 @@
 from glom import T, glom
 
 import datapane as dp
+import datapane.blocks.layout
 
 from ....client.e2e.common import gen_df
 from .test_reports import assert_report, element_to_str, md_block
@@ -16,7 +17,7 @@ def test_demo_report():
 
 def test_add_code():
     b = dp.builtins.add_code(md_block, "print(1)")
-    assert isinstance(b, dp.Select)
+    assert isinstance(b, datapane.blocks.layout.Select)
     assert glom(b, ("blocks", ["_tag"])) == ["Text", "Code"]
     assert "print(1)" in element_to_str(b)
 

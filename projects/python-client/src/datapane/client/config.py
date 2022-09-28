@@ -16,9 +16,7 @@ from typing import Optional
 import click
 from furl import furl
 
-from datapane import _IN_PYTEST, log
-
-from .utils import InvalidTokenError
+from .utils import IN_PYTEST, InvalidTokenError, log
 
 APP_NAME = "datapane"
 APP_DIR = Path(getenv("DATAPANE_APP_DIR", click.get_app_dir(APP_NAME)))
@@ -214,7 +212,7 @@ def check_get_config() -> Config:
         _config = init()
         if _config.token == DEFAULT_TOKEN:
             # still don't have a token set, open up the browser
-            if not _IN_PYTEST:
+            if not IN_PYTEST:
                 f = furl(path="/accounts/login/", origin=_config.server)
                 webbrowser.open(url=str(f), new=2)
             raise InvalidTokenError(

@@ -8,6 +8,8 @@ import pytest
 import requests
 
 import datapane as dp
+import datapane.blocks.asset
+import datapane.blocks.text
 from datapane.client import config as c
 
 from ..local.api.test_reports import gen_legacy_report_simple, gen_report_complex_with_files, gen_report_simple
@@ -151,7 +153,7 @@ def test_full_report(tmp_path: Path, shared_datadir: Path, monkeypatch):
     description = gen_description()
     source_url = "https://github.com/datapane/datapane"
     # create a basic report
-    m = dp.Text("hello world!!")
+    m = datapane.blocks.inline_text.Text("hello world!!")
 
     # Asset tests
     lis = [1, 2, 3]
@@ -161,12 +163,12 @@ def test_full_report(tmp_path: Path, shared_datadir: Path, monkeypatch):
     # create the DP
     fn = tmp_path / "json_list.json"
     fn.write_text(data=json_list)
-    file_asset = dp.Attachment(file=fn)
-    plot_asset = dp.Plot(data=plot)
-    list_asset = dp.Attachment(data=lis)
-    media_asset = dp.Media(file=Path("datapane-logo.png"))
-    df_asset = dp.DataTable(df=df, caption="Our Dataframe")
-    divider = dp.Divider()
+    file_asset = datapane.blocks.asset.Attachment(file=fn)
+    plot_asset = datapane.blocks.asset.Plot(data=plot)
+    list_asset = datapane.blocks.asset.Attachment(data=lis)
+    media_asset = datapane.blocks.asset.Media(file=Path("datapane-logo.png"))
+    df_asset = datapane.blocks.asset.DataTable(df=df, caption="Our Dataframe")
+    divider = datapane.blocks.inline_text.Divider()
     empty_block = dp.Empty(name="empty-block")
     dp_report = dp.App(m, file_asset, df_asset, plot_asset, list_asset, divider, empty_block, media_asset)
     dp.upload(dp_report, name=name, description=description, source_url=source_url)
@@ -248,10 +250,10 @@ def test_complex_df_report():
     df_desc = index_df.describe()
     df_desc_2 = df_desc.reset_index()
 
-    tz_t = dp.DataTable(tz_df)
-    index_t = dp.DataTable(index_df)
-    df_desc_t = dp.DataTable(df_desc)
-    df_desc_2_t = dp.DataTable(df_desc_2)
+    tz_t = datapane.blocks.asset.DataTable(tz_df)
+    index_t = datapane.blocks.asset.DataTable(index_df)
+    df_desc_t = datapane.blocks.asset.DataTable(df_desc)
+    df_desc_2_t = datapane.blocks.asset.DataTable(df_desc_2)
 
     with deletable(dp.App(tz_t, index_t, df_desc_t, df_desc_2_t)) as dp_report:
         dp.upload(dp_report, name=gen_name())

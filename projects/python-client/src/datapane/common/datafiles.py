@@ -70,7 +70,10 @@ class CSVFormat(DFFormatter):
 
     @staticmethod
     def load_file(fn: PathOrFile) -> pd.DataFrame:
-        fn = cast(str, fn)
+        # TODO - fix
+        if not isinstance(fn, str):
+            raise ValueError("FObj not yet supported")
+
         try:
             return pd.read_csv(fn, engine="c", sep=",")
         except UnicodeDecodeError:

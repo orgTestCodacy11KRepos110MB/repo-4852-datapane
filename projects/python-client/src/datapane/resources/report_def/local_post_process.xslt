@@ -20,7 +20,7 @@
   <!-- Drop blocks if embedded -->
   <!-- Disabled for now as local report rendering handles Blocks -->
   <!--
-  <xsl:template match="/Report/Pages//Blocks">
+  <xsl:template match="/View//Blocks">
     <xsl:choose>
       <xsl:when test="$embedded">
         <xsl:apply-templates/>
@@ -32,7 +32,6 @@
         </xsl:copy>
       </xsl:otherwise>
     </xsl:choose>
-
   </xsl:template>
   -->
 

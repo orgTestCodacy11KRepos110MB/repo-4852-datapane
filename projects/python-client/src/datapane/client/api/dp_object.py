@@ -5,6 +5,8 @@ and accessible by the client API
 
 ..note:: This module is not used directly
 """
+from __future__ import annotations
+
 import json
 import os
 import pprint
@@ -24,7 +26,7 @@ from datapane.common import JSON, URL, ArrowFormat, SDict
 from datapane.common.df_processor import to_df
 
 from . import Resource
-from .common import DPTmpFile, FileList
+from .common import DPTmpFile, FileAttachmentList
 
 __all__ = ["DPObjectRef"]
 
@@ -131,14 +133,16 @@ class DPObjectRef:
 
     @classmethod
     def post_with_files(
-        cls: Type[U], files: FileList = None, file: t.Optional[Path] = None, overwrite: bool = False, **data: JSON
+        cls: Type[U], files: FileAttachmentList = None, file: t.Optional[Path] = None, overwrite: bool = False, **data: JSON
     ) -> U:
         # TODO - move into UploadedFileMixin ?
         if file:
-            # wrap up a single file into a FileList
-            files = dict(uploaded_file=[file])
-
-        res = Resource(cls.endpoint).post_files(files=files, overwrite=overwrite, **data)
+            with file.open("b") as f:
+                # wrap up a single file into a FileList
+                files: FileAttachmentList = dict(uploaded_file=[f])
+                res = Resource(cls.endpoint).post_files(files=files, overwrite=overwrite, **data)
+        else:
+            res = Resource(cls.endpoint).post_files(files=files, overwrite=overwrite, **data)
         return cls(dto=res)
 
     @classmethod

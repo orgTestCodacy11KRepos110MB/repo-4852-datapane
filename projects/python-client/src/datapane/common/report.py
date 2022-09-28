@@ -17,6 +17,7 @@ local_report_def = ir.files("datapane.resources.report_def")
 rng_validator = etree.RelaxNG(file=str(local_report_def / "full_schema.rng"))
 
 dp_namespace: str = "https://datapane.com/schemas/report/1/"
+ViewXML = str
 
 
 def load_doc(x: str) -> etree._Element:

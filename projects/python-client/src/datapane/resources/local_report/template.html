@@ -33,14 +33,25 @@
       </script>
     {% else %}
       <script type="module">
-        import { mountReport } from "{{ cdn_base }}/report/index.es.js";
-        mountReport(window.reportProps);
+        import { mountReport, iframeResize, contentWindowJs } from "http://localhost:8090/static/report/index.es.js";
+        window.addEventListener("DOMContentLoaded", () => {
+          document.querySelector("#resize-target").srcdoc = `
+              <!DOCTYPE html>
+                <html>
+                    <body style="background: red;">
+                        <script>${contentWindowJs}<\/script>
+                        <div>Hey Shahin! The iframe height was adjusted to fit this red div element</div>
+                      </body>
+                </html>
+         `;
+          iframeResize({ log: true }, "#resize-target")
+        });
       </script>
     {% endif %}
   </head>
   <body>
     <main class="{{ report_width_class }} w-full mx-auto">
-      <div id="report" class="w-full pb-12"></div>
+      <iframe id="resize-target"></iframe>
     </main>
     <div style="position: fixed; bottom: 0; width: 100%; z-index: 3;">
       <nav class="bg-gray-200 border-t border-gray-300">

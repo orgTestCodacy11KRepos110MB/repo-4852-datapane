@@ -6,6 +6,8 @@ import "../base/src/styles/tailwind.css";
 import "highlight.js/styles/stackoverflow-light.css";
 import "codemirror/lib/codemirror.css";
 import "codemirror/theme/eclipse.css";
+import contentWindowJs from "iframe-resizer/js/iframeResizer.contentWindow.js?raw";
+import iframeResize from "iframe-resizer/js/iframeResizer";
 
 customElements.define("x-table-block", defineCustomElement(TableBlock));
 
@@ -23,4 +25,4 @@ const mountReport = (props: any) => {
     return app;
 };
 
-export { mountReport, parseElementProps };
+export { mountReport, parseElementProps, iframeResize, contentWindowJs };

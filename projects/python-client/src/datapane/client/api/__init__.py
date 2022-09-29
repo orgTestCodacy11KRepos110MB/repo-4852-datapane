@@ -12,9 +12,11 @@ The core document APIs, these are found in `datapane.client.api.report`, includi
 
   - `datapane.client.api.report.core.App`
   - Layout Blocks
-    - `datapane.client.api.report.blocks.Page`
     - `datapane.client.api.report.blocks.Group`
     - `datapane.client.api.report.blocks.Select`
+  - Interactive Blocks
+    - `datapane.client.api.report.blocks.Interactive`
+    - `datapane.client.api.report.blocks.Empty`
   - Data Blocks
     - `datapane.client.api.report.blocks.Plot`
     - `datapane.client.api.report.blocks.Table`
@@ -25,15 +27,6 @@ The core document APIs, these are found in `datapane.client.api.report`, includi
     - `datapane.client.api.report.blocks.Text`
     - `datapane.client.api.report.blocks.Code`
     - `datapane.client.api.report.blocks.HTML`
-
-### Datapane Enterprise (beta)
-
-Additional API docs are found in `datapane.client.api.teams` that provide building, deployment, and sharing of data analytics apps and workflows
-
-  - `datapane.client.api.teams.File`
-  - `datapane.client.api.teams.Environment`
-  - `datapane.client.api.teams.LegacyApp`
-  - `datapane.client.api.teams.Schedule`
 
 
 ..note::  These docs describe the latest version of the datapane API available on [pypi](https://pypi.org/project/datapane/)
@@ -60,8 +53,8 @@ from .report.blocks import (
     Empty,
     Formula,
     Group,
+    Interactive,
     Media,
-    Page,
     Plot,
     Select,
     SelectType,
@@ -69,17 +62,7 @@ from .report.blocks import (
     Text,
     Toggle,
 )
-from .report.core import (
-    App,
-    AppFormatting,
-    AppWidth,
-    FontChoice,
-    PageLayout,
-    Report,
-    ReportFormatting,
-    ReportWidth,
-    TextAlignment,
-)
+from .report.core import App, AppFormatting, AppWidth, FontChoice, PageLayout, TextAlignment, View
 from .report.processors import Processor, build, save_report, serve, upload
 from .runtime import Params, Result, _report, _reset_runtime, by_datapane
 from .teams import Environment, File, LegacyApp, Run, Schedule
@@ -109,11 +92,10 @@ __all__ = [
     "Empty",
     "Formula",
     "Group",
+    "Interactive",
     "LegacyApp",
     "Media",
-    "Page",
     "Plot",
-    "Report",
     "Select",
     "SelectType",
     "Table",
@@ -122,9 +104,8 @@ __all__ = [
     "FontChoice",
     "PageLayout",
     "Processor",
-    "ReportFormatting",
-    "ReportWidth",
     "TextAlignment",
+    "View",
     "Params",
     "Result",
     "_report",

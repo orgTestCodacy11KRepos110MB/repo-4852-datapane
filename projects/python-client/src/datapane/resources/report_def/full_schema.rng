@@ -123,7 +123,7 @@
       </attribute>
       <attribute name="swap">
         <choice>
-          <value type="string" datatypeLibrary="">swap</value>
+          <value type="string" datatypeLibrary="">replace</value>
           <value type="string" datatypeLibrary="">prepend</value>
           <value type="string" datatypeLibrary="">append</value>
         </choice>

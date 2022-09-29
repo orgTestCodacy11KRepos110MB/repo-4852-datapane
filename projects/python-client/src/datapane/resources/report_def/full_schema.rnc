@@ -70,7 +70,7 @@ Interactive = element Interactive {
   # submit has hard-coded "Go" button
   # schedule is hard-coded to 1m for now
   attribute trigger { string "submit" | string "schedule" },
-  attribute swap { string "swap" | string "prepend" | string "append" },
+  attribute swap { string "replace" | string "prepend" | string "append" },
 
   # internal controls
   Controls

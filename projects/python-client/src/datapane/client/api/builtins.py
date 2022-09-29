@@ -3,7 +3,6 @@ Datapane built-in helper functions to make creating your reports a bit simpler a
 """
 import random
 import typing as t
-from copy import deepcopy
 from pathlib import Path
 
 import altair as alt
@@ -14,7 +13,7 @@ import pandas as pd
 from datapane.common import NPath
 
 from .report import blocks as b
-from .report.core import App
+from .report.core import App, View
 
 __all__ = [
     "add_code",
@@ -27,18 +26,18 @@ __all__ = [
     "gen_plot",
 ]
 
-
-def _map_page_blocks(page: b.Page, f: t.Callable[[b.BlockList], b.BlockList]) -> b.Page:
-    page.blocks = f(page.blocks)
-    return page
-
-
-def _map_report_pages(r: App, f: t.Callable[[b.Page], b.Page], all_pages: bool = True) -> App:
-    def g(i: int, page: b.Page) -> b.Page:
-        return f(page) if all_pages or i == 0 else page
-
-    r.pages = [g(*x) for x in enumerate(r.pages)]
-    return r
+#
+# def _map_page_blocks(page: b.Page, f: t.Callable[[b.BlockList], b.BlockList]) -> b.Page:
+#     page.blocks = f(page.blocks)
+#     return page
+#
+#
+# def _map_report_pages(r: App, f: t.Callable[[b.Page], b.Page], all_pages: bool = True) -> App:
+#     def g(i: int, page: b.Page) -> b.Page:
+#         return f(page) if all_pages or i == 0 else page
+#
+#     r.pages = [g(*x) for x in enumerate(r.pages)]
+#     return r
 
 
 def add_code(block: b.BlockOrPrimitive, code: str, language: str = "python") -> b.Select:
@@ -86,7 +85,7 @@ def build_md_report(
         b_text = b.Text(text=t.cast(str, text_or_file))
 
     group = b_text.format(*args, **kwargs)
-    return App(b.Page(group))
+    return App(View(group))
 
 
 def add_header(report: App, header: b.BlockOrPrimitive, all_pages: bool = True) -> App:
@@ -101,11 +100,11 @@ def add_header(report: App, header: b.BlockOrPrimitive, all_pages: bool = True) 
     Returns:
         A modified report with the header applied
     """
-
-    report = deepcopy(report)
-    return _map_report_pages(
-        report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=[header] + p.blocks)]), all_pages=all_pages
-    )
+    return None
+    # report = deepcopy(report)
+    # return _map_report_pages(
+    #     report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=[header] + p.blocks)]), all_pages=all_pages
+    # )
 
 
 def add_footer(report: App, footer: b.BlockOrPrimitive, all_pages: bool = True) -> App:
@@ -120,10 +119,11 @@ def add_footer(report: App, footer: b.BlockOrPrimitive, all_pages: bool = True) 
     Returns:
         A modified report with the footer applied
     """
-    report = deepcopy(report)
-    return _map_report_pages(
-        report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=p.blocks + [footer])]), all_pages=all_pages
-    )
+    return None
+    # report = deepcopy(report)
+    # return _map_report_pages(
+    #     report, lambda p: _map_page_blocks(p, lambda blocks: [b.Group(blocks=p.blocks + [footer])]), all_pages=all_pages
+    # )
 
 
 def gen_df(dim: int = 4) -> pd.DataFrame:
@@ -259,7 +259,7 @@ Additionally layout blocks provide the ability nest blocks to create groups of c
         b.Formula(r"\frac{1}{\sqrt{x^2 + 1}}", caption="Simple formula"),
         columns=0,
     )
-    page_1 = b.Page(
+    page_1 = b.Select(
         b.Text(basics).format(table=b.Table(gen_table_df(), caption="A table"), plot=vega_sine, other=other),
         title="Intro",
     )
@@ -313,7 +313,7 @@ dp.Select(group1, df)
     select2 = b.Select(vega_bar, vega_sine, type=b.SelectType.DROPDOWN)
 
     nested = b.Select(group1, b.Table(gen_table_df()))
-    page_2 = b.Page(
+    page_2 = b.Select(
         b.Text(layout).format(group1=group1, group2=group2, select1=select1, select2=select2, nested=nested),
         title="Layout",
     )
@@ -412,8 +412,8 @@ dp.Attachment(data=[1,2,3])
         columns=2,
     )
 
-    page_3 = b.Page(
+    page_3 = b.Select(
         b.Text(adv_blocks).format(plots=plots, tables=tables, text=text, embed=embed, media=media), title="Blocks"
     )
 
-    return App(page_1, page_2, page_3)
+    return App(View(page_1, page_2, page_3))

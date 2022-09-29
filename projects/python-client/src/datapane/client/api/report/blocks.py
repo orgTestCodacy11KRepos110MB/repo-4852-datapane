@@ -7,8 +7,9 @@ Describes the collection of `Block` objects that can be combined together to mak
 import dataclasses as dc
 import enum
 import re
+import secrets
 import typing as t
-from abc import ABC, abstractmethod
+from abc import ABC
 from base64 import b64encode
 from collections import deque
 from functools import reduce
@@ -19,6 +20,7 @@ from dominate.dom_tag import dom_tag
 from glom import glom
 from lxml import etree
 from lxml.builder import ElementMaker
+from lxml.etree import Element
 from pandas.io.formats.style import Styler
 
 from datapane.client import DPError
@@ -34,12 +36,12 @@ E = ElementMaker()  # XML Tag Factory
 __all__ = [
     "Attachment",
     "BaseElement",
-    "Page",
     "Group",
     "Select",
     "Toggle",
     "SelectType",
     "Empty",
+    "Interactive",
     "Table",
     "DataTable",
     "DataBlock",
@@ -65,6 +67,12 @@ __pdoc__ = {
 }
 
 
+BlockId = str
+Block = t.Union["Group", "Select", "DataBlock", "Empty", "Interactive"]
+BlockOrPrimitive = t.Union[Block, t.Any]  # TODO - expand
+BlockList = t.List[Block]
+
+
 @dc.dataclass
 class BuilderState:
     """Hold state whilst building the Report XML document"""
@@ -78,6 +86,7 @@ class BuilderState:
     attachments: t.List[Path] = dc.field(default_factory=list)
 
     def add_element(self, block: "BaseElement", e: etree.Element, f: t.Optional[Path] = None) -> "BuilderState":
+        """Add an element to the list of nodes at the current XML tree location"""
         if block.name:
             e.set("name", block.name)
 
@@ -90,6 +99,53 @@ class BuilderState:
         return self
 
 
+class View:
+    blocks: BlockList
+    fragment: bool = False
+
+    def __init__(
+        self,
+        *arg_blocks: BlockOrPrimitive,
+        blocks: t.List[BlockOrPrimitive] = None,
+    ):
+        blocks = blocks or list(arg_blocks)
+        if len(blocks) == 0:
+            raise DPError("Can't create View with 0 objects")
+        self.blocks = [wrap_block(b) for b in blocks]
+
+    @classmethod
+    def empty(cls) -> "View":
+        return View(blocks=[Empty()])
+
+    def __add__(self, other: "View") -> "View":
+        x = self.blocks + other.blocks
+        return View(blocks=x)
+
+    def __and__(self, other: "View") -> "View":
+        x = self.blocks + other.blocks
+        return View(blocks=x)
+
+    def __or__(self, other: "View") -> "View":
+        x = Group(blocks=self.blocks) if len(self.blocks) > 1 else self.blocks[0]
+        y = Group(blocks=other.blocks) if len(other.blocks) > 1 else other.blocks[0]
+        z = Group(x, y, columns=2)
+        return View(z)
+
+    def _to_xml(self, embedded: bool, served: bool) -> t.Tuple[Element, t.List[Path]]:
+        # kick-off the recursive pass of the node-tree
+        s = BuilderState(embedded, served)
+        _s = reduce(lambda _s, b: b._to_xml(_s), self.blocks, s)
+
+        # create top-level structure
+        view_doc: Element = E.View(
+            # E.Internal(),
+            *_s.elements,
+            **mk_attribs(version="1", fragment=self.fragment),
+        )
+
+        return view_doc, _s.attachments
+
+
 class BaseElement(ABC):
     """Base Block class - subclassed by all Block types
 
@@ -99,9 +155,9 @@ class BaseElement(ABC):
     _attributes: t.Dict[str, str]
     _tag: str
     _block_name: str
-    name: t.Optional[str] = None
+    name: t.Optional[BlockId] = None
 
-    def __init__(self, name: str = None, **kwargs):
+    def __init__(self, name: BlockId = None, **kwargs):
         """
         Args:
             name: A unique name to reference the block, used when referencing blocks via the report editor and when embedding
@@ -123,7 +179,7 @@ class BaseElement(ABC):
                 log.warning(f"{key} must be less than {max_length} characters, truncating")
                 # raise DPError(f"{key} must be less than {max_length} characters, '{x}'")
 
-    def _set_name(self, name: str = None):
+    def _set_name(self, name: BlockId = None):
         if name:
             # validate name
             if not is_valid_id(name):
@@ -134,15 +190,10 @@ class BaseElement(ABC):
     def _add_attributes(self, **kwargs):
         self._attributes.update(mk_attribs(**kwargs))
 
-    @abstractmethod
     def _to_xml(self, s: BuilderState) -> BuilderState:
-        pass
-
-
-Block = t.Union["Group", "Select", "DataBlock", "Empty"]
-BlockOrPrimitive = t.Union[Block, t.Any]  # TODO - expand
-PageOrPrimitive = t.Union["Page", BlockOrPrimitive]
-BlockList = t.List[Block]
+        """Base implementation - just created an empty tag including all the intitial attributes"""
+        _E = getattr(E, self._tag)
+        return s.add_element(self, _E(**self._attributes))
 
 
 class SelectType(enum.Enum):
@@ -151,8 +202,8 @@ class SelectType(enum.Enum):
 
 
 def wrap_block(b: BlockOrPrimitive) -> Block:
-    if isinstance(b, Page):
-        raise DPError("Page objects can only be at the top-level")
+    # if isinstance(b, Page):
+    #     raise DPError("Page objects can only be at the top-level")
     if not isinstance(b, BaseElement):
         # import here as a very slow module due to nested imports
         from ..files import convert
@@ -196,43 +247,43 @@ class LayoutBlock(BaseElement):
         return _s3
 
 
-class Page(LayoutBlock):
-    """
-    All `datapane.client.api.report.core.Report`s consist of a list of Pages.
-    A Page itself is a Block, but is only allowed at the top-level and cannot be nested.
-
-    Page objects take a list of blocks which make up the Page.
-
-    ..note:: You can pass ordinary Blocks to a page, e.g. Plots or DataTables.
-      Additionally, if a Python object is passed, e.g. a Dataframe, Datapane will attempt to convert it automatically.
-    """
-
-    # NOTE - technically a higher-level layoutblock but we keep here to maximise reuse
-    _tag = "Page"
-
-    def __init__(
-        self,
-        *arg_blocks: BlockOrPrimitive,
-        blocks: t.List[BlockOrPrimitive] = None,
-        title: str = None,
-        name: str = None,
-    ):
-        """
-        Args:
-            *arg_blocks: Blocks to add to Page
-            blocks: Allows providing the report blocks as a single list
-            title: The page title (optional)
-            name: A unique id for the Page to aid querying (optional)
-
-        ..tip:: Page can be passed using either arg parameters or the `blocks` kwarg, e.g.
-          `dp.Page(group, select)` or `dp.Group(blocks=[group, select])`
-        """
-        super().__init__(*arg_blocks, blocks=blocks, label=title, name=name)
-        # error checking
-        if len(self.blocks) < 1:
-            raise DPError("Can't create Page with no objects")
-        if any(isinstance(b, Page) for b in self.blocks):
-            raise DPError("Page objects can only be at the top-level")
+# class Page(LayoutBlock):
+#     """
+#     All `datapane.client.api.report.core.Report`s consist of a list of Pages.
+#     A Page itself is a Block, but is only allowed at the top-level and cannot be nested.
+#
+#     Page objects take a list of blocks which make up the Page.
+#
+#     ..note:: You can pass ordinary Blocks to a page, e.g. Plots or DataTables.
+#       Additionally, if a Python object is passed, e.g. a Dataframe, Datapane will attempt to convert it automatically.
+#     """
+#
+#     # NOTE - technically a higher-level layoutblock but we keep here to maximise reuse
+#     _tag = "Page"
+#
+#     def __init__(
+#         self,
+#         *arg_blocks: BlockOrPrimitive,
+#         blocks: t.List[BlockOrPrimitive] = None,
+#         title: str = None,
+#         name: BlockId = None,
+#     ):
+#         """
+#         Args:
+#             *arg_blocks: Blocks to add to Page
+#             blocks: Allows providing the report blocks as a single list
+#             title: The page title (optional)
+#             name: A unique id for the Page to aid querying (optional)
+#
+#         ..tip:: Page can be passed using either arg parameters or the `blocks` kwarg, e.g.
+#           `dp.Page(group, select)` or `dp.Group(blocks=[group, select])`
+#         """
+#         super().__init__(*arg_blocks, blocks=blocks, label=title, name=name)
+#         # error checking
+#         if len(self.blocks) < 1:
+#             raise DPError("Can't create Page with no objects")
+#         if any(isinstance(b, Page) for b in self.blocks):
+#             raise DPError("Page objects can only be at the top-level")
 
 
 class Select(LayoutBlock):
@@ -254,8 +305,9 @@ class Select(LayoutBlock):
         *arg_blocks: BlockOrPrimitive,
         blocks: t.List[BlockOrPrimitive] = None,
         type: t.Optional[SelectType] = None,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
+        title: str = None,
     ):
         """
         Args:
@@ -269,6 +321,7 @@ class Select(LayoutBlock):
           `dp.Select(table, plot, type=dp.SelectType.TABS)` or `dp.Group(blocks=[table, plot])`
         """
         _type = glom(type, "value", default=None)
+        label = label or title
         super().__init__(*arg_blocks, blocks=blocks, name=name, label=label, type=_type)
         if len(self.blocks) < 2:
             raise DPError("Can't create Select with less than 2 objects")
@@ -291,7 +344,7 @@ class Group(LayoutBlock):
         self,
         *arg_blocks: BlockOrPrimitive,
         blocks: t.List[BlockOrPrimitive] = None,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
         columns: int = 1,
     ):
@@ -322,7 +375,7 @@ class Toggle(LayoutBlock):
         self,
         *arg_blocks: BlockOrPrimitive,
         blocks: t.List[BlockOrPrimitive] = None,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
     ):
         """
@@ -354,12 +407,41 @@ class Empty(BaseElement):
 
     _tag = "Empty"
 
-    def __init__(self, name: str):
+    def __init__(self, name: BlockId = None):
+        if name is None:
+            name = f"id-{secrets.token_urlsafe(8)}"
         super().__init__(name=name)
 
+
+class Controls:
+    title: str = "Test Controls panel"
+
+    def _to_xml(self) -> etree.Element:
+        # TODO - create the params here...
+        return E.Controls(title=self.title)
+
+
+class Interactive(BaseElement):
+    """
+    An interactive block that allows for dynamic views based on functions
+    """
+
+    _tag = "Interactive"
+    controls: Controls
+
+    def __init__(self, function: t.Callable, target: BlockId, controls: Controls, name: BlockId = None):
+        self.controls = controls
+        # basic attributes
+        super().__init__(name=name, target=target, title="Test Interactive Block", trigger="submit", swap="replace")
+
     def _to_xml(self, s: BuilderState) -> BuilderState:
-        _E = getattr(E, self._tag)
-        return s.add_element(self, _E(**self._attributes))
+        # add additional attributes
+        self._attributes.update(
+            function="foo",
+        )
+
+        e = E.Interactive(self.controls._to_xml(), **self._attributes)
+        return s.add_element(self, e)
 
 
 class DataBlock(BaseElement):
@@ -379,7 +461,7 @@ class EmbeddedTextBlock(DataBlock):
 
     content: str
 
-    def __init__(self, content: str, name: str = None, **kwargs):
+    def __init__(self, content: str, name: BlockId = None, **kwargs):
         super().__init__(name, **kwargs)
         self.content = content.strip()
 
@@ -400,7 +482,7 @@ class Text(EmbeddedTextBlock):
 
     _tag = "Text"
 
-    def __init__(self, text: str = None, file: NPath = None, name: str = None, label: str = None):
+    def __init__(self, text: str = None, file: NPath = None, name: BlockId = None, label: str = None):
         """
         Args:
             text: The markdown formatted text, use triple-quotes, (`\"\"\"# My Title\"\"\"`) to create multi-line markdown text
@@ -464,7 +546,9 @@ class Code(EmbeddedTextBlock):
 
     _tag = "Code"
 
-    def __init__(self, code: str, language: str = "python", caption: str = None, name: str = None, label: str = None):
+    def __init__(
+        self, code: str, language: str = "python", caption: str = None, name: BlockId = None, label: str = None
+    ):
         """
         Args:
             code: The source code
@@ -483,7 +567,7 @@ class HTML(EmbeddedTextBlock):
 
     _tag = "HTML"
 
-    def __init__(self, html: t.Union[str, dom_tag], name: str = None, label: str = None):
+    def __init__(self, html: t.Union[str, dom_tag], name: BlockId = None, label: str = None):
         """
         Args:
             html: The HTML fragment to embed - can be a string or a [dominate](https://github.com/Knio/dominate/) tag
@@ -500,7 +584,7 @@ class Formula(EmbeddedTextBlock):
 
     _tag = "Formula"
 
-    def __init__(self, formula: str, caption: str = None, name: str = None, label: str = None):
+    def __init__(self, formula: str, caption: str = None, name: BlockId = None, label: str = None):
         r"""
         Args:
             formula: The formula to embed, using LaTeX format (use raw strings)
@@ -521,7 +605,7 @@ class Embed(EmbeddedTextBlock):
 
     _tag = "Embed"
 
-    def __init__(self, url: str, width: int = 960, height: int = 540, name: str = None, label: str = None):
+    def __init__(self, url: str, width: int = 960, height: int = 540, name: BlockId = None, label: str = None):
         """
         Args:
             url: The URL of the resource to be embedded
@@ -558,7 +642,7 @@ class BigNumber(DataBlock):
         prev_value: t.Optional[NumberValue] = None,
         is_positive_intent: t.Optional[bool] = None,
         is_upward_change: t.Optional[bool] = None,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
     ):
         """
@@ -591,9 +675,6 @@ class BigNumber(DataBlock):
             label=label,
         )
 
-    def _to_xml(self, s: BuilderState) -> BuilderState:
-        return s.add_element(self, E.BigNumber(**self._attributes))
-
 
 class AssetBlock(DataBlock):
     """
@@ -604,7 +685,7 @@ class AssetBlock(DataBlock):
     file_attribs: SSDict = None
     caption: t.Optional[str] = None
 
-    def __init__(self, file: Path, caption: str = None, name: str = None, label: str = None, **kwargs):
+    def __init__(self, file: Path, caption: str = None, name: BlockId = None, label: str = None, **kwargs):
         # storing objects for delayed upload
         super().__init__(name=name, label=label, **kwargs)
         self.file = Path(file)
@@ -669,7 +750,7 @@ class Media(AssetBlock):
     def __init__(
         self,
         file: NPath,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
         caption: t.Optional[str] = None,
     ):
@@ -701,7 +782,7 @@ class Attachment(AssetBlock):
         file: t.Optional[NPath] = None,
         filename: t.Optional[str] = None,
         caption: t.Optional[str] = None,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
     ):
         """
@@ -738,7 +819,7 @@ class Plot(AssetBlock):
         caption: t.Optional[str] = None,
         responsive: bool = True,
         scale: float = 1.0,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
     ):
         """
@@ -768,7 +849,11 @@ class Table(AssetBlock):
     _tag = "Table"
 
     def __init__(
-        self, data: t.Union[pd.DataFrame, Styler], caption: t.Optional[str] = None, name: str = None, label: str = None
+        self,
+        data: t.Union[pd.DataFrame, Styler],
+        caption: t.Optional[str] = None,
+        name: BlockId = None,
+        label: str = None,
     ):
         """
         Args:
@@ -797,7 +882,7 @@ class DataTable(AssetBlock):
         self,
         df: pd.DataFrame,
         caption: t.Optional[str] = None,
-        name: str = None,
+        name: BlockId = None,
         label: str = None,
     ):
         """

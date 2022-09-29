@@ -10,7 +10,6 @@ import typing as t
 import webbrowser
 from abc import ABC
 from base64 import b64encode
-from functools import reduce
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from os import path as osp
 from pathlib import Path
@@ -21,7 +20,6 @@ from uuid import uuid4
 import importlib_resources as ir
 from jinja2 import Environment, FileSystemLoader, Template, pass_context
 from lxml import etree
-from lxml.etree import Element, _Element
 from markupsafe import Markup  # used by Jinja
 
 from datapane.client import config as c
@@ -33,8 +31,7 @@ from datapane.common import NPath, SDict, dict_drop_empty, log, timestamp
 from datapane.common.report import local_report_def, validate_report_doc
 from datapane.common.utils import compress_file
 
-from .blocks import BuilderState, E
-from .core import CDN_BASE, App, AppFormatting, AppWidth
+from .core import CDN_BASE, App, AppFormatting, AppWidth, View
 
 __all__ = ["upload", "save_report", "serve", "build"]
 
@@ -82,58 +79,21 @@ class Processor:
     Contains logic for generating an App document and converting to XML
     """
 
+    # TODO - should this be view instead of App?
     app: App
+    view: View
 
-    def __init__(self, app: App):
-        self.app = app
+    def __init__(self, view: View):
+        self.view = view
 
-    def _to_xml(
+    def to_view_xml(
         self,
         embedded: bool,
         served: bool,
-        title: str = "Title",
-        description: str = "Description",
-        author: str = "Anonymous",
-    ) -> t.Tuple[Element, t.List[Path]]:
-        """Build XML report document"""
-        # convert Pages to XML
-        s = BuilderState(embedded, served)
-        _s = reduce(lambda _s, p: p._to_xml(_s), self.app.pages, s)
-
-        # create the pages
-        pages: _Element = E.Pages(*_s.elements)
-        if self.app.page_layout:
-            pages.set("layout", self.app.page_layout.value)
-
-        # add to main structure
-        report_doc: Element = E.Report(
-            E.Internal(),
-            pages,
-            version="1",
-        )
-
-        # add optional Meta
-        if embedded or served:
-            meta = E.Meta(
-                E.Author(author or ""),
-                E.CreatedOn(timestamp()),
-                E.Title(title),
-                E.Description(description),
-            )
-            report_doc.insert(0, meta)
-        return report_doc, _s.attachments
-
-    def _gen_report(
-        self,
-        embedded: bool,
-        served: bool,
-        title: str = "Title",
-        description: str = "Description",
-        author: str = "Anonymous",
         validate: bool = True,
     ) -> t.Tuple[str, t.List[Path]]:
         """Generate a report for saving/uploading"""
-        report_doc, attachments = self._to_xml(embedded, served, title, description, author)
+        report_doc, attachments = self.view._to_xml(embedded, served)
 
         if embedded and served:
             raise DPError("App can't be both embedded and served")
@@ -144,7 +104,7 @@ class Processor:
         )
         if validate:
             validate_report_doc(xml_doc=processed_report_doc)
-            self._report_status_checks(processed_report_doc, embedded)
+            self._doc_status_checks(processed_report_doc, embedded)
 
         # convert to string
         report_str = etree.tounicode(processed_report_doc)
@@ -152,7 +112,7 @@ class Processor:
         # log.debug(report_str)
         return report_str, attachments
 
-    def _report_status_checks(self, processed_report_doc: etree._ElementTree, embedded: bool):
+    def _doc_status_checks(self, processed_report_doc: etree._ElementTree, embedded: bool):
         # check for any unsupported local features, e.g. DataTable
         # NOTE - we could eventually have different validators for local and uploaded reports
         if embedded:
@@ -160,9 +120,12 @@ class Processor:
 
         # App checks
         # TODO - validate at least a single element
-        asset_blocks = processed_report_doc.xpath("count(/Report/Pages/Page/*)")
+        asset_blocks = processed_report_doc.xpath("count(/View/*)")
         if asset_blocks == 0:
             raise InvalidReportError("Empty app - must contain at least one asset/block")
+
+    def go(self):
+        raise NotImplementedError("Implement in subclass")
 
 
 class LocalProcessor(Processor, ABC):
@@ -321,7 +284,7 @@ class Uploader(Processor):
         kwargs = dict_drop_empty(kwargs)
 
         # generate the report
-        report_str, attachments = self._gen_report(embedded=False, served=False, title=name, description=description)
+        report_str, attachments = self.to_view_xml(embedded=False, served=False, title=name, description=description)
         files = dict(attachments=attachments)
 
         res = Resource(self.app.endpoint).post_files(files, overwrite=overwrite, document=report_str, **kwargs)
@@ -387,7 +350,7 @@ class Saver(LocalProcessor):
         if not name:
             name = Path(path).stem[:127]
 
-        local_doc, _ = self._gen_report(embedded=True, served=False, title=name)
+        local_doc, _ = self.to_view_xml(embedded=True, served=False, title=name)
         report_id = self.write(
             local_doc,
             path,
@@ -473,7 +436,7 @@ class Server(LocalProcessor):
         # Copy across symlinked Vue module
         copy(self.assets / VUE_ESM_FILE, bundle_path / VUE_ESM_FILE)
 
-        local_doc, attachments = self._gen_report(embedded=False, served=True, title=name)
+        local_doc, attachments = self.to_view_xml(embedded=False, served=True, title=name)
 
         # Copy across attachments
         for a in attachments:

@@ -34,36 +34,17 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <section>
 </section>
 <section>
-</section>
-<section>
-<h2 class="section-title" id="header-classes">Classes</h2>
+<h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
-<dt id="datapane.client.api.report.processors.Uploader"><code class="flex name class">
-<span>class <span class="ident">Uploader</span></span>
-<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Uploads a given App to the server that the user is logged into (e.g. datapane.com)</p></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>datapane.client.api.report.processors.Processor</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.report.processors.Uploader.app"><code class="name">var <span class="ident">app</span> : <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.report.processors.Uploader.go"><code class="name flex">
-<span>def <span class="ident">go</span></span>(<span>self, name: str, description: str = '', source_url: str = '', publicly_visible: bool = False, tags: List[str] = None, project: Optional[str] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, overwrite: bool = False, **kwargs) ‑> None</span>
+<dt id="datapane.client.api.report.processors.upload"><code class="name flex">
+<span>def <span class="ident">upload</span></span>(<span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>, name: str, description: str = '', source_url: str = '', publicly_visible: bool = False, tags: List[str] = None, project: Optional[str] = None, open: bool = False, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, overwrite: bool = False, **kwargs)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Upload the app document, including its attached assets, to the logged-in Datapane Server.</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>app</code></strong></dt>
+<dd>The <code>App</code> object</dd>
 <dt><strong><code>name</code></strong></dt>
 <dd>The document name - can include spaces, caps, symbols, etc., e.g. "Profit &amp; Loss 2020"</dd>
 <dt><strong><code>description</code></strong></dt>
@@ -84,56 +65,15 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dd>Overwrite the app</dd>
 </dl></div>
 </dd>
-</dl>
-</dd>
-<dt id="datapane.client.api.report.processors.Saver"><code class="flex name class">
-<span>class <span class="ident">Saver</span></span>
-<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Saves a given App as a single HTML file</p></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>datapane.client.api.report.processors.LocalProcessor</li>
-<li>datapane.client.api.report.processors.Processor</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.report.processors.Saver.template"><code class="name">var <span class="ident">template</span> : Optional[jinja2.environment.Template]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Saver.assets"><code class="name">var <span class="ident">assets</span> : pathlib.Path</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Saver.logo"><code class="name">var <span class="ident">logo</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Saver.report_id"><code class="name">var <span class="ident">report_id</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Saver.served"><code class="name">var <span class="ident">served</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Saver.template_name"><code class="name">var <span class="ident">template_name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.report.processors.Saver.go"><code class="name flex">
-<span>def <span class="ident">go</span></span>(<span>self, path: str, open: bool = False, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, cdn_base: str = 'https://datapane-cdn.com/v0.15.3') ‑> None</span>
+<dt id="datapane.client.api.report.processors.save_report"><code class="name flex">
+<span>def <span class="ident">save_report</span></span>(<span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>, path: str, open: bool = False, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, cdn_base: str = 'https://datapane-cdn.com/v0.15.4') ‑> None</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Save the app document to a local HTML file</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>app</code></strong></dt>
+<dd>The <code>App</code> object</dd>
 <dt><strong><code>path</code></strong></dt>
 <dd>File path to store the document</dd>
 <dt><strong><code>open</code></strong></dt>
@@ -150,75 +90,38 @@ ga('create', 'UA-167952366-2', 'auto'); ga('send', 'pageview');
 <dd>The base url to use for standalone apps (default: <a href="https://datapane-cdn.com/{version}">https://datapane-cdn.com/{version}</a>)</dd>
 </dl></div>
 </dd>
-<dt id="datapane.client.api.report.processors.Saver.preview"><code class="name flex">
-<span>def <span class="ident">preview</span></span>(<span>self, open: bool, standalone: bool = False, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None) ‑> None</span>
+<dt id="datapane.client.api.report.processors.stringify_report"><code class="name flex">
+<span>def <span class="ident">stringify_report</span></span>(<span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>, standalone: bool = False, name: Optional[str] = None, author: Optional[str] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, cdn_base: str = 'https://datapane-cdn.com/v0.15.4', template_name: str = 'template.html') ‑> str</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Preview the app in a new browser window.
-Can be called multiple times, refreshing the existing created preview file.
-Pass open=False to stop openning a new tab on subsequent previews</p>
+<div class="desc"><p>Stringify the app document to a HTML string</p>
 <h2 id="args">Args</h2>
 <dl>
-<dt><strong><code>open</code></strong></dt>
-<dd>Open in your browser after creating (default: True)</dd>
 <dt><strong><code>standalone</code></strong></dt>
 <dd>Inline the app source in the HTML app file rather than loading via CDN (default: False)</dd>
+<dt><strong><code>name</code></strong></dt>
+<dd>Name of the document (optional: uses path if not provided)</dd>
+<dt><strong><code>author</code></strong></dt>
+<dd>The app author / email / etc. (optional)</dd>
 <dt><strong><code>formatting</code></strong></dt>
 <dd>Sets the basic app styling</dd>
+<dt><strong><code>cdn_base</code></strong></dt>
+<dd>The base url to use for standalone apps (default: <a href="https://datapane-cdn.com/{version}">https://datapane-cdn.com/{version}</a>)</dd>
+<dt><strong><code>template_name</code></strong></dt>
+<dd>The name of the template to use for repor rendering (default: template.html)</dd>
 </dl></div>
 </dd>
-</dl>
-</dd>
-<dt id="datapane.client.api.report.processors.Server"><code class="flex name class">
-<span>class <span class="ident">Server</span></span>
-<span>(</span><span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>)</span>
-</code></dt>
-<dd>
-<div class="desc"><p>Builds a given App for use in a server environment, or serves the App directly in a local server</p></div>
-<h3>Ancestors</h3>
-<ul class="hlist">
-<li>datapane.client.api.report.processors.LocalProcessor</li>
-<li>datapane.client.api.report.processors.Processor</li>
-<li>abc.ABC</li>
-</ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="datapane.client.api.report.processors.Server.template"><code class="name">var <span class="ident">template</span> : Optional[jinja2.environment.Template]</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Server.assets"><code class="name">var <span class="ident">assets</span> : pathlib.Path</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Server.logo"><code class="name">var <span class="ident">logo</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Server.report_id"><code class="name">var <span class="ident">report_id</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Server.served"><code class="name">var <span class="ident">served</span> : bool</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="datapane.client.api.report.processors.Server.template_name"><code class="name">var <span class="ident">template_name</span> : str</code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="datapane.client.api.report.processors.Server.go"><code class="name flex">
-<span>def <span class="ident">go</span></span>(<span>self, name: str = 'app', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, port: int = 8000, host: str = 'localhost', formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, open: bool = True, overwrite: bool = False) ‑> None</span>
+<dt id="datapane.client.api.report.processors.serve"><code class="name flex">
+<span>def <span class="ident">serve</span></span>(<span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>, name: str = 'app', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, port: int = 8000, host: str = 'localhost', formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, open: bool = True, overwrite: bool = False)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Serve the app from a local http server</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>app</code></strong></dt>
+<dd>The <code>App</code> object</dd>
 <dt><strong><code>name</code></strong></dt>
-<dd>The name of the app, which will also be the name of the app directory</dd>
+<dd>The name of the app directory to be created</dd>
 <dt><strong><code>dest</code></strong></dt>
 <dd>File path to store the app directory</dd>
 <dt><strong><code>open</code></strong></dt>
@@ -233,15 +136,17 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 <dd>Replace existing app with the same name and destination if already exists (default: False)</dd>
 </dl></div>
 </dd>
-<dt id="datapane.client.api.report.processors.Server.build"><code class="name flex">
-<span>def <span class="ident">build</span></span>(<span>self, name: str = 'app', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, compress_assets: bool = False, overwrite: bool = False) ‑> pathlib.Path</span>
+<dt id="datapane.client.api.report.processors.build"><code class="name flex">
+<span>def <span class="ident">build</span></span>(<span>app: <a title="datapane.client.api.report.core.App" href="core.html#datapane.client.api.report.core.App">App</a>, name: str = 'app', dest: Union[pathlib.Path, os.PathLike, str, ForwardRef(None)] = None, formatting: Optional[datapane.client.api.report.core.AppFormatting] = None, compress_assets: bool = False, overwrite: bool = False) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Build a app which can be served by a local http server</p>
+<div class="desc"><p>Build an app with a directory structure, which can be served by a local http server</p>
 <h2 id="args">Args</h2>
 <dl>
+<dt><strong><code>app</code></strong></dt>
+<dd>The <code>App</code> object</dd>
 <dt><strong><code>name</code></strong></dt>
-<dd>The name of the app, which will also be the name of the app directory</dd>
+<dd>The name of the app directory to be created</dd>
 <dt><strong><code>dest</code></strong></dt>
 <dd>File path to store the app directory</dd>
 <dt><strong><code>compress_assets</code></strong></dt>
@@ -253,8 +158,8 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 </dl></div>
 </dd>
 </dl>
-</dd>
-</dl>
+</section>
+<section>
 </section>
 </article>
 <nav id="sidebar">
@@ -268,28 +173,13 @@ Pass open=False to stop openning a new tab on subsequent previews</p>
 <li><code><a title="datapane.client.api.report" href="index.html">datapane.client.api.report</a></code></li>
 </ul>
 </li>
-<li><h3><a href="#header-classes">Classes</a></h3>
-<ul>
-<li>
-<h4><code><a title="datapane.client.api.report.processors.Uploader" href="#datapane.client.api.report.processors.Uploader">Uploader</a></code></h4>
+<li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
-<li><code><a title="datapane.client.api.report.processors.Uploader.go" href="#datapane.client.api.report.processors.Uploader.go">go</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.report.processors.Saver" href="#datapane.client.api.report.processors.Saver">Saver</a></code></h4>
-<ul class="">
-<li><code><a title="datapane.client.api.report.processors.Saver.go" href="#datapane.client.api.report.processors.Saver.go">go</a></code></li>
-<li><code><a title="datapane.client.api.report.processors.Saver.preview" href="#datapane.client.api.report.processors.Saver.preview">preview</a></code></li>
-</ul>
-</li>
-<li>
-<h4><code><a title="datapane.client.api.report.processors.Server" href="#datapane.client.api.report.processors.Server">Server</a></code></h4>
-<ul class="">
-<li><code><a title="datapane.client.api.report.processors.Server.go" href="#datapane.client.api.report.processors.Server.go">go</a></code></li>
-<li><code><a title="datapane.client.api.report.processors.Server.build" href="#datapane.client.api.report.processors.Server.build">build</a></code></li>
-</ul>
-</li>
+<li><code><a title="datapane.client.api.report.processors.upload" href="#datapane.client.api.report.processors.upload">upload</a></code></li>
+<li><code><a title="datapane.client.api.report.processors.save_report" href="#datapane.client.api.report.processors.save_report">save_report</a></code></li>
+<li><code><a title="datapane.client.api.report.processors.stringify_report" href="#datapane.client.api.report.processors.stringify_report">stringify_report</a></code></li>
+<li><code><a title="datapane.client.api.report.processors.serve" href="#datapane.client.api.report.processors.serve">serve</a></code></li>
+<li><code><a title="datapane.client.api.report.processors.build" href="#datapane.client.api.report.processors.build">build</a></code></li>
 </ul>
 </li>
 </ul>

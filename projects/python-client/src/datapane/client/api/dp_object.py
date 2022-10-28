@@ -5,6 +5,8 @@ and accessible by the client API
 
 ..note:: This module is not used directly
 """
+from __future__ import annotations
+
 import json
 import os
 import pprint

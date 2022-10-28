@@ -37,7 +37,7 @@ def num_blocks(report_str: str) -> int:
 def assert_report(
     report: dp.App, expected_attachments: int = None, expected_num_blocks: int = None
 ) -> t.Tuple[str, t.List[Path]]:
-    report_str, attachments = dp.Processor(report).to_view_xml(
+    report_str, attachments = dp.BaseProcessor(report).to_view_xml(
         embedded=False, served=False, title="TITLE", description="DESCRIPTION"
     )
     # print(report_str)
@@ -208,35 +208,35 @@ def test_gen_failing_reports():
     # nested pages
     with pytest.raises(DPError):
         r = dp.App(dp.Page(dp.Page(md_block)))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
     with pytest.raises(DPError):
         r = dp.App(dp.Group(dp.Page(md_block)))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
 
     # page/pages with 0 objects
     with pytest.raises(DPError):
         r = dp.App(dp.Page(blocks=[]))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
 
     # select with 1 object
     with pytest.raises(DPError):
         r = dp.App(dp.Page(dp.Select(blocks=[md_block])))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
 
     # empty text block
     with pytest.raises(AssertionError):
         r = dp.App(dp.Text(" "))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
 
     # empty df
     with pytest.raises(DPError):
         r = dp.App(dp.DataTable(pd.DataFrame()))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
 
     # invalid names
     with pytest.raises(DocumentInvalid):
         r = dp.App(dp.Text("a", name="my-name"), dp.Text("a", name="my-name"))
-        dp.Processor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
+        dp.BaseProcessor(r).to_view_xml(embedded=False, served=False, title="TITLE", description="DESCRIPTION")
 
     with pytest.raises(DPError):
         dp.App(dp.Text("a", name="3-invalid-name"))

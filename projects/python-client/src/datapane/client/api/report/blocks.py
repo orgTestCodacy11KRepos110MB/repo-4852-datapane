@@ -3,6 +3,7 @@ Datapane Blocks API
 
 Describes the collection of `Block` objects that can be combined together to make a `datapane.client.api.report.core.Report`.
 """
+from __future__ import annotations
 
 import dataclasses as dc
 import enum
@@ -25,10 +26,14 @@ from pandas.io.formats.style import Styler
 
 from datapane.client import DPError
 from datapane.common import MIME, PKL_MIMETYPE, NPath, SSDict, guess_type, log, utf_read_text
-from datapane.common.report import get_embed_url, is_valid_id, mk_attribs
+from datapane.common.report import conv_attrib, get_embed_url, is_valid_id, mk_attribs
 
 from ..common import DPTmpFile
 from ..dp_object import save_df
+
+if t.TYPE_CHECKING:
+    from .processors import BuilderState, FileStore
+
 
 E = ElementMaker()  # XML Tag Factory
 
@@ -55,6 +60,7 @@ __all__ = [
     "Media",
     "Formula",
     "Media",
+    "View",
 ]
 
 __pdoc__ = {
@@ -73,29 +79,33 @@ BlockOrPrimitive = t.Union[Block, t.Any]  # TODO - expand
 BlockList = t.List[Block]
 
 
-@dc.dataclass
-class BuilderState:
-    """Hold state whilst building the Report XML document"""
+class BlockListIterator:
+    """
+    Wrapper around the default list iterator that supports depth-first recursion for list-of-lists
+    """
 
-    embedded: bool = False
-    served: bool = False
-    attachment_count: int = 0
-    # NOTE - store as single element or a list?
-    # element: t.Optional[etree.Element] = None  # Empty Group Element?
-    elements: t.List[etree.Element] = dc.field(default_factory=list)
-    attachments: t.List[Path] = dc.field(default_factory=list)
+    # TODO - needs testing
+    def __init__(self, _iter):
+        # manually mock the stack of list iterators
+        self.nested: list = [_iter]
 
-    def add_element(self, block: "BaseElement", e: etree.Element, f: t.Optional[Path] = None) -> "BuilderState":
-        """Add an element to the list of nodes at the current XML tree location"""
-        if block.name:
-            e.set("name", block.name)
+    def __next__(self) -> Block:
+        try:
+            b: Block = self.nested[-1].__next__()
+        except StopIteration as e:
+            try:
+                self.nested.pop()
+                b = self.__next__()
+            except IndexError:
+                raise e
 
-        self.elements.append(e)
-        if f and not self.embedded:
-            self.attachments.append(f)
-            self.attachment_count += 1
-            assert len(self.attachments) == self.attachment_count
+        if isinstance(b, LayoutBlock):
+            # add new iter for next call
+            self.nested.append(b.blocks.__iter__())
 
+        return b
+
+    def __iter__(self):
         return self
 
 
@@ -114,26 +124,36 @@ class View:
         self.blocks = [wrap_block(b) for b in blocks]
 
     @classmethod
-    def empty(cls) -> "View":
+    def empty(cls) -> View:
         return View(blocks=[Empty()])
 
-    def __add__(self, other: "View") -> "View":
+    # TODO - add these to BaseElement...
+    # TODO - should this be an Element type (similar to Page??)#
+    # TODO - add special X/DP wrapper?
+    def __add__(self, other: View) -> View:
         x = self.blocks + other.blocks
         return View(blocks=x)
 
-    def __and__(self, other: "View") -> "View":
+    def __and__(self, other: View) -> View:
         x = self.blocks + other.blocks
         return View(blocks=x)
 
-    def __or__(self, other: "View") -> "View":
+    def __or__(self, other: View) -> View:
         x = Group(blocks=self.blocks) if len(self.blocks) > 1 else self.blocks[0]
         y = Group(blocks=other.blocks) if len(other.blocks) > 1 else other.blocks[0]
         z = Group(x, y, columns=2)
         return View(z)
 
-    def _to_xml(self, embedded: bool, served: bool) -> t.Tuple[Element, t.List[Path]]:
+    def __iter__(self):
+        return BlockListIterator(self.blocks.__iter__())
+
+    def accept(self, visitor):
+        dispatch_to: str = visitor.dispatch_to
+        f = getattr(self, dispatch_to)
+        return f(visitor)
+
+    def _to_xml(self, s: BuilderState) -> t.Tuple[Element, FileStore]:
         # kick-off the recursive pass of the node-tree
-        s = BuilderState(embedded, served)
         _s = reduce(lambda _s, b: b._to_xml(_s), self.blocks, s)
 
         # create top-level structure
@@ -143,7 +163,7 @@ class View:
             **mk_attribs(version="1", fragment=self.fragment),
         )
 
-        return view_doc, _s.attachments
+        return view_doc, _s.store
 
 
 class BaseElement(ABC):
@@ -229,6 +249,9 @@ class LayoutBlock(BaseElement):
 
         super().__init__(**kwargs)
 
+    def __iter__(self):
+        return BlockListIterator(self.blocks.__iter__())
+
     def _to_xml(self, s: BuilderState) -> BuilderState:
         """
         Recurse into the elements and pull them out
@@ -237,6 +260,7 @@ class LayoutBlock(BaseElement):
         NOTE - this results in a document-order created list of attachments for AssetBlocks,
         as they are leaf nodes
         """
+        # TODO - move out into accept on the node??
         _s1: BuilderState = dc.replace(s, elements=[])
         _s2: BuilderState = reduce(lambda _s, x: x._to_xml(_s), self.blocks, _s1)
         _s3: BuilderState = dc.replace(_s2, elements=s.elements)
@@ -681,61 +705,52 @@ class AssetBlock(DataBlock):
     AssetBlock objects form basis of all File-related blocks (abstract class, not exported)
     """
 
+    # TODO - we may need to support file here as well to handle media, etc.
     file: Path = None
-    file_attribs: SSDict = None
+    data: t.Optional[t.Any] = None
     caption: t.Optional[str] = None
 
-    def __init__(self, file: Path, caption: str = None, name: BlockId = None, label: str = None, **kwargs):
+    def __init__(
+        self,
+        data: t.Optional[t.Any] = None,
+        file: t.Optional[Path] = None,
+        caption: str = None,
+        name: BlockId = None,
+        label: str = None,
+        **kwargs,
+    ):
         # storing objects for delayed upload
         super().__init__(name=name, label=label, **kwargs)
-        self.file = Path(file)
+        self.data = data
+        self.file = file
         self.caption = caption or ""
 
-    def get_file_attribs(self) -> t.Dict[str, str]:
-        """per-file-type attributes, override if needed"""
-        return self.file_attribs or dict()
-
-    def _b64_encode_src(self, content_type: MIME) -> str:
-        """
-        load the file and embed into a data-uri
-        NOTE - currently we read entire file into memory first prior to b64 encoding,
-        to consider using base64io-python to stream and encode in 1-pass
-        """
-        content = b64encode(self.file.read_bytes()).decode("ascii")
-        return f"data:{content_type};base64,{content}"
-
     def _to_xml(self, s: BuilderState) -> BuilderState:
-        _E = getattr(E, self._tag)
-        e: etree._Element
+        # import here as a very slow module due to nested imports
+        from .. import files
 
-        if s.embedded or s.served:
-            content_type = guess_type(self.file)
-            file_size = str(self.file.stat().st_size)
-            src = self._b64_encode_src(content_type) if s.embedded else f"/data/{self.file.name}"
-
-            e = _E(
-                type=content_type,
-                size=file_size,
-                uploaded_filename=self.file.name,
-                **self._attributes,
-                **self.get_file_attribs(),
-                src=src,
-            )
+        if self.data is not None:
+            fe = files.add_to_store(self.data, s.store)
+        elif self.file is not None:
+            fe = s.store.load_file(self.file)
         else:
-            e = _E(
-                **self._attributes,
-                src=f"attachment://{s.attachment_count}",
-            )
+            raise DPError("No asset to add")
+
+        # NOTE: we inline the file attributes here rather than as a later transformation pass atm for simplicity
+        _E = getattr(E, self._tag)
+
+        self._add_attributes()
+        e: etree._Element = _E(
+            type=fe.mime,
+            size=conv_attrib(fe.size),
+            hash=fe.hash,
+            **self._attributes,
+            src=f"attachment://{s.store_count}",
+        )
 
         if self.caption:
             e.set("caption", self.caption)
-        return s.add_element(self, e, self.file)
-
-    def _save_obj(cls, data: t.Any) -> DPTmpFile:
-        # import here as a very slow module due to nested imports
-        from ..files import save
-
-        return save(data)
+        return s.add_element(self, e)
 
 
 class Media(AssetBlock):
@@ -762,7 +777,8 @@ class Media(AssetBlock):
             label: A label used when displaying the block (optional)
         """
         file = Path(file).expanduser()
-        super().__init__(file=file, name=name, caption=caption, label=label)
+        data = file.read_bytes()
+        super().__init__(data=data, name=name, caption=caption, label=label)
 
 
 class Attachment(AssetBlock):
@@ -797,12 +813,17 @@ class Attachment(AssetBlock):
         ..note:: either `data` or `file` must be provided
         """
         if file:
+            # TODO - fix this
             file = Path(file).expanduser()
+            data = file.read_bytes()
+            filename = filename or file.name
         else:
-            out_fn = self._save_obj(data)
-            file = out_fn.file
+            data = data
+            # out_fn = self._save_obj(data)
+            # file = out_fn.file
+            filename = filename or "test.data"
 
-        super().__init__(file=file, filename=filename or file.name, name=name, caption=caption, label=label)
+        super().__init__(data=data, filename=filename, name=name, caption=caption, label=label)
 
 
 class Plot(AssetBlock):
@@ -831,11 +852,11 @@ class Plot(AssetBlock):
             name: A unique name for the block to reference when adding text or embedding (optional)
             label: A label used when displaying the block (optional)
         """
-        out_fn = self._save_obj(data)
-        if out_fn.mime == PKL_MIMETYPE:
-            raise DPError("Can't embed object as a plot")
+        # out_fn = self._save_obj(data)
+        # if out_fn.mime == PKL_MIMETYPE:
+        #     raise DPError("Can't embed object as a plot")
 
-        super().__init__(file=out_fn.file, caption=caption, responsive=responsive, scale=scale, name=name, label=label)
+        super().__init__(data=data, caption=caption, responsive=responsive, scale=scale, name=name, label=label)
 
 
 class Table(AssetBlock):
@@ -862,8 +883,8 @@ class Table(AssetBlock):
             name: A unique name for the block to reference when adding text or embedding (optional)
             label: A label used when displaying the block (optional)
         """
-        out_fn = self._save_obj(data)
-        super().__init__(file=out_fn.file, caption=caption, name=name, label=label)
+        # out_fn = self._save_obj(data)
+        super().__init__(data=data, caption=caption, name=name, label=label)
 
 
 class DataTable(AssetBlock):

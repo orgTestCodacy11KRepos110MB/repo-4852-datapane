@@ -94,6 +94,7 @@ bottle = "^0.12.23"
 cheroot = "^8.6.0"
 jsonrpcserver = "^5.0.9"
 jsonrpcclient = "^4.0.2"
+base64io = "^1.0.3"
 
 [tool.poetry.extras]
 plotting = ["matplotlib", "bokeh", "plotly", "folium", "plotapi"]

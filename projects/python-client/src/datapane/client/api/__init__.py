@@ -61,9 +61,10 @@ from .report.blocks import (
     Table,
     Text,
     Toggle,
+    View,
 )
-from .report.core import App, AppFormatting, AppWidth, FontChoice, PageLayout, TextAlignment, View
-from .report.processors import Processor, build, save_report, serve, upload
+from .report.core import App, AppFormatting, AppWidth, FontChoice, PageLayout, TextAlignment
+from .report.processors import BaseProcessor, build, save_report, serve, upload
 from .runtime import Params, Result, _report, _reset_runtime, by_datapane
 from .teams import Environment, File, LegacyApp, Run, Schedule
 from .user import hello_world, login, logout, ping, template
@@ -103,7 +104,7 @@ __all__ = [
     "Toggle",
     "FontChoice",
     "PageLayout",
-    "Processor",
+    "BaseProcessor",
     "TextAlignment",
     "View",
     "Params",

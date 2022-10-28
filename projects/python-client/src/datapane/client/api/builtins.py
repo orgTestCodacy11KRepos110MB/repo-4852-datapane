@@ -13,7 +13,8 @@ import pandas as pd
 from datapane.common import NPath
 
 from .report import blocks as b
-from .report.core import App, View
+from .report.blocks import View
+from .report.core import App
 
 __all__ = [
     "add_code",

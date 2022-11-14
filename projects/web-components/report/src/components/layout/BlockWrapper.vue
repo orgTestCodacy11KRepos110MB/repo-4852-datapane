@@ -2,15 +2,18 @@
 /**
  * Centres block and adds caption below if necessary
  */
-import { inject } from "vue";
+import { toRefs } from "vue";
+import { BlockFigureProps } from "../../data-model/blocks";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 
 const p = defineProps<{
-    caption?: string;
-    count?: number;
-    captionType: string;
+    figure: BlockFigureProps;
 }>();
 
-const singleBlockEmbed = inject("singleBlockEmbed");
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
+const { caption, count, captionType } = toRefs(p.figure);
 </script>
 
 <template>
@@ -18,16 +21,16 @@ const singleBlockEmbed = inject("singleBlockEmbed");
         :class="[
             'w-full relative flex flex-col justify-center items-center overflow-x-auto',
             { 'h-iframe': singleBlockEmbed },
-            { 'p-1': !singleBlockEmbed },
+            { 'py-3 px-1': !singleBlockEmbed },
         ]"
     >
         <slot />
         <div
-            v-if="p.caption"
+            v-if="caption"
             class="text-sm text-dp-light-gray italic text-justify"
         >
-            <b>{{ p.captionType }} {{ p.count }}</b>
-            {{ p.caption }}
+            <b>{{ captionType }} {{ count }}</b>
+            {{ caption }}
         </div>
     </div>
 </template>

@@ -1,12 +1,15 @@
 <script setup lang="ts">
-import { onUnmounted, inject, onMounted } from "vue";
+import { onUnmounted, onMounted } from "vue";
 import { v4 as uuid4 } from "uuid";
 import * as Bokeh from "@bokeh/bokehjs";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 
 const docIds: any[] = [];
 const divId = uuid4();
 
-const singleBlockEmbed = inject("singleBlockEmbed");
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
 
 const p = defineProps<{ plotJson: any; responsive: boolean }>();
 

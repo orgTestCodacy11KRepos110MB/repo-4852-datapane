@@ -1,23 +1,24 @@
-import VTextBlock from "../components/blocks/Text.vue";
-import VHTMLBlock from "../components/blocks/HTML.vue";
-import VFileBlock from "../components/blocks/File.vue";
-import VEmbedBlock from "../components/blocks/Embed.vue";
-import VFoliumBlock from "../components/blocks/Folium.connector.vue";
-import VPlotapiBlock from "../components/blocks/Plotapi.connector.vue";
-import VFormulaBlock from "../components/blocks/Formula.connector.vue";
-import VCodeBlock from "../components/blocks/Code.connector.vue";
-import VBokehBlock from "../components/blocks/Bokeh.connector.vue";
-import VVegaBlock from "../components/blocks/Vega.connector.vue";
-import VPlotlyBlock from "../components/blocks/Plotly.connector.vue";
-import VTableBlock from "../components/blocks/Table.connector.vue";
-import VSVGBlock from "../components/blocks/SVG.connector.vue";
-import VMediaBlock from "../components/blocks/Media.vue";
-import VBigNumberBlock from "../components/blocks/BigNumber.vue";
-import VBigNumberBlockSimple from "../components/blocks/BigNumberSimple.vue";
+import VTextBlock from "../../components/blocks/Text.vue";
+import VHTMLBlock from "../../components/blocks/HTML.vue";
+import VFileBlock from "../../components/blocks/File.vue";
+import VEmbedBlock from "../../components/blocks/Embed.vue";
+import VFoliumBlock from "../../components/blocks/Folium.connector.vue";
+import VPlotapiBlock from "../../components/blocks/Plotapi.connector.vue";
+import VFormulaBlock from "../../components/blocks/Formula.connector.vue";
+import VCodeBlock from "../../components/blocks/Code.connector.vue";
+import VBokehBlock from "../../components/blocks/Bokeh.connector.vue";
+import VVegaBlock from "../../components/blocks/Vega.connector.vue";
+import VPlotlyBlock from "../../components/blocks/Plotly.connector.vue";
+import VTableBlock from "../../components/blocks/Table.connector.vue";
+import VSVGBlock from "../../components/blocks/SVG.connector.vue";
+import VMediaBlock from "../../components/blocks/Media.vue";
+import VBigNumberBlock from "../../components/blocks/BigNumber.vue";
+import VBigNumberBlockSimple from "../../components/blocks/BigNumberSimple.vue";
 import { markRaw } from "vue";
-import { v4 as uuidv4 } from "uuid";
 import axios from "axios";
 import { saveAs } from "file-saver";
+import { useViewStore } from "../layout-store";
+import { v4 as uuid4 } from "uuid";
 
 // Represents a serialised JSON element prior to becoming a Page/Group/Select/Block
 export type Elem = {
@@ -29,9 +30,17 @@ export type Elem = {
     type: "element";
 };
 
-export type BlockTree = LayoutBlock | Block;
-
 type AssetResource = Promise<string | object>;
+
+export type BlockFigureProps = {
+    caption?: string;
+    captionType: string;
+    count?: number;
+};
+
+export type BlockFigure = Pick<BlockFigureProps, "count" | "caption">;
+
+export type CaptionType = "Table" | "Figure" | "Plot";
 
 /* Helper functions */
 
@@ -73,91 +82,11 @@ const decodeBase64AssetUtf8 = (src: string) => {
     return decoder.decode(bytes);
 };
 
-export class Report {
-    public children: Page[];
-    public width: ReportWidth;
-
-    private _layout?: PageLayout;
-
-    public get layout(): PageLayout {
-        return this._layout || (this.children.length > 5 ? "side" : "top");
-    }
-
-    public constructor(o: {
-        children: Page[];
-        width: ReportWidth;
-        layout?: PageLayout;
-    }) {
-        this.children = o.children;
-        this.width = o.width;
-        this._layout = o.layout;
-    }
-}
-
-/* Layout blocks */
-
-export class Page {
-    public children: LayoutBlock[];
-    public label?: string;
-
-    public constructor(o: { children: LayoutBlock[]; label?: string }) {
-        this.children = o.children;
-        this.label = o.label;
-    }
-}
-
-export class Group {
-    public children: BlockTree[];
-    public columns: number;
-    public label?: string;
-    public name = "Group";
-    public refId = uuidv4();
-
-    public constructor(o: {
-        children: BlockTree[];
-        columns: number;
-        label?: string;
-    }) {
-        this.children = o.children;
-        this.columns = o.columns;
-        this.label = o.label;
-    }
-}
-
-export class Toggle {
-    public children: BlockTree[];
-    public label?: string;
-    public name = "Toggle";
-    public refId = uuidv4();
-
-    public constructor(o: { children: BlockTree[]; label?: string }) {
-        this.children = o.children;
-        this.label = o.label;
-    }
-}
-
-export class Select {
-    public children: BlockTree[];
-    public label?: string;
-    public type: string;
-    public name = "Select";
-    public refId = uuidv4();
-
-    public constructor(o: {
-        children: BlockTree[];
-        type: string;
-        label?: string;
-    }) {
-        this.children = o.children;
-        this.label = o.label;
-        this.type = o.type;
-    }
-}
-
 /* Inline blocks */
 
 export class Block {
-    public refId: string;
+    public refId = uuid4();
+    public id?: string;
     public captionType = "Figure";
     public caption?: string;
     public label?: string;
@@ -167,18 +96,19 @@ export class Block {
 
     public constructor(
         elem: Elem,
-        caption?: string,
-        count?: number,
+        figure: BlockFigure,
         /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
         opts?: any
     ) {
         const { attributes } = elem;
-        this.refId = uuidv4();
-        this.count = count;
-        this.caption = caption;
-        this.componentProps = {};
+        this.count = figure.count;
+        this.caption = figure.caption;
+        this.componentProps = {
+            figure: { ...figure, captionType: this.captionType },
+        };
 
         if (attributes) {
+            this.id = attributes.id;
             this.label = attributes.label;
         }
     }
@@ -186,15 +116,10 @@ export class Block {
 
 export class TextBlock extends Block {
     public component = markRaw(VTextBlock);
-    public componentProps: any;
+    public name = "TextBlock";
 
-    public constructor(
-        elem: Elem,
-        caption?: string,
-        count?: number,
-        opts?: any
-    ) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure, opts?: any) {
+        super(elem, figure);
         const content = getInnerText(elem);
         this.componentProps = {
             ...this.componentProps,
@@ -206,26 +131,37 @@ export class TextBlock extends Block {
 
 export class CodeBlock extends Block {
     public component = markRaw(VCodeBlock);
-    public componentProps: any;
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         const { language } = elem.attributes;
         const code = getInnerText(elem);
         this.componentProps = { ...this.componentProps, code, language };
     }
 }
 
+export class View extends Block {
+    public id = "root";
+    public name = "View";
+    public children: Block[];
+    public store: any;
+
+    public constructor(elem: any, figure: BlockFigure) {
+        super(elem, figure);
+        const { children, layout, fragment } = elem.attributes;
+        this.children = children;
+        this.store = fragment
+            ? undefined
+            : useViewStore(this.children, layout)();
+        this.componentProps = { ...this.componentProps, store: this.store };
+    }
+}
+
 export class HTMLBlock extends Block {
     public component = markRaw(VHTMLBlock);
 
-    public constructor(
-        elem: Elem,
-        caption?: string,
-        count?: number,
-        opts?: any
-    ) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure, opts?: any) {
+        super(elem, figure);
         const html = getInnerText(elem);
         this.componentProps = {
             ...this.componentProps,
@@ -238,8 +174,8 @@ export class HTMLBlock extends Block {
 export class FormulaBlock extends Block {
     public component = markRaw(VFormulaBlock);
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         const content = getInnerText(elem);
         this.componentProps = {
             ...this.componentProps,
@@ -249,8 +185,8 @@ export class FormulaBlock extends Block {
 }
 
 export class BigNumberBlock extends Block {
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         const { attributes } = elem;
         const useSimple = !attributes.prev_value && !attributes.change;
         this.component = markRaw(
@@ -286,8 +222,8 @@ export abstract class AssetBlock extends Block {
     public src: string;
     public type: string;
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         const { attributes } = elem;
         this.src = attributes.src;
         this.type = attributes.type;
@@ -337,8 +273,8 @@ export class EmbedBlock extends AssetBlock {
     private _isIFrame?: boolean;
     private html: string;
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         this.html = getInnerText(elem);
         this.componentProps = {
             ...this.componentProps,
@@ -373,8 +309,8 @@ export class FileBlock extends AssetBlock {
 
     private readonly filename: string;
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         const { attributes } = elem;
         this.filename = attributes.filename;
         this.componentProps = {
@@ -392,8 +328,8 @@ export class FileBlock extends AssetBlock {
 export class MediaBlock extends AssetBlock {
     public component = markRaw(VMediaBlock);
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         this.componentProps = {
             ...this.componentProps,
             type: this.type,
@@ -406,8 +342,8 @@ export abstract class PlotAssetBlock extends AssetBlock {
     public captionType = "Plot";
     public responsive: boolean;
 
-    public constructor(elem: Elem, caption?: string, count?: number) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure) {
+        super(elem, figure);
         const { attributes } = elem;
         this.responsive = JSON.parse(attributes.responsive);
         this.componentProps = {
@@ -459,26 +395,3 @@ export class SVGBlock extends PlotAssetBlock {
         return this.src;
     }
 }
-
-/* Helper types */
-
-export type LayoutBlock = Group | Select | Toggle;
-
-export type ReportWidth = "full" | "medium" | "narrow";
-
-export type PageLayout = "top" | "side";
-
-export type ExportType = "EXCEL" | "CSV";
-
-export const isBlock = (obj: any): obj is Block => !!obj.refId;
-
-export const isGroup = (obj: any): obj is Group => obj.name === "Group";
-
-export const isSelect = (obj: any): obj is Select => obj.name === "Select";
-
-export const isToggle = (obj: any): obj is Toggle => obj.name === "Toggle";
-
-export const isLayoutBlock = (obj: any): obj is LayoutBlock =>
-    isGroup(obj) || isSelect(obj) || isToggle(obj);
-
-export const isAssetBlock = (obj: any): obj is AssetBlock => !!obj.src;

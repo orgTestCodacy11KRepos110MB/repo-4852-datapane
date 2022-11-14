@@ -1,9 +1,13 @@
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref } from "vue";
 import Folium from "./Folium.vue";
+import { BlockFigureProps } from "../../data-model/blocks";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 
-const p = defineProps<{ fetchAssetData: any }>();
-const singleBlockEmbed: boolean | undefined = inject("singleBlockEmbed");
+const p = defineProps<{ fetchAssetData: any; figure: BlockFigureProps }>();
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
 const iframeContent = ref<string | null>(null);
 
 (async () => {
@@ -12,9 +16,11 @@ const iframeContent = ref<string | null>(null);
 </script>
 
 <template>
-    <folium
-        v-if="iframeContent"
-        :iframe-content="iframeContent"
-        :single-block-embed="!!singleBlockEmbed"
-    />
+    <block-wrapper :figure="p.figure">
+        <folium
+            v-if="iframeContent"
+            :iframe-content="iframeContent"
+            :single-block-embed="!!singleBlockEmbed"
+        />
+    </block-wrapper>
 </template>

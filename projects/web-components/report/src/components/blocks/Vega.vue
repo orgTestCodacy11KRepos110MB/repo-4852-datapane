@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { onUnmounted, inject, onMounted, ref } from "vue";
+import { onUnmounted, onMounted, ref } from "vue";
 import vegaEmbed, { Result } from "vega-embed";
 import { v4 as uuid4 } from "uuid";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 
 const p = defineProps<{ plotJson: any; responsive: boolean }>();
 const divId = `vega_${uuid4()}`;
-const singleBlockEmbed = inject("singleBlockEmbed");
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
 
 // Vega view object to be stored for cleanup on unmount
 const vegaView = ref<Result | undefined>();

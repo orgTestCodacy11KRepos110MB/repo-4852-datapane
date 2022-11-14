@@ -1,8 +1,13 @@
 <script setup lang="ts">
-import { ref, inject } from "vue";
+import { ref } from "vue";
+import BlockWrapper from "../layout/BlockWrapper.vue";
+import { BlockFigureProps } from "../../data-model/blocks";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 
-const p = defineProps<{ fetchAssetData: any }>();
-const singleBlockEmbed = inject("singleBlockEmbed");
+const p = defineProps<{ fetchAssetData: any; figure: BlockFigureProps }>();
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
 const html = ref<string | null>(null);
 
 (async () => {
@@ -11,10 +16,12 @@ const html = ref<string | null>(null);
 </script>
 
 <template>
-    <x-table-block
-        v-if="html"
-        :html="html"
-        :single-block-embed="singleBlockEmbed"
-        class="w-full"
-    />
+    <block-wrapper :figure="p.figure">
+        <x-table-block
+            v-if="html"
+            :html="html"
+            :single-block-embed="singleBlockEmbed"
+            class="w-full"
+        />
+    </block-wrapper>
 </template>

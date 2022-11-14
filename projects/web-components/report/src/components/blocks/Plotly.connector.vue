@@ -1,8 +1,14 @@
 <script setup lang="ts">
 import { ref, defineAsyncComponent } from "vue";
+import BlockWrapper from "../layout/BlockWrapper.vue";
+import { BlockFigureProps } from "../../data-model/blocks";
 const PlotlyBlock = defineAsyncComponent(() => import("./Plotly.vue"));
 
-const p = defineProps<{ fetchAssetData: any; responsive: boolean }>();
+const p = defineProps<{
+    fetchAssetData: any;
+    responsive: boolean;
+    figure: BlockFigureProps;
+}>();
 const plotJson = ref<any>(null);
 
 (async () => {
@@ -11,9 +17,11 @@ const plotJson = ref<any>(null);
 </script>
 
 <template>
-    <plotly-block
-        v-if="plotJson"
-        :plot-json="plotJson"
-        :responsive="p.responsive"
-    />
+    <block-wrapper :figure="p.figure">
+        <plotly-block
+            v-if="plotJson"
+            :plot-json="plotJson"
+            :responsive="p.responsive"
+        />
+    </block-wrapper>
 </template>

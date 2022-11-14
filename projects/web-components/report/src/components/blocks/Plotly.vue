@@ -1,10 +1,13 @@
 <script setup lang="ts">
-import { inject, onMounted } from "vue";
+import { onMounted } from "vue";
 import Plotly from "plotly.js-dist-min";
 import { v4 as uuid4 } from "uuid";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 
 const p = defineProps<{ plotJson: any; responsive: boolean }>();
-const singleBlockEmbed = inject("singleBlockEmbed");
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
 const divId = `vega_${uuid4()}`;
 
 const makeResponsive = (json: any) => {

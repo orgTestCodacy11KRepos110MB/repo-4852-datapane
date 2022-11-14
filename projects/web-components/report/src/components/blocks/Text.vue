@@ -2,6 +2,8 @@
 import { computed } from "vue";
 import * as marked from "marked";
 import hljs from "highlight.js";
+import BlockWrapper from "../layout/BlockWrapper.vue";
+import { BlockFigureProps } from "../../data-model/blocks";
 
 (marked as any).setOptions({
     highlight: function (code: string, language: string) {
@@ -9,20 +11,26 @@ import hljs from "highlight.js";
     },
 });
 
-const p = defineProps<{ content: string; isLightProse: boolean }>();
+const p = defineProps<{
+    content: string;
+    isLightProse: boolean;
+    figure: BlockFigureProps;
+}>();
 const md = computed(() => (marked as any).parse(p.content));
 </script>
 
 <template>
-    <div
-        :class="['w-full overflow-y-hidden', { dark: p.isLightProse }]"
-        data-cy="block-markdown"
-    >
+    <block-wrapper :figure="p.figure">
         <div
-            class="w-full prose font-dp-prose dark:prose-invert text-container"
-            v-html="md"
-        />
-    </div>
+            :class="['w-full overflow-y-hidden', { dark: p.isLightProse }]"
+            data-cy="block-markdown"
+        >
+            <div
+                class="w-full prose font-dp-prose dark:prose-invert text-container"
+                v-html="md"
+            />
+        </div>
+    </block-wrapper>
 </template>
 
 <style scoped>

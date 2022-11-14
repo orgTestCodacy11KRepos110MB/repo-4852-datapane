@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { inject } from "vue";
+import { useRootStore } from "../../data-model/root-store";
+import { storeToRefs } from "pinia";
 const p = defineProps<{ src: string; responsive: boolean }>();
-const singleBlockEmbed = inject("singleBlockEmbed");
+const rootStore = useRootStore();
+const { singleBlockEmbed } = storeToRefs(rootStore);
 </script>
 
 <template>

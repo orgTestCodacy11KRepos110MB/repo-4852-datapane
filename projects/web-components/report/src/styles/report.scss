@@ -9,3 +9,13 @@
 .prose {
     max-width: 100% !important;
 }
+
+:root {
+    --fk-max-width-input: none !important;
+}
+
+.formkit-outer[data-type="text"] {
+    input {
+        background-color: white !important;
+    }
+}

@@ -48,6 +48,7 @@
         "mobx-vue-lite": "^0.3.1",
         "moment": "^2.29.4",
         "numeral": "^2.0.6",
+        "pinia": "^2.0.23",
         "plotly.js-dist-min": "^2.16.1",
         "posthog-js": "^1.34.0",
         "ramda": "^0.28.0",

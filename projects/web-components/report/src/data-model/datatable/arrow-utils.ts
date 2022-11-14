@@ -1,6 +1,6 @@
 import { DataType, Precision, Type, tableFromIPC } from "apache-arrow";
 import { Coerce } from "./Coerce";
-import { DatasetResponse } from "./datatable-block";
+import { DatasetResponse } from "../blocks";
 
 export type FormattedNsSchemaField = {
     name: string;

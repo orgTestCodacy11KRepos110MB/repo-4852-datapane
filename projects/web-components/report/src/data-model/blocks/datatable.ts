@@ -1,5 +1,5 @@
 import { markRaw } from "vue";
-import { AssetBlock, Elem, ExportType } from "../blocks";
+import { AssetBlock, BlockFigure, Elem, ExportType } from "../blocks/index";
 import VDataTableBlock from "../../components/blocks/DataTable/DataTable.connector.vue";
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
 import download from "downloadjs";
@@ -85,13 +85,8 @@ export class DataTableBlock extends AssetBlock {
         return this.buildExtensionUrl("export");
     }
 
-    public constructor(
-        elem: Elem,
-        caption?: string,
-        count?: number,
-        opts?: any
-    ) {
-        super(elem, caption, count);
+    public constructor(elem: Elem, figure: BlockFigure, opts?: any) {
+        super(elem, figure);
         const { attributes } = elem;
         this.rows = attributes.rows;
         this.columns = attributes.columns;
@@ -123,7 +118,7 @@ export class DataTableBlock extends AssetBlock {
         const opts: AxiosRequestConfig = {
             responseType: "arraybuffer",
         };
-        const { apiResponseToArrow } = await import("./arrow-utils");
+        const { apiResponseToArrow } = await import("../datatable/arrow-utils");
         const arrayBuffer = await this.fetchDataset(opts);
         return apiResponseToArrow(arrayBuffer);
     };

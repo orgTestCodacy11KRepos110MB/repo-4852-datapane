@@ -7,9 +7,15 @@ Describes an API for serializing a Report object, rendering it locally and publi
 from __future__ import annotations
 
 import abc
+import shutil
+from contextlib import contextmanager
 import dataclasses as dc
 import datetime
+import hashlib
+import gzip
+import io
 import os
+import tempfile
 import threading
 import typing as t
 import webbrowser
@@ -22,6 +28,7 @@ from shutil import copy, copyfileobj, copytree, rmtree
 from time import sleep
 from uuid import uuid4
 
+import base64io
 import importlib_resources as ir
 from jinja2 import Environment, FileSystemLoader, Template, pass_context
 from lxml import etree
@@ -32,17 +39,22 @@ from datapane.client import config as c
 from datapane.client.analytics import _NO_ANALYTICS, capture, capture_event
 from datapane.client.api.common import DPTmpFile, Resource
 from datapane.client.api.runtime import _report
+from datapane.common.utils import pushd
 from datapane.client.utils import DPError, InvalidReportError, display_msg
 from datapane.common import NPath, SDict, dict_drop_empty, guess_type, log, timestamp
 from datapane.common.report import ViewXML, local_report_def, validate_report_doc
 from datapane.common.utils import compress_file
 
-from .blocks import View
+from .blocks import View, BaseElement
 from .core import App, AppFormatting, AppWidth
+from ...commands import file
+
+
+if t.TYPE_CHECKING:
+    from datapane.client.api.common import FileAttachmentList
+
 
 __all__ = ["upload", "save_report", "serve", "build"]
-
-from ...commands import file
 
 CDN_BASE: str = os.getenv("DATAPANE_CDN_BASE", f"https://datapane-cdn.com/v{dp_version}")
 
@@ -60,7 +72,7 @@ local_post_transform = etree.XSLT(local_post_xslt)
 
 VUE_ESM_FILE = "vue.esm-browser.prod.js"
 SERVED_REPORT_BUNDLE_DIR = "static"
-SERVED_REPORT_ASSETS_DIR = "data"
+SERVED_REPORT_ASSETS_DIR = "assets"
 
 
 class CompressedAssetsHTTPHandler(SimpleHTTPRequestHandler):
@@ -86,16 +98,6 @@ def include_raw(ctx, name) -> Markup:  # noqa: ANN001
 
 
 XFileHandler = t.List[Path]
-
-
-import gzip
-import hashlib
-import io
-import tempfile
-from contextlib import contextmanager
-
-import base64io
-
 GZIP_MTIME = datetime.datetime(year=2000, month=1, day=1).timestamp()
 
 
@@ -109,6 +111,7 @@ class FileWrapper:
     mime: str
     hash: str
     size: int
+    wrapped: t.BinaryIO
 
     def __init__(self, ext: str, mime: t.Optional[str] = None, dir_path: t.Optional[Path] = None):
         self.mime = mime or guess_type(Path(f"tmp{ext}"))
@@ -142,12 +145,13 @@ class FileWrapper:
 
 
 class B64FileEntry(FileWrapper):
+    """Memory-based b64 file"""
     file: base64io.Base64IO
     wrapped: io.BytesIO
     contents: bytes
 
-    def __init__(self, ext: str, mime: str, dir_path: t.Optional[Path] = None):
-        super().__init__(ext, mime, dir_path)
+    def __init__(self, ext: str, mime: str, *a, **kw):
+        super().__init__(ext, mime, *a, **kw)
         self.wrapped = io.BytesIO()
         self.file = base64io.Base64IO(self.wrapped)
 
@@ -168,6 +172,7 @@ class B64FileEntry(FileWrapper):
 
 
 class GzipTmpFileEntry(FileWrapper):
+    """Gzipped file, by default stored in /tmp"""
     file: gzip.GzipFile
     # TODO - this could actually be an in-memory file...
     wrapped: tempfile.NamedTemporaryFile
@@ -180,9 +185,9 @@ class GzipTmpFileEntry(FileWrapper):
         if dir_path:
             # create as a permanent file within the given dir
             self.has_output_dir = True
-            self.wrapped = tempfile.NamedTemporaryFile("w+b", suffix=ext, dir=dir_path, delete=False)
+            self.wrapped = tempfile.NamedTemporaryFile("w+b", suffix=ext, prefix="dp-", dir=dir_path, delete=False)
         else:
-            self.wrapped = tempfile.NamedTemporaryFile("w+b", suffix=ext)
+            self.wrapped = tempfile.NamedTemporaryFile("w+b", suffix=ext, prefix="dp-")
 
         self.file = gzip.GzipFile(fileobj=self.wrapped, mode="w+b", mtime=GZIP_MTIME)
 
@@ -195,7 +200,10 @@ class GzipTmpFileEntry(FileWrapper):
 
     @property
     def src(self) -> str:
-        return self.wrapped.name if self.has_output_dir else "NYI"
+        if self.has_output_dir:
+            return f"/{SERVED_REPORT_ASSETS_DIR}/{Path(self.wrapped.name).name}"
+        else:
+            return "NYI"
 
     def freeze(self) -> None:
         if not self.frozen:
@@ -219,15 +227,12 @@ class FileEntry:
 
 class FileStore:
     # TODO - make this a CAS (index by object itself?)
-    files: t.List[FileWrapper]
-    fw_klass: t.Type[FileWrapper]
-    dir_path: t.Optional[Path] = None
-
-    def __init__(self, fw_klass: t.Type[FileWrapper], dir_path: t.Optional[Path] = None):
+    # NOTE - currently we pass dir_path via the FileStore, could move into the file themselves?
+    def __init__(self, fw_klass: t.Type[FileWrapper], assets_dir: t.Optional[Path] = None):
         super().__init__()
         self.fw_klass = fw_klass
-        self.files = []
-        self.dir_path = dir_path
+        self.files: t.List[FileWrapper] = []
+        self.dir_path = assets_dir
 
     def __add__(self, other: FileStore):
         # TODO - ensure factory is the same for both
@@ -247,6 +252,10 @@ class FileStore:
     @property
     def store_count(self) -> int:
         return len(self.files)
+
+    @property
+    def file_list(self) -> t.List[t.BinaryIO]:
+        return [f.wrapped for f in self.files]
 
     @contextmanager
     def write_file(self, ext, mode) -> t.ContextManager[t.IO]:
@@ -298,6 +307,7 @@ Step = t.Callable[..., ViewAST]
 
 class Pipeline:
     """A simple, programmable, eagerly-evaluated, pipeline that is specialised on ViewAST transformations"""
+    # TODO - should we just use a lib for this?
 
     _state: ViewAST
 
@@ -313,9 +323,9 @@ class Pipeline:
         return self._state
 
 
-def _f():
-    x = ViewAST("", FileStore(mk_b64file))
-    y = Pipeline(x).pipe(lambda s: s).pipe(lambda s: s).result
+# def _f():
+#     x = ViewAST("", FileStore(mk_b64file))
+#     y = Pipeline(x).pipe(lambda s: s).pipe(lambda s: s).result
 
 
 class BaseProcessor:
@@ -330,6 +340,12 @@ class BaseProcessor:
 class OptimiseAST(BaseProcessor):
     def __call__(self, view: View) -> View:
         """TODO - optimisations to improve the layout of the view"""
+        return view
+
+
+class PreUploadProcessor(BaseProcessor):
+    def __call__(self, view: ViewAST) -> ViewAST:
+        """TODO - pre-upload pass of the AST, can handle inlining file attributes from AssetStore"""
         return view
 
 
@@ -379,7 +395,7 @@ class ConvertXML(BaseProcessor):
         self.served = served
         self.validate = validate
         # TODO - should we use a lambda for file_entry_klass with dir_path captured?
-        self.file_store = FileStore(file_entry_klass, dir_path=dir_path)
+        self.file_store = FileStore(file_entry_klass, assets_dir=dir_path)
         if embedded and served:
             raise DPError("App can't be both embedded and served")
 
@@ -432,13 +448,13 @@ class BaseExportHTML(BaseProcessor, ABC):
     template: t.Optional[Template] = None
     # Type is `ir.abc.Traversable` which extends `Path`,
     # but the former isn't compatible with `shutil`
-    assets: Path = t.cast(Path, ir.files("datapane.resources.local_report"))
+    internal_resources: Path = t.cast(Path, ir.files("datapane.resources.local_report"))
     logo: str
     template_name: str
     report_id: str = uuid4().hex
     served: bool
 
-    def _write(
+    def _write_html_template(
         self,
         view: ViewAST,
         path: str,
@@ -486,10 +502,10 @@ class BaseExportHTML(BaseProcessor, ABC):
 
     def _setup_template(self):
         # load the logo
-        logo_img = (self.assets / "datapane-logo-dark.png").read_bytes()
+        logo_img = (self.internal_resources / "datapane-logo-dark.png").read_bytes()
         self.logo = f"data:image/png;base64,{b64encode(logo_img).decode('ascii')}"
 
-        template_loader = FileSystemLoader(self.assets)
+        template_loader = FileSystemLoader(self.internal_resources)
         template_env = Environment(loader=template_loader)
         template_env.globals["include_raw"] = include_raw
         self.template = template_env.get_template(self.template_name)
@@ -514,62 +530,58 @@ class ExportHTMLInlineAssets(BaseExportHTML):
         self,
         view: ViewAST,
     ) -> str:
-        report_id = self._write(view, self.path, self.name, self.formatting, self.open)
+        report_id = self._write_html_template(view, self.path, self.name, self.formatting, self.open)
         capture("CLI Report Save", report_id=report_id)
         return report_id
 
 
 class ExportHTMLFileAssets(BaseExportHTML):
+    template_name = "template.html"
+    served = True
+
+    def __init__(self, app_dir: Path, name: str = "app", formatting: t.Optional[AppFormatting] = None):
+        self.app_dir = app_dir
+        self.name = name
+        self.formatting = formatting
+
     def __call__(
         self,
         view: ViewAST,
-        name: str = "app",
         dest: t.Optional[NPath] = None,
-        formatting: t.Optional[AppFormatting] = None,
-        compress_assets: bool = False,
-        overwrite: bool = False,
     ) -> Path:
-        path: Path = Path(dest or os.getcwd()) / name
-        app_exists = path.is_dir()
 
-        if app_exists and overwrite:
-            rmtree(path)
-        elif app_exists and not overwrite:
-            raise DPError(f"App exists at given path {str(path)} -- set `overwrite=True` to allow overwrite")
+        # bundle_path = app_dir / SERVED_REPORT_BUNDLE_DIR
+        # assets_path = app_dir / SERVED_REPORT_ASSETS_DIR
+        #
+        # bundle_path.mkdir(parents=True)
+        # assets_path.mkdir(parents=True)
 
-        bundle_path = path / SERVED_REPORT_BUNDLE_DIR
-        assets_path = path / SERVED_REPORT_ASSETS_DIR
-
-        bundle_path.mkdir(parents=True)
-        assets_path.mkdir(parents=True)
-
+        # NOTE - unneeded as always use CDN
         # Copy across symlinked app bundle.
         # Ignore `call-arg` as CI errors on `dirs_exist_ok`
-        copytree(self.assets / "report", bundle_path / "app", dirs_exist_ok=True)  # type: ignore[call-arg]
-
+        # copytree(self.internal_resources / "report", bundle_path / "app", dirs_exist_ok=True)  # type: ignore[call-arg]
         # Copy across symlinked Vue module
-        copy(self.assets / VUE_ESM_FILE, bundle_path / VUE_ESM_FILE)
-
+        # copy(self.internal_resources / VUE_ESM_FILE, bundle_path / VUE_ESM_FILE)
         # Copy across attachments
-        # TODO - these should be placed in location by the FileHandler
-        for a in view.files:
-            destination_path = assets_path / a.name
-            if compress_assets:
-                with compress_file(a) as a_gz:
-                    copy(a_gz, destination_path)
-            else:
-                copy(a, destination_path)
+        # # TODO - these should be placed in location by the FileHandler
+        # for a in view.files:
+        #     destination_path = assets_path / a.name
+        #     if compress_assets:
+        #         with compress_file(a) as a_gz:
+        #             copy(a_gz, destination_path)
+        #     else:
+        #         copy(a, destination_path)
 
-        self._write(
+        self._write_html_template(
             view,
-            str(path / "index.html"),
-            name=name,
-            formatting=formatting,
+            str(self.app_dir / "index.html"),
+            name=self.name,
+            formatting=self.formatting,
         )
 
-        display_msg(f"Successfully built app in {path}")
+        display_msg(f"Successfully built app in {self.app_dir}")
 
-        return path
+        return self.app_dir
 
 
 ################################################################################
@@ -595,53 +607,81 @@ def serve(
         formatting: Sets the basic app styling; note that this is ignored if a app exists at the specified path
         overwrite: Replace existing app with the same name and destination if already exists (default: False)
     """
+    # NOTE - this is basically build the static view, then serve
 
-    # build then serve
-    # path = self.build(name=name, dest=dest, formatting=formatting, compress_assets=True, overwrite=overwrite)
+    # build in a tmp dir then serve
+    app_dir = Path(tempfile.mkdtemp(prefix="dp-"))
+    build(view, name="app", dest=app_dir, formatting=formatting)
 
-    path = ""
+    # Run the server in the specified path
+    with pushd(app_dir / "app"):
+        server = HTTPServer((host, port), CompressedAssetsHTTPHandler)
+        display_msg(f"Server started at {host}:{port}")
 
-    os.chdir(path)  # Run the server in the specified path
-    server = HTTPServer((host, port), CompressedAssetsHTTPHandler)
-    display_msg(f"Server started at {host}:{port}")
+        if open:
+            # If the endpoint is simply opened then there is a race
+            # between the page loading and server becoming available.
+            def _open_browser(host: str, port: int) -> None:
+                sleep(1)  # yield so server in main thread can start
+                webbrowser.open_new_tab(f"http://{host}:{port}")
 
-    if open:
-        # If the endpoint is simply opened then there is a race
-        # between the page loading and server becoming available.
-        def _open_browser(host: str, port: int) -> None:
-            sleep(1)  # yield so server in main thread can start
-            webbrowser.open_new_tab(f"http://{host}:{port}")
+            threading.Thread(target=_open_browser, args=(host, port), daemon=True).start()
 
-        threading.Thread(target=_open_browser, args=(host, port), daemon=True).start()
-
-    try:
-        server.serve_forever()
-    except KeyboardInterrupt:
-        pass
-
-    server.server_close()
+        try:
+            server.serve_forever()
+        except KeyboardInterrupt:
+            pass
+        finally:
+            server.server_close()
+            shutil.rmtree(app_dir, ignore_errors=True)
 
 
-# TODO(product) - is this useful?
 def build(
     view: View,
     name: str = "app",
     dest: t.Optional[NPath] = None,
     formatting: t.Optional[AppFormatting] = None,
-    compress_assets: bool = False,
     overwrite: bool = False,
 ) -> None:
-    """Build an app with a directory structure, which can be served by a local http server
+    """Build an (static) app with a directory structure, which can be served by a local http server
+    TODO(product) - unknown if we should keep this...
+
     Args:
-        app: The `App` object
+        view: The `View` object
         name: The name of the app directory to be created
         dest: File path to store the app directory
-        compress_assets: Compress user assets during app generation (default: True)
         formatting: Sets the basic app styling
         overwrite: Replace existing app with the same name and destination if already exists (default: False)
     """
-    # LocalServe(view).build(name=name, dest=dest, formatting=formatting, compress_assets=compress_assets, overwrite=overwrite)
-    ...
+
+    # build the dest dir
+    app_dir: Path = Path(dest or os.getcwd()) / name
+    app_exists = app_dir.is_dir()
+
+    if app_exists and overwrite:
+        rmtree(app_dir)
+    elif app_exists and not overwrite:
+        raise DPError(f"App exists at given path {str(app_dir)} -- set `overwrite=True` to allow overwrite")
+
+    assets_dir = app_dir / "assets"
+    assets_dir.mkdir(parents=True)
+
+    # write the app html and assets
+    report_id: str = (
+        Pipeline(view)
+        .pipe(OptimiseAST())
+        .pipe(
+            ConvertXML(
+                embedded=True,
+                served=False,
+                validate=True,
+                file_entry_klass=GzipTmpFileEntry,
+                dir_path=assets_dir,
+            )
+        )
+        .pipe(ExportHTMLFileAssets(app_dir=app_dir, name=name, formatting=formatting))
+        .result
+    )
 
 
 def save_report(
@@ -653,7 +693,7 @@ def save_report(
 ) -> None:
     """Save the app document to a local HTML file
     Args:
-        app: The `App` object
+        view: The `View` object
         path: File path to store the document
         open: Open in your browser after creating (default: False)
         name: Name of the document (optional: uses path if not provided)
@@ -668,8 +708,7 @@ def save_report(
                 embedded=True,
                 served=False,
                 validate=True,
-                file_entry_klass=GzipTmpFileEntry,
-                dir_path=Path("./data-files/"),
+                file_entry_klass=B64FileEntry,
             )
         )
         .pipe(ExportHTMLInlineAssets(path=path, open=open, name=name, formatting=formatting))
@@ -729,10 +768,23 @@ def upload(
     # current protocol is to strip all empty args and patch (via a post)
     kwargs = dict_drop_empty(kwargs)
 
-    # TODO - run the pipeline...
-    view_ast = ViewAST()
+    view_ast: ViewAST = (
+        Pipeline(view)
+        .pipe(OptimiseAST())
+        .pipe(
+            ConvertXML(
+                embedded=True,
+                served=False,
+                validate=True,
+                file_entry_klass=GzipTmpFileEntry,
+            )
+        )
+        .pipe(PreUploadProcessor())
+        .result
+    )
+
     # attach the view and upload as an App
-    files = dict(attachments=view_ast.files)
+    files: FileAttachmentList = dict(attachments=view_ast.store.file_list)
     app = App.post_with_files(files, overwrite=overwrite, document=view_ast.view_xml, **kwargs)
 
     if open:

@@ -139,7 +139,7 @@ def _process_res(r: Response, empty_ok: bool = False) -> t.Union[Munch, JSON]:
     return munchify(r_data) if isinstance(r_data, dict) else r_data
 
 
-FileList = t.Dict[str, t.List[Path]]
+FileAttachmentList = t.Dict[str, t.List[t.BinaryIO]]
 
 
 # TODO - make generic and return a dataclass from server?
@@ -182,19 +182,18 @@ class Resource:
         r = self.session.post(self.url, headers=extra_headers, json=data, params=params, timeout=self.timeout)
         return _process_res(r)
 
-    def post_files(self, files: FileList, overwrite: bool = False, **data: JSON) -> Munch:
+    def post_files(self, files: FileAttachmentList, overwrite: bool = False, **data: JSON) -> Munch:
         # upload files using custom json-data protocol
         # build the fields
         file_header = {"Content-Encoding": "gzip"}
 
-        def _mk_file_fields(field_name: str, f: Path):
-            # compress the file, in-place
-            # TODO - disable compression where unneeded, e.g. .gz, .zip, .png, etc
-            with compress_file(f) as f_gz:
-                return (
-                    field_name,
-                    (f.name, open(f_gz, "rb"), guess_type(f), file_header),
-                )
+        def _mk_file_fields(field_name: str, fobj: t.BinaryIO):
+            fobj.flush()
+            fobj.seek(0)
+            return (
+                field_name,
+                (fobj.name, fobj, guess_type(Path(fobj.name)), file_header),
+            )
 
         fields = [_mk_file_fields(k, x) for (k, v) in files.items() for x in v]
         fields.append(("json_data", json.dumps(data)))

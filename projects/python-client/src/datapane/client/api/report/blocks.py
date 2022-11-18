@@ -28,7 +28,15 @@ from datapane.client import DPError
 from datapane.common import NPath, SSDict, log, utf_read_text
 from datapane.common.report import conv_attrib, get_embed_url, is_valid_id, mk_attribs
 
-from .asset_utils import AssetMeta, AssetWriterP, AttachmentWriter, DataTableWriter, HTMLTableWriter, PlotWriter
+from .asset_writing import (
+    AssetMeta,
+    AssetWriterP,
+    AttachmentWriter,
+    DataTableWriter,
+    HTMLTableWriter,
+    PlotWriter,
+    convert_to_block,
+)
 
 if t.TYPE_CHECKING:
     from .processors import BuilderState, FileEntry, FileStore
@@ -225,9 +233,9 @@ def wrap_block(b: BlockOrPrimitive) -> Block:
     #     raise DPError("Page objects can only be at the top-level")
     if not isinstance(b, BaseElement):
         # import here as a very slow module due to nested imports
-        from ..files import convert
+        # from ..files import convert
 
-        return convert(b)
+        return convert_to_block(b)
     return t.cast(Block, b)
 
 

@@ -9,18 +9,34 @@ import typing as t
 from collections import namedtuple
 from contextlib import suppress
 from io import TextIOWrapper
+from pathlib import Path
 
 import pandas as pd
 from altair.utils import SchemaBase
 from multimethod import multimethod
+from packaging import version as v
+from packaging.specifiers import SpecifierSet
 from pandas.io.formats.style import Styler
 
 from datapane.client import DPError
 from datapane.common import ArrowFormat, log
 from datapane.common.df_processor import to_df
 
+from . import blocks as b
+
 AssetMeta = namedtuple("AssetMeta", "ext mime")
 TABLE_CELLS_LIMIT: int = 500
+# NOTE - need to update this and keep in sync with JS
+BOKEH_V_SPECIFIER = SpecifierSet("~=2.4.2")
+PLOTLY_V_SPECIFIER = SpecifierSet(">=4.0.0")
+FOLIUM_V_SPECIFIER = SpecifierSet(">=0.12.0")
+
+
+def _check_version(name: str, _v: v.Version, ss: SpecifierSet):
+    if _v not in ss:
+        log.warning(
+            f"{name} version {_v} is not supported, these plots may not display correctly, please install version {ss}"
+        )
 
 
 class DPTextIOWrapper(TextIOWrapper):
@@ -37,7 +53,9 @@ class DPTextIOWrapper(TextIOWrapper):
 
 
 class AssetWriterP(t.Protocol):
-    # Implement these in any asset block to support file handling
+    """Implement these in any class to support asset writing
+    for a particular AssetBlock"""
+
     def get_meta(self, x: t.Any) -> AssetMeta:
         ...
 
@@ -121,7 +139,7 @@ try:
     import folium
     from folium import Map
 
-    # _check_version("Folium", v.Version(folium.__version__), FOLIUM_V_SPECIFIER)
+    _check_version("Folium", v.Version(folium.__version__), FOLIUM_V_SPECIFIER)
     HAVE_FOLIUM = True
 except ImportError:
     HAVE_FOLIUM = False
@@ -142,7 +160,7 @@ try:
     from bokeh.layouts import LayoutDOM as BLayout
     from bokeh.plotting.figure import Figure as BFigure
 
-    # _check_version("Bokeh", v.Version(bokeh.__version__), BOKEH_V_SPECIFIER)
+    _check_version("Bokeh", v.Version(bokeh.__version__), BOKEH_V_SPECIFIER)
     HAVE_BOKEH = True
 except ImportError:
     HAVE_BOKEH = False
@@ -153,7 +171,7 @@ try:
     import plotly
     from plotly.graph_objects import Figure as PFigure
 
-    # _check_version("Plotly", v.Version(plotly.__version__), PLOTLY_V_SPECIFIER)
+    _check_version("Plotly", v.Version(plotly.__version__), PLOTLY_V_SPECIFIER)
     HAVE_PLOTLY = True
 except ImportError:
     HAVE_PLOTLY = False
@@ -236,13 +254,8 @@ class PlotWriter:
             self.write_file(fig)
 
 
-from pathlib import Path
-
 #################################################################
-# Block wrapping - TODO - move out
-from . import blocks as b
-
-
+# Block wrapping
 @multimethod
 def convert_to_block(x: object) -> b.DataBlock:
     raise DPError(

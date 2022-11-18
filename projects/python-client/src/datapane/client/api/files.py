@@ -11,16 +11,19 @@ import abc
 import json
 import os
 import pickle
+import typing
 from functools import singledispatch
 from pathlib import Path
 from typing import IO, TYPE_CHECKING, Any, Generic, List, Optional, Type, TypeVar
 
+import pandas as pd
 from altair.utils import SchemaBase
 from numpy import ndarray
 from pandas import DataFrame
 from pandas.io.formats.style import Styler
 
-from datapane.common import log
+from datapane.common import ArrowFormat, log
+from datapane.common.df_processor import to_df
 
 from .. import DPError
 from .common import DPTmpFile
@@ -30,7 +33,7 @@ from .report.blocks import Attachment, DataBlock, DataTable, Plot, Table, Text
 if TYPE_CHECKING:
     from bokeh.model import Model
 
-    from .report.processors import FileStore, FileWrapper
+    from .report.processors import FileEntry, FileStore
 
 T = TypeVar("T")
 U = TypeVar("U", DataFrame, Styler)
@@ -46,7 +49,7 @@ class BaseAsset(Generic[T], abc.ABC):
     ext: str
     file_mode: str = "w"
 
-    def add_to_store(self, x: T, fs: FileStore) -> FileWrapper:
+    def add_to_store(self, x: T, fs: FileStore) -> FileEntry:
         # TODO - maybe we just get the file constructor from filestore so can write and add manually
         # with fs.write_file(self.ext, self.file_mode) as f:
         #     self.write_file(f, x)
@@ -316,7 +319,7 @@ def save(obj: Any) -> DPTmpFile:
     return fn
 
 
-def add_to_store(obj: Any, fs: FileStore) -> FileWrapper:
+def add_to_store(obj: Any, fs: FileStore) -> FileEntry:
     return get_wrapper(obj, error_msg=None).add_to_store(obj, fs)
 
 

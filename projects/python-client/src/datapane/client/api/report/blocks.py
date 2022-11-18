@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import dataclasses as dc
 import enum
+import io
 import re
 import secrets
 import typing as t
@@ -32,7 +33,7 @@ from ..common import DPTmpFile
 from ..dp_object import save_df
 
 if t.TYPE_CHECKING:
-    from .processors import BuilderState, FileStore
+    from .processors import BuilderState, FileEntry, FileStore
 
 
 E = ElementMaker()  # XML Tag Factory
@@ -211,7 +212,7 @@ class BaseElement(ABC):
         self._attributes.update(mk_attribs(**kwargs))
 
     def _to_xml(self, s: BuilderState) -> BuilderState:
-        """Base implementation - just created an empty tag including all the intitial attributes"""
+        """Base implementation - just created an empty tag including all the initial attributes"""
         _E = getattr(E, self._tag)
         return s.add_element(self, _E(**self._attributes))
 
@@ -563,6 +564,19 @@ class Text(EmbeddedTextBlock):
         return Group(blocks=blocks)
 
 
+class Divider(EmbeddedTextBlock):
+    """
+    Divider blocks add a horizontal line to your report, normally used to break up report contents
+    # TODO - turn into a component function, doesn't need to be a block type
+    """
+
+    _tag = "Text"
+
+    def __init__(self):
+        # `---` is processed as a horizontal divider by the FE markdown renderer
+        super().__init__(content="---")
+
+
 class Code(EmbeddedTextBlock):
     """
     Code objects store source code that can be displayed as formatted text when viewing your report.
@@ -700,46 +714,276 @@ class BigNumber(DataBlock):
         )
 
 
+################################################################################
+# Asset-based blkocks
+# TODO - move to new module
+
+import json
+import pickle
+from collections import namedtuple
+
+from multimethod import DispatchError, multimethod
+
+from datapane.common import ArrowFormat
+from datapane.common.df_processor import to_df
+
+AssetMeta = namedtuple("AssetMeta", "ext mime")
+
+
+class AssetWriterP(t.Protocol):
+    # Implement these in any asset block to support file handling
+    def get_meta(self, x: t.Any) -> AssetMeta:
+        ...
+
+    def write_file(self, x: t.Any, f: t.IO) -> None:
+        ...
+
+
+class AttachmentWriter:
+    # pickle
+    @multimethod
+    def get_meta(self, x: t.Any) -> AssetMeta:
+        return AssetMeta(ext=".pkl", mime="application/vnd.pickle+binary")
+
+    @multimethod
+    def get_meta(self, x: str) -> AssetMeta:
+        return AssetMeta(ext=".json", mime="application/json")
+
+    @multimethod
+    def write_file(self, x: t.Any, f) -> None:
+        pickle.dump(x, f)
+
+    @multimethod
+    def write_file(self, x: str, f) -> None:
+        out: str = json.dumps(json.loads(x))
+        f.write(out.encode())
+
+
+class DataTableWriter:
+    @multimethod
+    def get_metaa(self, x: pd.DataFrame) -> AssetMeta:
+        return AssetMeta(mime=ArrowFormat.content_type, ext=ArrowFormat.ext)
+
+    @multimethod
+    def write_file(self, x: pd.DataFrame, f) -> None:
+        # create a copy of the df to process
+        df = to_df(x)
+        if df.size == 0:
+            raise DPError("Empty DataFrame provided")
+        # process_df called in Arrow.save_file
+        ArrowFormat.save_file(f, df)
+
+
+class HTMLTableWriter:
+    TABLE_CELLS_LIMIT: int = 500
+
+    @multimethod
+    def get_meta(self, x: t.Union[pd.DataFrame, Styler]) -> AssetMeta:
+        return AssetMeta(mime="application/vnd.datapane.table+html", ext=".tbl.html")
+
+    @multimethod
+    def write_file(self, x: pd.DataFrame, f) -> None:
+        self._check(x)
+        out = x.to_html().encode()
+        f.write(out)
+
+    @multimethod
+    def write_file(self, x: Styler, f) -> None:
+        self._check(x.data)
+        out = x.render().encode()
+        f.write(out)
+
+    def _check(self, df: pd.DataFrame) -> None:
+        n_cells = df.shape[0] * df.shape[1]
+        if n_cells > self.TABLE_CELLS_LIMIT:
+            raise ValueError(
+                f"Dataframe over limit of {self.TABLE_CELLS_LIMIT} cells for dp.Table, consider using dp.DataTable instead or aggregating the df first"
+            )
+
+
+from contextlib import suppress
+from io import TextIOWrapper
+
+from altair.utils import SchemaBase
+
+
+class DPTextIOWrapper(TextIOWrapper):
+    """Custom IO Wrapper that detaches before closing - see https://bugs.python.org/issue21363"""
+
+    def __init__(self, f, *a, **kw):
+        super().__init__(f, encoding="utf-8", *a, **kw)
+
+    def __del__(self):
+        # don't close the underlying stream
+        self.flush()
+        with suppress(Exception):
+            self.detach()
+
+
+# TODO - optimise this
+# Matplotlib
+try:
+    from matplotlib.figure import Axes, Figure
+    from numpy import ndarray
+
+    matplotlib_available = True
+except ImportError:
+    log.debug("No matplotlib found")
+    matplotlib_available = False
+
+# Folium
+try:
+    import folium
+    from folium import Map
+
+    # _check_version("Folium", v.Version(folium.__version__), FOLIUM_V_SPECIFIER)
+    folium_available = True
+except ImportError:
+    folium_available = False
+    log.debug("No folium found")
+
+# Plotapi
+try:
+    from plotapi import Visualisation
+
+    plotapi_available = True
+except ImportError:
+    plotapi_available = False
+    log.debug("No plotapi found")
+
+# Bokeh
+try:
+    import bokeh
+    from bokeh.layouts import LayoutDOM as BLayout
+    from bokeh.plotting.figure import Figure as BFigure
+
+    # _check_version("Bokeh", v.Version(bokeh.__version__), BOKEH_V_SPECIFIER)
+    bokeh_available = True
+except ImportError:
+    bokeh_available = False
+    log.debug("No Bokeh Found")
+
+# Plotly
+try:
+    import plotly
+    from plotly.graph_objects import Figure as PFigure
+
+    # _check_version("Plotly", v.Version(plotly.__version__), PLOTLY_V_SPECIFIER)
+    plotly_available = True
+except ImportError:
+    plotly_available = False
+    log.debug("No Plotly Found")
+
+
+class PlotWriter:
+    obj_type: t.Any
+
+    # Altair
+    @multimethod
+    def get_meta(self, x: SchemaBase) -> AssetMeta:
+        return AssetMeta(mime="application/vnd.vegalite.v4+json", ext=".vl.json")
+
+    @multimethod
+    def write_file(self, x: SchemaBase, f) -> None:
+        json.dump(x.to_dict(), DPTextIOWrapper(f))
+
+    if folium_available:
+
+        @multimethod
+        def get_meta(self, x: Map) -> AssetMeta:
+            return AssetMeta(mime="application/vnd.folium+html", ext=".fl.html")
+
+        @multimethod
+        def write_file(self, x: Map, f) -> None:
+            html: str = x.get_root().render()
+            f.write(html.encode())
+
+    if plotapi_available:
+
+        @multimethod
+        def get_meta(self, x: Visualisation) -> AssetMeta:
+            return AssetMeta(mime="application/vnd.plotapi+html", ext=".plotapi.html")
+
+        @multimethod
+        def write_file(self, x: Visualisation, f) -> None:
+            html: str = x.to_string()
+            f.write(html.encode())
+
+    if bokeh_available:
+
+        @multimethod
+        def get_meta(self, x: t.Union[BFigure, BLayout]) -> AssetMeta:
+            return AssetMeta(mime="application/vnd.bokeh.show+json", ext=".bokeh.json")
+
+        @multimethod
+        def write_file(self, x: t.Union[BFigure, BLayout], f: t.IO):
+            from bokeh.embed import json_item
+
+            json.dump(json_item(x), DPTextIOWrapper(f))
+
+    if plotly_available:
+
+        @multimethod
+        def get_meta(self, x: PFigure) -> AssetMeta:
+            return AssetMeta(mime="application/vnd.plotly.v1+json", ext=".pl.json")
+
+        @multimethod
+        def write_file(self, x: PFigure, f):
+            json.dump(x.to_json(), DPTextIOWrapper(f))
+
+    if matplotlib_available:
+
+        @multimethod
+        def get_meta(self, x: t.Union[Axes, Figure, ndarray]) -> AssetMeta:
+            return AssetMeta(mime="image/svg+xml", ext=".svg")
+
+        @multimethod
+        def write_file(self, x: Figure, f) -> None:
+            x.savefig(DPTextIOWrapper(f))
+
+        @multimethod
+        def write_file(self, x: Axes, f) -> None:
+            self.write_file(x.get_figure())
+
+        @multimethod
+        def write_file(self, x: ndarray, f) -> None:
+            fig = x.flatten()[0].get_figure()
+            self.write_file(fig)
+
+
 class AssetBlock(DataBlock):
     """
     AssetBlock objects form basis of all File-related blocks (abstract class, not exported)
     """
 
     # TODO - we may need to support file here as well to handle media, etc.
-    file: Path = None
-    data: t.Optional[t.Any] = None
-    caption: t.Optional[str] = None
+    writer: t.Type[AssetWriterP]
 
     def __init__(
         self,
         data: t.Optional[t.Any] = None,
         file: t.Optional[Path] = None,
-        caption: str = None,
-        name: BlockId = None,
-        label: str = None,
+        caption: str = "",
+        name: t.Optional[BlockId] = None,
+        label: t.Optional[str] = None,
         **kwargs,
     ):
         # storing objects for delayed upload
         super().__init__(name=name, label=label, **kwargs)
         self.data = data
         self.file = file
-        self.caption = caption or ""
+        self.caption = caption
+        self.file_attribs: SSDict = dict()
 
     def _to_xml(self, s: BuilderState) -> BuilderState:
-        # import here as a very slow module due to nested imports
-        from .. import files
-
-        if self.data is not None:
-            fe = files.add_to_store(self.data, s.store)
-        elif self.file is not None:
-            fe = s.store.load_file(self.file)
-        else:
-            raise DPError("No asset to add")
+        """Main XMl creation method - visotor method"""
+        fe = self._add_asset_to_store(s)
 
         # NOTE: we inline the file attributes here rather than as a later transformation pass atm for simplicity
         _E = getattr(E, self._tag)
 
-        self._add_attributes()
+        self._add_attributes(**self.get_file_attribs())
+
         e: etree._Element = _E(
             type=fe.mime,
             size=conv_attrib(fe.size),
@@ -751,6 +995,32 @@ class AssetBlock(DataBlock):
         if self.caption:
             e.set("caption", self.caption)
         return s.add_element(self, e)
+
+    def get_file_attribs(self) -> SSDict:
+        return self.file_attribs
+
+    def _add_asset_to_store(self, s: BuilderState) -> FileEntry:
+        """Default asset store handler that operates on native Python objects"""
+        # import here as a very slow module due to nested imports
+        from .. import files
+
+        fs = s.store
+        if self.data is not None:
+            # fe = files.add_to_store(self.data, s.store)
+            try:
+                writer = self.writer()
+                meta: AssetMeta = writer.get_meta(self.data)
+                fe = fs.get_file(meta.ext, meta.mime)
+                writer.write_file(self.data, fe.file)
+                fs.add_file(fe)
+            except DispatchError:
+                raise DPError(f"{type(self.data).__name__} not supported for {self.__class__.__name__}")
+        elif self.file is not None:
+            fe = fs.load_file(self.file)
+        else:
+            raise DPError("No asset to add")
+
+        return fe
 
 
 class Media(AssetBlock):
@@ -777,8 +1047,7 @@ class Media(AssetBlock):
             label: A label used when displaying the block (optional)
         """
         file = Path(file).expanduser()
-        data = file.read_bytes()
-        super().__init__(data=data, name=name, caption=caption, label=label)
+        super().__init__(file=file, name=name, caption=caption, label=label)
 
 
 class Attachment(AssetBlock):
@@ -791,6 +1060,7 @@ class Attachment(AssetBlock):
     """
 
     _tag = "Attachment"
+    writer = AttachmentWriter
 
     def __init__(
         self,
@@ -813,17 +1083,12 @@ class Attachment(AssetBlock):
         ..note:: either `data` or `file` must be provided
         """
         if file:
-            # TODO - fix this
             file = Path(file).expanduser()
-            data = file.read_bytes()
             filename = filename or file.name
-        else:
-            data = data
-            # out_fn = self._save_obj(data)
-            # file = out_fn.file
+        elif data:
             filename = filename or "test.data"
 
-        super().__init__(data=data, filename=filename, name=name, caption=caption, label=label)
+        super().__init__(data=data, file=file, filename=filename, name=name, caption=caption, label=label)
 
 
 class Plot(AssetBlock):
@@ -833,6 +1098,7 @@ class Plot(AssetBlock):
     """
 
     _tag = "Plot"
+    writer = PlotWriter
 
     def __init__(
         self,
@@ -852,10 +1118,6 @@ class Plot(AssetBlock):
             name: A unique name for the block to reference when adding text or embedding (optional)
             label: A label used when displaying the block (optional)
         """
-        # out_fn = self._save_obj(data)
-        # if out_fn.mime == PKL_MIMETYPE:
-        #     raise DPError("Can't embed object as a plot")
-
         super().__init__(data=data, caption=caption, responsive=responsive, scale=scale, name=name, label=label)
 
 
@@ -868,6 +1130,7 @@ class Table(AssetBlock):
     # NOTE - Tables are stored as HTML fragment files rather than inline within the Report document
 
     _tag = "Table"
+    writer = HTMLTableWriter
 
     def __init__(
         self,
@@ -883,7 +1146,6 @@ class Table(AssetBlock):
             name: A unique name for the block to reference when adding text or embedding (optional)
             label: A label used when displaying the block (optional)
         """
-        # out_fn = self._save_obj(data)
         super().__init__(data=data, caption=caption, name=name, label=label)
 
 
@@ -898,6 +1160,7 @@ class DataTable(AssetBlock):
     """
 
     _tag = "DataTable"
+    writer = DataTableWriter
 
     def __init__(
         self,
@@ -913,20 +1176,7 @@ class DataTable(AssetBlock):
             name: A unique name for the block to reference when adding text or embedding (optional)
             label: A label used when displaying the block (optional)
         """
-        fn = save_df(df)
-        (rows, columns) = df.shape
+        super().__init__(data=df, caption=caption, name=name, label=label)
         # TODO - support pyarrow schema for local reports
+        (rows, columns) = df.shape
         self.file_attribs = mk_attribs(rows=rows, columns=columns, schema="[]")
-        super().__init__(file=fn.file, caption=caption, name=name, label=label)
-
-
-class Divider(EmbeddedTextBlock):
-    """
-    Divider blocks add a horizontal line to your report, normally used to break up report contents
-    """
-
-    _tag = "Text"
-
-    def __init__(self):
-        # `---` is processed as a horizontal divider by the FE markdown renderer
-        super().__init__(content="---")

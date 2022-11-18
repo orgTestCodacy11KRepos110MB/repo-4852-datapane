@@ -7,20 +7,20 @@ Describes an API for serializing a Report object, rendering it locally and publi
 from __future__ import annotations
 
 import abc
-import shutil
-from contextlib import contextmanager
 import dataclasses as dc
 import datetime
-import hashlib
 import gzip
+import hashlib
 import io
 import os
+import shutil
 import tempfile
 import threading
 import typing as t
 import webbrowser
 from abc import ABC
 from base64 import b64encode
+from contextlib import contextmanager
 from http.server import HTTPServer, SimpleHTTPRequestHandler
 from os import path as osp
 from pathlib import Path
@@ -39,16 +39,14 @@ from datapane.client import config as c
 from datapane.client.analytics import _NO_ANALYTICS, capture, capture_event
 from datapane.client.api.common import DPTmpFile, Resource
 from datapane.client.api.runtime import _report
-from datapane.common.utils import pushd
 from datapane.client.utils import DPError, InvalidReportError, display_msg
 from datapane.common import NPath, SDict, dict_drop_empty, guess_type, log, timestamp
 from datapane.common.report import ViewXML, local_report_def, validate_report_doc
-from datapane.common.utils import compress_file
+from datapane.common.utils import compress_file, pushd
 
-from .blocks import View, BaseElement
-from .core import App, AppFormatting, AppWidth
 from ...commands import file
-
+from .blocks import BaseElement, View
+from .core import App, AppFormatting, AppWidth
 
 if t.TYPE_CHECKING:
     from datapane.client.api.common import FileAttachmentList
@@ -101,7 +99,7 @@ XFileHandler = t.List[Path]
 GZIP_MTIME = datetime.datetime(year=2000, month=1, day=1).timestamp()
 
 
-class FileWrapper:
+class FileEntry:
     file: t.IO
     _ext: str
     _dir_path: t.Optional[Path]
@@ -144,8 +142,10 @@ class FileWrapper:
         return FileEntry(file=self, hash=self.hash, size=self.size, mime=self.mime)
 
 
-class B64FileEntry(FileWrapper):
+class B64FileEntry(FileEntry):
     """Memory-based b64 file"""
+
+    # requires b64io is bytes only and wraps to a bytes file only
     file: base64io.Base64IO
     wrapped: io.BytesIO
     contents: bytes
@@ -171,8 +171,10 @@ class B64FileEntry(FileWrapper):
         return f"data:{self.mime};base64,{self.contents.decode('ascii')}"
 
 
-class GzipTmpFileEntry(FileWrapper):
+class GzipTmpFileEntry(FileEntry):
     """Gzipped file, by default stored in /tmp"""
+
+    # both file and wapper files are bytes-only
     file: gzip.GzipFile
     # TODO - this could actually be an in-memory file...
     wrapped: tempfile.NamedTemporaryFile
@@ -216,22 +218,13 @@ class GzipTmpFileEntry(FileWrapper):
             self.hash = self.calc_hash(self.wrapped)
 
 
-# TODO - do we use this?
-@dc.dataclass
-class FileEntry:
-    file: FileWrapper
-    hash: str
-    size: int
-    mime: str
-
-
 class FileStore:
     # TODO - make this a CAS (index by object itself?)
     # NOTE - currently we pass dir_path via the FileStore, could move into the file themselves?
-    def __init__(self, fw_klass: t.Type[FileWrapper], assets_dir: t.Optional[Path] = None):
+    def __init__(self, fw_klass: t.Type[FileEntry], assets_dir: t.Optional[Path] = None):
         super().__init__()
         self.fw_klass = fw_klass
-        self.files: t.List[FileWrapper] = []
+        self.files: t.List[FileEntry] = []
         self.dir_path = assets_dir
 
     def __add__(self, other: FileStore):
@@ -271,24 +264,26 @@ class FileStore:
 
         self.add_file(file)
 
-    def get_file(self, ext: str, mime: str) -> FileWrapper:
+    def get_file(self, ext: str, mime: str) -> FileEntry:
         return self.fw_klass(ext, mime, self.dir_path)
 
-    def add_file(self, fw: FileWrapper) -> None:
+    def add_file(self, fw: FileEntry) -> None:
         fw.freeze()
         self.files.append(fw)
 
-    def load_file(self, path: Path) -> FileWrapper:
+    def load_file(self, path: Path) -> FileEntry:
         """load a file into the store (makes a copy)"""
         # TODO - ideally lazily-link a path to the store (rather than include it)
+        # TODO - fix??
         ext = "".join(path.suffixes)
         with path.open("wb") as src_obj, self.fw_klass(ext=ext, dir_path=self.dir_path) as dest_obj:
             copyfileobj(src_obj, dest_obj)
-        return self.add_file(dest_obj)
+        self.add_file(dest_obj)
+        return dest_obj
 
     def as_dict(self) -> dict:
         """Build a json structure suitable for embedding in a html file, json-rpc response, etc."""
-        v: FileWrapper
+        v: FileEntry
         return {k: v.as_dict() for (k, v) in enumerate(self.files, 1)}
 
 
@@ -307,6 +302,7 @@ Step = t.Callable[..., ViewAST]
 
 class Pipeline:
     """A simple, programmable, eagerly-evaluated, pipeline that is specialised on ViewAST transformations"""
+
     # TODO - should we just use a lib for this?
 
     _state: ViewAST
@@ -387,7 +383,7 @@ class ConvertXML(BaseProcessor):
         self,
         embedded: bool,
         served: bool,
-        file_entry_klass: t.Type[FileWrapper],
+        file_entry_klass: t.Type[FileEntry],
         dir_path: t.Optional[Path] = None,
         validate: bool = True,
     ):

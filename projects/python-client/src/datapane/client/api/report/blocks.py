@@ -7,12 +7,10 @@ from __future__ import annotations
 
 import dataclasses as dc
 import enum
-import io
 import re
 import secrets
 import typing as t
 from abc import ABC
-from base64 import b64encode
 from collections import deque
 from functools import reduce
 from pathlib import Path
@@ -23,14 +21,14 @@ from glom import glom
 from lxml import etree
 from lxml.builder import ElementMaker
 from lxml.etree import Element
+from multimethod import DispatchError
 from pandas.io.formats.style import Styler
 
 from datapane.client import DPError
-from datapane.common import MIME, PKL_MIMETYPE, NPath, SSDict, guess_type, log, utf_read_text
+from datapane.common import NPath, SSDict, log, utf_read_text
 from datapane.common.report import conv_attrib, get_embed_url, is_valid_id, mk_attribs
 
-from ..common import DPTmpFile
-from ..dp_object import save_df
+from .asset_utils import AssetMeta, AssetWriterP, AttachmentWriter, DataTableWriter, HTMLTableWriter, PlotWriter
 
 if t.TYPE_CHECKING:
     from .processors import BuilderState, FileEntry, FileStore
@@ -716,241 +714,6 @@ class BigNumber(DataBlock):
 
 ################################################################################
 # Asset-based blkocks
-# TODO - move to new module
-
-import json
-import pickle
-from collections import namedtuple
-
-from multimethod import DispatchError, multimethod
-
-from datapane.common import ArrowFormat
-from datapane.common.df_processor import to_df
-
-AssetMeta = namedtuple("AssetMeta", "ext mime")
-
-
-class AssetWriterP(t.Protocol):
-    # Implement these in any asset block to support file handling
-    def get_meta(self, x: t.Any) -> AssetMeta:
-        ...
-
-    def write_file(self, x: t.Any, f: t.IO) -> None:
-        ...
-
-
-class AttachmentWriter:
-    # pickle
-    @multimethod
-    def get_meta(self, x: t.Any) -> AssetMeta:
-        return AssetMeta(ext=".pkl", mime="application/vnd.pickle+binary")
-
-    @multimethod
-    def get_meta(self, x: str) -> AssetMeta:
-        return AssetMeta(ext=".json", mime="application/json")
-
-    @multimethod
-    def write_file(self, x: t.Any, f) -> None:
-        pickle.dump(x, f)
-
-    @multimethod
-    def write_file(self, x: str, f) -> None:
-        out: str = json.dumps(json.loads(x))
-        f.write(out.encode())
-
-
-class DataTableWriter:
-    @multimethod
-    def get_metaa(self, x: pd.DataFrame) -> AssetMeta:
-        return AssetMeta(mime=ArrowFormat.content_type, ext=ArrowFormat.ext)
-
-    @multimethod
-    def write_file(self, x: pd.DataFrame, f) -> None:
-        # create a copy of the df to process
-        df = to_df(x)
-        if df.size == 0:
-            raise DPError("Empty DataFrame provided")
-        # process_df called in Arrow.save_file
-        ArrowFormat.save_file(f, df)
-
-
-class HTMLTableWriter:
-    TABLE_CELLS_LIMIT: int = 500
-
-    @multimethod
-    def get_meta(self, x: t.Union[pd.DataFrame, Styler]) -> AssetMeta:
-        return AssetMeta(mime="application/vnd.datapane.table+html", ext=".tbl.html")
-
-    @multimethod
-    def write_file(self, x: pd.DataFrame, f) -> None:
-        self._check(x)
-        out = x.to_html().encode()
-        f.write(out)
-
-    @multimethod
-    def write_file(self, x: Styler, f) -> None:
-        self._check(x.data)
-        out = x.render().encode()
-        f.write(out)
-
-    def _check(self, df: pd.DataFrame) -> None:
-        n_cells = df.shape[0] * df.shape[1]
-        if n_cells > self.TABLE_CELLS_LIMIT:
-            raise ValueError(
-                f"Dataframe over limit of {self.TABLE_CELLS_LIMIT} cells for dp.Table, consider using dp.DataTable instead or aggregating the df first"
-            )
-
-
-from contextlib import suppress
-from io import TextIOWrapper
-
-from altair.utils import SchemaBase
-
-
-class DPTextIOWrapper(TextIOWrapper):
-    """Custom IO Wrapper that detaches before closing - see https://bugs.python.org/issue21363"""
-
-    def __init__(self, f, *a, **kw):
-        super().__init__(f, encoding="utf-8", *a, **kw)
-
-    def __del__(self):
-        # don't close the underlying stream
-        self.flush()
-        with suppress(Exception):
-            self.detach()
-
-
-# TODO - optimise this
-# Matplotlib
-try:
-    from matplotlib.figure import Axes, Figure
-    from numpy import ndarray
-
-    matplotlib_available = True
-except ImportError:
-    log.debug("No matplotlib found")
-    matplotlib_available = False
-
-# Folium
-try:
-    import folium
-    from folium import Map
-
-    # _check_version("Folium", v.Version(folium.__version__), FOLIUM_V_SPECIFIER)
-    folium_available = True
-except ImportError:
-    folium_available = False
-    log.debug("No folium found")
-
-# Plotapi
-try:
-    from plotapi import Visualisation
-
-    plotapi_available = True
-except ImportError:
-    plotapi_available = False
-    log.debug("No plotapi found")
-
-# Bokeh
-try:
-    import bokeh
-    from bokeh.layouts import LayoutDOM as BLayout
-    from bokeh.plotting.figure import Figure as BFigure
-
-    # _check_version("Bokeh", v.Version(bokeh.__version__), BOKEH_V_SPECIFIER)
-    bokeh_available = True
-except ImportError:
-    bokeh_available = False
-    log.debug("No Bokeh Found")
-
-# Plotly
-try:
-    import plotly
-    from plotly.graph_objects import Figure as PFigure
-
-    # _check_version("Plotly", v.Version(plotly.__version__), PLOTLY_V_SPECIFIER)
-    plotly_available = True
-except ImportError:
-    plotly_available = False
-    log.debug("No Plotly Found")
-
-
-class PlotWriter:
-    obj_type: t.Any
-
-    # Altair
-    @multimethod
-    def get_meta(self, x: SchemaBase) -> AssetMeta:
-        return AssetMeta(mime="application/vnd.vegalite.v4+json", ext=".vl.json")
-
-    @multimethod
-    def write_file(self, x: SchemaBase, f) -> None:
-        json.dump(x.to_dict(), DPTextIOWrapper(f))
-
-    if folium_available:
-
-        @multimethod
-        def get_meta(self, x: Map) -> AssetMeta:
-            return AssetMeta(mime="application/vnd.folium+html", ext=".fl.html")
-
-        @multimethod
-        def write_file(self, x: Map, f) -> None:
-            html: str = x.get_root().render()
-            f.write(html.encode())
-
-    if plotapi_available:
-
-        @multimethod
-        def get_meta(self, x: Visualisation) -> AssetMeta:
-            return AssetMeta(mime="application/vnd.plotapi+html", ext=".plotapi.html")
-
-        @multimethod
-        def write_file(self, x: Visualisation, f) -> None:
-            html: str = x.to_string()
-            f.write(html.encode())
-
-    if bokeh_available:
-
-        @multimethod
-        def get_meta(self, x: t.Union[BFigure, BLayout]) -> AssetMeta:
-            return AssetMeta(mime="application/vnd.bokeh.show+json", ext=".bokeh.json")
-
-        @multimethod
-        def write_file(self, x: t.Union[BFigure, BLayout], f: t.IO):
-            from bokeh.embed import json_item
-
-            json.dump(json_item(x), DPTextIOWrapper(f))
-
-    if plotly_available:
-
-        @multimethod
-        def get_meta(self, x: PFigure) -> AssetMeta:
-            return AssetMeta(mime="application/vnd.plotly.v1+json", ext=".pl.json")
-
-        @multimethod
-        def write_file(self, x: PFigure, f):
-            json.dump(x.to_json(), DPTextIOWrapper(f))
-
-    if matplotlib_available:
-
-        @multimethod
-        def get_meta(self, x: t.Union[Axes, Figure, ndarray]) -> AssetMeta:
-            return AssetMeta(mime="image/svg+xml", ext=".svg")
-
-        @multimethod
-        def write_file(self, x: Figure, f) -> None:
-            x.savefig(DPTextIOWrapper(f))
-
-        @multimethod
-        def write_file(self, x: Axes, f) -> None:
-            self.write_file(x.get_figure())
-
-        @multimethod
-        def write_file(self, x: ndarray, f) -> None:
-            fig = x.flatten()[0].get_figure()
-            self.write_file(fig)
-
-
 class AssetBlock(DataBlock):
     """
     AssetBlock objects form basis of all File-related blocks (abstract class, not exported)
